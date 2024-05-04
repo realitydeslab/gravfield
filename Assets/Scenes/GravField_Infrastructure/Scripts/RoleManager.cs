@@ -13,7 +13,8 @@ public class RoleManager : NetworkBehaviour
     public GameObject goAudience;
     const int PERFORMER_COUNT = 3;
     Performer[] performerList = new Performer[PERFORMER_COUNT];
-    UnityEvent onReceiveApplicationResult;
+    UnityEvent<bool> onReceiveApplicationResult;
+    public bool isPerformer = false;
 
 
     /// <summary>
@@ -43,11 +44,31 @@ public class RoleManager : NetworkBehaviour
     {
 
     }
+
     public void JoinAsPerformer()
     {
-        // Apply to be a performer
-        RegisterPerformerServerRPC();
+        StartCoroutine(WaitToApplyPerformer());
     }
+    IEnumerator WaitToApplyPerformer()
+    {
+        float elapsed_time = 0;
+        while(elapsed_time < 5 && IsSpawned == false)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        if(IsSpawned)
+        {
+            RegisterPerformerServerRpc();
+        }
+        else
+        {
+            Debug.Log("Apply Performer: Time Out. Be an audience instead");
+            onReceiveApplicationResult?.Invoke(false);
+            JoinAsAudience();
+        }
+    }
+
     public void JoinAsAudience()
     {
         // do nothing
@@ -69,31 +90,44 @@ public class RoleManager : NetworkBehaviour
         }
     }
 
-    [Rpc(SendTo.Server)]
-    public void RegisterPerformerServerRPC(RpcParams rpcParams = default)
+    [ServerRpc(RequireOwnership = false)]
+    public void TestServerRpc(ServerRpcParams rpcParams = default)
     {
+        Debug.Log("TestServerRpc | " + IsSpawned);
         if (!IsServer)
             return;
 
         int available_index = GetAvailableIndex();
-        OnGetRegistrationResultClientRPC(available_index, RpcTarget.Single(rpcParams.Receive.SenderClientId, RpcTargetUse.Temp));
-        Debug.Log(string.Format("RegisterPerformerRPC | ClientID:{0}, Index:{1}", rpcParams.Receive.SenderClientId, available_index));
+        Debug.Log(string.Format("TestServerRpc | ClientID:{0}, Index:{1}", rpcParams.Receive.SenderClientId, available_index));
+        
+    }
+
+    [Rpc(SendTo.Server)]
+    void RegisterPerformerServerRpc(RpcParams rpcParams = default)
+    {
+        
+        if (!IsServer)
+            return;
+
+        int available_index = GetAvailableIndex();
+        OnGetRegistrationResultClientRpc(available_index, RpcTarget.Single(rpcParams.Receive.SenderClientId, RpcTargetUse.Temp));
+        Debug.Log(string.Format("RegisterPerformerServerRpc | ClientID:{0}, Index:{1}", rpcParams.Receive.SenderClientId, available_index));
         if (available_index != -1)
         {
-            AddNewPerformerRPC(available_index);
+            AddNewPerformerRpc(available_index);
         }
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
-    public void OnGetRegistrationResultClientRPC(int available_index, RpcParams rpcParams = default)
+    void OnGetRegistrationResultClientRpc(int available_index, RpcParams rpcParams = default)
     {
-        Debug.Log(string.Format("OnGetRegistrationResultRPC | ClientID:{0}, Index:{1}", NetworkManager.Singleton.LocalClientId, available_index));
+        Debug.Log(string.Format("OnGetRegistrationResultClientRpc | ClientID:{0}, Index:{1}", NetworkManager.Singleton.LocalClientId, available_index));
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    public void AddNewPerformerRPC(int index)
+    void AddNewPerformerRpc(int index)
     {
-        Debug.Log("AddNewPerformerRPC | index:" + index);
+        Debug.Log("AddNewPerformerRpc | index:" + index);
         NetworkObject player_object = NetworkManager.LocalClient.PlayerObject;
         player_object.transform.GetChild(index).GetComponent<Performer>().isPerforming.Value = true;
     }
@@ -111,6 +145,9 @@ public class RoleManager : NetworkBehaviour
         //return -1;
 
         // NetworkObject player_object = NetworkManager.LocalClient.PlayerObject;
+        Debug.Log("PerformList:" + performerList);
+        Debug.Log("PerformListCount:" + performerList.Length);
+        Debug.Log("PerformList[0]:" + performerList[0].isPerforming);
         for (int i = 0; i < performerList.Length; i++)
         {
             if (performerList[i].isPerforming.Value == false)

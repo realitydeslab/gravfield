@@ -63,9 +63,8 @@ public class GameManager : MonoBehaviour
         string local_ip = GetLocalIPAddress();
         if (local_ip == ServerIP)
             JoinAsServer();
-        //else
-        //    JoinAsAudience();
     }
+
 
     public void JoinAsServer()
     {
@@ -75,7 +74,7 @@ public class GameManager : MonoBehaviour
 
         RoleManager.JoinAsServer();
 
-        Debug.Log("Join As Server.");
+        Debug.Log("Server Started.");
     }
 
     public void JoinAsPerformer()
@@ -86,7 +85,6 @@ public class GameManager : MonoBehaviour
 
         RoleManager.JoinAsPerformer();
 
-        // Try to register as a performer
         Debug.Log("Join As Performer.");
     }
 
@@ -100,8 +98,6 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Join As Audience.");
     }
-
-
 
 
     #region Network
