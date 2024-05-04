@@ -142,14 +142,16 @@ public class RoleManager : NetworkBehaviour
 
         int available_index = GetAvailablePerformerIndex();
 
+        Debug.Log(string.Format("RegisterPerformerRpc | PerformerIndex:{0}, ClientID:{1}", available_index, rpcParams.Receive.SenderClientId));
+
         ReplyRegistrationResultRpc(available_index != -1 ? true:false, RpcTarget.Single(rpcParams.Receive.SenderClientId, RpcTargetUse.Temp));
         
         if (available_index != -1)
         {
             AddPerformerRpc(available_index, rpcParams.Receive.SenderClientId);
-        }
 
-        Debug.Log(string.Format("RegisterPerformerRpc | PerformerIndex:{0}, ClientID:{1}", available_index, rpcParams.Receive.SenderClientId));
+            RefreshPlayerCount();
+        }
     }
 
 
@@ -186,8 +188,6 @@ public class RoleManager : NetworkBehaviour
             performerSynchronizer.BindPerformerTransform(performerList[index].gameObject.transform);
             Debug.Log(string.Format("AddPerformerRpc | Bind Performer Transform:{0}", index));
         }
-
-        RefreshPlayerCount();
     }
 
 
@@ -212,8 +212,6 @@ public class RoleManager : NetworkBehaviour
             performerSynchronizer.UnbindPerformTransform();
             Debug.Log(string.Format("AddPerformerRpc | Unbind Performer Transform:{0}", index));
         }
-
-        RefreshPlayerCount();
     }
     #endregion
 

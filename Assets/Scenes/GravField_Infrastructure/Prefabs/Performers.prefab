@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2593224298917409493}
   - component: {fileID: 7947205146624120478}
   - component: {fileID: 5605027164812212596}
+  - component: {fileID: 7138303720940536106}
   - component: {fileID: 8742406241424475587}
   - component: {fileID: 6131426863620039184}
   - component: {fileID: 1947458010434256164}
@@ -88,6 +89,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7138303720940536106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736473998118647235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3330398936
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &8742406241424475587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,8 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97d6182c2e64b4bf08a44298be253de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transform: {fileID: 0}
-  performerID: 0
   clientID:
     m_InternalValue: 0
   isPerforming:
@@ -174,6 +194,7 @@ GameObject:
   - component: {fileID: 5407489973997020536}
   - component: {fileID: 1716546584157225760}
   - component: {fileID: 2025363518130737277}
+  - component: {fileID: 3000074379638483455}
   - component: {fileID: 851591320732394642}
   - component: {fileID: 1630214698959515959}
   - component: {fileID: 2838806199080828088}
@@ -251,6 +272,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3000074379638483455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1898256842492866041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 899348938
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &851591320732394642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,8 +336,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97d6182c2e64b4bf08a44298be253de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transform: {fileID: 0}
-  performerID: 0
   clientID:
     m_InternalValue: 0
   isPerforming:
@@ -679,6 +719,7 @@ GameObject:
   - component: {fileID: 1335072611827631672}
   - component: {fileID: 1378967759141239729}
   - component: {fileID: 6589734191828244997}
+  - component: {fileID: 3720247913873323339}
   - component: {fileID: 8006635692287799068}
   - component: {fileID: 9004403236403271584}
   - component: {fileID: 5002416973441032133}
@@ -756,6 +797,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3720247913873323339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4536412796755592805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 109814941
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &8006635692287799068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -799,8 +861,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97d6182c2e64b4bf08a44298be253de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transform: {fileID: 0}
-  performerID: 0
   clientID:
     m_InternalValue: 0
   isPerforming:

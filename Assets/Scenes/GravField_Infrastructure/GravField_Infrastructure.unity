@@ -9374,6 +9374,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3000074379638483455, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 4008036483
+      objectReference: {fileID: 0}
+    - target: {fileID: 3000074379638483455, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3699642009
+      objectReference: {fileID: 0}
+    - target: {fileID: 3720247913873323339, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3074982968
+      objectReference: {fileID: 0}
+    - target: {fileID: 3720247913873323339, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3699642009
+      objectReference: {fileID: 0}
+    - target: {fileID: 7138303720940536106, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 62431084
+      objectReference: {fileID: 0}
+    - target: {fileID: 7138303720940536106, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3699642009
+      objectReference: {fileID: 0}
     - target: {fileID: 7375516848168713379, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
       propertyPath: m_Name
       value: Performers
