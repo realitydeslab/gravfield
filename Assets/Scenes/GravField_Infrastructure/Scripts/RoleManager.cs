@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 public class RoleManager : NetworkBehaviour
 {
+    public Transform transPerformerRoot;
     public GameObject goServer;
     public GameObject goPerformer;
     public GameObject goAudience;
@@ -21,12 +22,12 @@ public class RoleManager : NetworkBehaviour
     /// </summary>
     void Start()
     {
-
+        StorePerformerToList();
     }
 
     public override void OnNetworkSpawn()
     {
-        StorePerformerToList();
+        
     }
 
     // Update is called once per frame
@@ -54,11 +55,17 @@ public class RoleManager : NetworkBehaviour
 
     void StorePerformerToList()
     {
-        NetworkObject player_object = NetworkManager.LocalClient.PlayerObject;
-        Debug.Log("StorePerformerToList: PlayerCount:" + player_object.transform.childCount);
-        for (int i = 0; i < player_object.transform.childCount; i++)
+        //NetworkObject player_object = NetworkManager.LocalClient.PlayerObject;
+        //Debug.Log("StorePerformerToList: PlayerCount:" + player_object.transform.childCount);
+        //for (int i = 0; i < player_object.transform.childCount; i++)
+        //{
+        //    performerList[i] = player_object.transform.GetChild(i).GetComponent<Performer>();
+        //}
+
+        Debug.Log("StorePerformerToList: PlayerCount:" + transPerformerRoot.childCount);
+        for (int i = 0; i < transPerformerRoot.childCount; i++)
         {
-            performerList[i] = player_object.transform.GetChild(i).GetComponent<Performer>();
+            performerList[i] = transPerformerRoot.GetChild(i).GetComponent<Performer>();
         }
     }
 
@@ -93,10 +100,20 @@ public class RoleManager : NetworkBehaviour
 
     int GetAvailableIndex()
     {
+        //NetworkObject player_object = NetworkManager.LocalClient.PlayerObject;
+        //for (int i = 0; i < player_object.transform.childCount; i++)
+        //{
+        //    if (player_object.transform.GetChild(i).GetComponent<Performer>().isPerforming.Value == false)
+        //    {
+        //        return i;
+        //    }
+        //}
+        //return -1;
+
         NetworkObject player_object = NetworkManager.LocalClient.PlayerObject;
-        for (int i = 0; i < player_object.transform.childCount; i++)
+        for (int i = 0; i < performerList.Length; i++)
         {
-            if (player_object.transform.GetChild(i).GetComponent<Performer>().isPerforming.Value == false)
+            if (performerList[i].isPerforming.Value == false)
             {
                 return i;
             }
