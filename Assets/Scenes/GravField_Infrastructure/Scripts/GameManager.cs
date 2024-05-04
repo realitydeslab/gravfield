@@ -30,11 +30,11 @@ public class GameManager : MonoBehaviour
             Debug.LogError("No ImageTrackingStablizer Found.");
         }
 
-        roleManager = FindObjectOfType<RoleManager>();
-        if (roleManager == null)
-        {
-            Debug.LogError("No RoleManager Found.");
-        }
+        //roleManager = FindObjectOfType<RoleManager>();
+        //if (roleManager == null)
+        //{
+        //    Debug.LogError("No RoleManager Found.");
+        //}
 
 
         // Read Command Line
@@ -59,6 +59,8 @@ public class GameManager : MonoBehaviour
         string local_ip = GetLocalIPAddress();
         if (local_ip == ServerIp)
             JoinAsServer();
+        else
+            JoinAsAudience();
     }
 
     public void JoinAsServer()
@@ -67,7 +69,7 @@ public class GameManager : MonoBehaviour
 
         NetworkManager.Singleton.StartServer();
 
-        RoleManager.JoinAsServer();
+        //RoleManager.JoinAsServer();
 
         Debug.Log("Join As Server.");
     }
@@ -78,7 +80,7 @@ public class GameManager : MonoBehaviour
 
         NetworkManager.Singleton.StartClient();
 
-        RoleManager.JoinAsPerformer();
+        //RoleManager.JoinAsPerformer();
 
         // Try to register as a performer
         Debug.Log("Join As Performer.");
@@ -90,7 +92,7 @@ public class GameManager : MonoBehaviour
 
         NetworkManager.Singleton.StartClient();
 
-        RoleManager.JoinAsAudience();
+        //RoleManager.JoinAsAudience();
 
         Debug.Log("Join As Audience.");
     }
