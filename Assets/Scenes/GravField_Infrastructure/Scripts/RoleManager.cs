@@ -58,9 +58,10 @@ public class RoleManager : NetworkBehaviour
     {
         if (!IsServer)
             return;
-
+        
         RefreshPlayerCount();
 
+        Debug.Log("OnClientConnectedCallback | ClientID:" + clientId);
     }
     private void OnClientDisconnectCallback(ulong clientId)
     {
@@ -76,6 +77,8 @@ public class RoleManager : NetworkBehaviour
         }
 
         RefreshPlayerCount();
+
+        Debug.Log("OnClientDisconnectCallback | ClientID:" + clientId);
     }
 
     void Update()
@@ -110,7 +113,7 @@ public class RoleManager : NetworkBehaviour
         }
         else
         {
-            Debug.Log("Apply Performer: Time Out. Be an audience instead");
+            GameManager.Instance.DisplayMessageOnUI("Performer Registration Time Out. Switch to audience instead.");
             OnReceiveRegistrationResult(false);
             
         }
@@ -168,8 +171,11 @@ public class RoleManager : NetworkBehaviour
     void AddPerformerRpc(int index, ulong client_id)
     {
         Debug.Log("AddPerformerRpc | index:" + index);
-        performerList[index].isPerforming.Value = true;
-        performerList[index].clientID.Value = client_id;
+        if(IsServer)
+        {
+            performerList[index].isPerforming.Value = true;
+            performerList[index].clientID.Value = client_id;
+        }
 
         if (NetworkManager.Singleton.LocalClientId == client_id)
         {
@@ -190,8 +196,11 @@ public class RoleManager : NetworkBehaviour
     void RemovePerformerRpc(int index, ulong client_id)
     {
         Debug.Log("RemovePerformerRpc | index:" + index);
-        performerList[index].isPerforming.Value = false;
-        performerList[index].clientID.Value = 0;
+        if (IsServer)
+        {
+            performerList[index].isPerforming.Value = false;
+            performerList[index].clientID.Value = 0;
+        }
 
         if (NetworkManager.Singleton.LocalClientId == client_id)
         {
@@ -234,6 +243,7 @@ public class RoleManager : NetworkBehaviour
         else
         {
             SetPlayerRole(PlayerRole.Audience);
+            GameManager.Instance.DisplayMessageOnUI("Performers Are Full . Switch to audience instead.");
         }
         OnReceiveRegistrationResultEvent?.Invoke(result);
     }

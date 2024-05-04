@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     private RoleManager roleManager;
     public RoleManager RoleManager { get => roleManager; }
 
+    private UIController uiController;
+    public UIController UIController { get => uiController; }
+
     void Start()
     {
         // Initialize References
@@ -38,6 +41,12 @@ public class GameManager : MonoBehaviour
         if (roleManager == null)
         {
             Debug.LogError("No RoleManager Found.");
+        }
+
+        uiController = FindObjectOfType<UIController>();
+        if (uiController == null)
+        {
+            Debug.LogError("No UIController Found.");
         }
 
 
@@ -97,6 +106,11 @@ public class GameManager : MonoBehaviour
         RoleManager.JoinAsAudience();
 
         Debug.Log("Join As Audience.");
+    }
+
+    public void DisplayMessageOnUI(string msg)
+    {
+        uiController.DisplayMessageOnUI(msg);
     }
 
 

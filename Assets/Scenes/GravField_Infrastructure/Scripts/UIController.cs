@@ -83,7 +83,7 @@ public class UIController : MonoBehaviour
         else
         {
             // Show Error Info
-            ShowWarning("Wrong Password.");
+            DisplayMessageOnUI("Wrong Password.");
         }
 
     }
@@ -101,11 +101,11 @@ public class UIController : MonoBehaviour
         else
         {
             // Show Error Info
-            ShowWarning("Wrong ServerIp.");
+            DisplayMessageOnUI("Wrong ServerIp.");
         }
     }
 
-    public void ShowWarning(string msg)
+    public void DisplayMessageOnUI(string msg)
     {
         transPanelWarning.Find("Message").GetComponent<TextMeshProUGUI>().text = msg;
         transPanelWarning.gameObject.SetActive(true);
@@ -153,7 +153,7 @@ public class UIController : MonoBehaviour
                 //Performer
                 case 1:
                     transPanelPassword.gameObject.SetActive(true);
-                    inputPassword.text = GameManager.Instance.IsInDevelopment ? "111" : "";
+                    inputPassword.text = GameManager.Instance.IsInDevelopment ? GameManager.Instance.PerformerPassword : "";
                     break;
                 // ServerIp Page
                 case 2:
