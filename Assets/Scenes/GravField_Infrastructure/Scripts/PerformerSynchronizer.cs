@@ -24,6 +24,7 @@ public class PerformerSynchronizer : NetworkBehaviour
 
             if (m_ARCameraManager != null)
             {
+                Debug.Log("SetPositionAndRotation");
                 transPerformer.SetPositionAndRotation(m_ARCameraManager.transform.position, m_ARCameraManager.transform.rotation);
             }
         }

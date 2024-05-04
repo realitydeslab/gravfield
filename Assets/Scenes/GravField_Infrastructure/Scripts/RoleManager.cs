@@ -56,6 +56,7 @@ public class RoleManager : NetworkBehaviour
 
     private void OnClientConnectedCallback(ulong clientId)
     {
+        Debug.Log("OnClientConnectedCallback | ClientID:" + clientId);
         if (!IsServer)
             return;
         
@@ -65,6 +66,7 @@ public class RoleManager : NetworkBehaviour
     }
     private void OnClientDisconnectCallback(ulong clientId)
     {
+        Debug.Log("OnClientDisconnectCallback | ClientID:" + clientId);
         if (!IsServer)
             return;
 
@@ -168,7 +170,7 @@ public class RoleManager : NetworkBehaviour
     /// </summary>
     /// <param name="index"></param>
     /// <param name="client_id"></param>
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.Everyone)]
     void AddPerformerRpc(int index, ulong client_id)
     {
         Debug.Log("AddPerformerRpc | index:" + index);
@@ -193,7 +195,7 @@ public class RoleManager : NetworkBehaviour
     /// </summary>
     /// <param name="index"></param>
     /// <param name="client_id"></param>
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.Everyone)]
     void RemovePerformerRpc(int index, ulong client_id)
     {
         Debug.Log("RemovePerformerRpc | index:" + index);
