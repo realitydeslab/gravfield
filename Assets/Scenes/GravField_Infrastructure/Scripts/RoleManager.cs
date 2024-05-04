@@ -64,8 +64,8 @@ public class RoleManager : NetworkBehaviour
         else
         {
             Debug.Log("Apply Performer: Time Out. Be an audience instead");
-            onReceiveApplicationResult?.Invoke(false);
-            JoinAsAudience();
+            OnGetRegistrationResultLocal(false);
+            
         }
     }
 
@@ -89,18 +89,7 @@ public class RoleManager : NetworkBehaviour
             performerList[i] = transPerformerRoot.GetChild(i).GetComponent<Performer>();
         }
     }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void TestServerRpc(ServerRpcParams rpcParams = default)
-    {
-        Debug.Log("TestServerRpc | " + IsSpawned);
-        if (!IsServer)
-            return;
-
-        int available_index = GetAvailableIndex();
-        Debug.Log(string.Format("TestServerRpc | ClientID:{0}, Index:{1}", rpcParams.Receive.SenderClientId, available_index));
-        
-    }
+    
 
     [Rpc(SendTo.Server)]
     void RegisterPerformerServerRpc(RpcParams rpcParams = default)
@@ -110,23 +99,47 @@ public class RoleManager : NetworkBehaviour
             return;
 
         int available_index = GetAvailableIndex();
-        OnGetRegistrationResultClientRpc(available_index, RpcTarget.Single(rpcParams.Receive.SenderClientId, RpcTargetUse.Temp));
+        OnGetRegistrationResultClientRpc(available_index == -1? false:true, RpcTarget.Single(rpcParams.Receive.SenderClientId, RpcTargetUse.Temp));
         Debug.Log(string.Format("RegisterPerformerServerRpc | ClientID:{0}, Index:{1}", rpcParams.Receive.SenderClientId, available_index));
         if (available_index != -1)
         {
-            AddNewPerformerRpc(available_index);
+            AddNewPerformerRpc(available_index, rpcParams.Receive.SenderClientId);
         }
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
-    void OnGetRegistrationResultClientRpc(int available_index, RpcParams rpcParams = default)
+    void OnGetRegistrationResultClientRpc(bool result, RpcParams rpcParams = default)
     {
-        Debug.Log(string.Format("OnGetRegistrationResultClientRpc | ClientID:{0}, Index:{1}", NetworkManager.Singleton.LocalClientId, available_index));
+        OnGetRegistrationResultLocal(result);
+        Debug.Log(string.Format("OnGetRegistrationResultClientRpc | ClientID:{0}, result:{1}", NetworkManager.Singleton.LocalClientId, result));
+    }
+
+    void OnGetRegistrationResultLocal(bool result)
+    {
+        onReceiveApplicationResult?.Invoke(result);
+        if(result == true)
+        {
+            isPerformer = true;
+        }
+        else
+        {
+            isPerformer = false;
+        }
+    }
+
+    void BindPerformerTransform()
+    {
+
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    void AddNewPerformerRpc(int index)
+    void AddNewPerformerRpc(int index, ulong new_client_id)
     {
+        if(NetworkManager.Singleton.LocalClientId == new_client_id)
+        {
+            BindPerformerTransform();
+            Debug.Log("AddNewPerformerRpc | Bind me");
+        }
         Debug.Log("AddNewPerformerRpc | index:" + index);
         NetworkObject player_object = NetworkManager.LocalClient.PlayerObject;
         player_object.transform.GetChild(index).GetComponent<Performer>().isPerforming.Value = true;
