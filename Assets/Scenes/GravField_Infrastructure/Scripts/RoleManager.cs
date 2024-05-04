@@ -180,7 +180,7 @@ public class RoleManager : NetworkBehaviour
         {
             performerList[index].isPerforming.Value = true;
             performerList[index].clientID.Value = client_id;
-            performerList[index].GetComponentInParent<NetworkObject>().ChangeOwnership(client_id);
+            performerList[index].GetComponent<NetworkObject>().ChangeOwnership(client_id);
         }
 
         if (NetworkManager.Singleton.LocalClientId == client_id)
@@ -204,7 +204,7 @@ public class RoleManager : NetworkBehaviour
         {
             performerList[index].isPerforming.Value = false;
             performerList[index].clientID.Value = 0;
-            performerList[index].GetComponentInParent<NetworkObject>().RemoveOwnership();
+            performerList[index].GetComponent<NetworkObject>().RemoveOwnership();
         }
 
         if (NetworkManager.Singleton.LocalClientId == client_id)
