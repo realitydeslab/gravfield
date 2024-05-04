@@ -6172,6 +6172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f85889c321846bfa679822e39f67a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInDevelopment: 1
 --- !u!4 &1215605116
 Transform:
   m_ObjectHideFlags: 0
@@ -7953,7 +7954,7 @@ GameObject:
   - component: {fileID: 1659760762}
   - component: {fileID: 1659760761}
   m_Layer: 0
-  m_Name: InputField_ServerIp
+  m_Name: InputField_ServerIP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8413,7 +8414,7 @@ GameObject:
   - component: {fileID: 1884193758}
   - component: {fileID: 1884193757}
   m_Layer: 0
-  m_Name: Panel_ServerIp
+  m_Name: Panel_ServerIP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

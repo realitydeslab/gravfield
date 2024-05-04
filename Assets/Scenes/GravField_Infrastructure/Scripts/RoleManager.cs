@@ -46,7 +46,7 @@ public class RoleManager : NetworkBehaviour
     public void JoinAsPerformer()
     {
         // Apply to be a performer
-        RegisterPerformerRPC();
+        RegisterPerformerServerRPC();
     }
     public void JoinAsAudience()
     {
@@ -70,13 +70,13 @@ public class RoleManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    public void RegisterPerformerRPC(RpcParams rpcParams = default)
+    public void RegisterPerformerServerRPC(RpcParams rpcParams = default)
     {
         if (!IsServer)
             return;
 
         int available_index = GetAvailableIndex();
-        OnGetRegistrationResultRPC(available_index, RpcTarget.Single(rpcParams.Receive.SenderClientId, RpcTargetUse.Temp));
+        OnGetRegistrationResultClientRPC(available_index, RpcTarget.Single(rpcParams.Receive.SenderClientId, RpcTargetUse.Temp));
         Debug.Log(string.Format("RegisterPerformerRPC | ClientID:{0}, Index:{1}", rpcParams.Receive.SenderClientId, available_index));
         if (available_index != -1)
         {
@@ -85,7 +85,7 @@ public class RoleManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
-    public void OnGetRegistrationResultRPC(int available_index, RpcParams rpcParams = default)
+    public void OnGetRegistrationResultClientRPC(int available_index, RpcParams rpcParams = default)
     {
         Debug.Log(string.Format("OnGetRegistrationResultRPC | ClientID:{0}, Index:{1}", NetworkManager.Singleton.LocalClientId, available_index));
     }
@@ -110,7 +110,7 @@ public class RoleManager : NetworkBehaviour
         //}
         //return -1;
 
-        NetworkObject player_object = NetworkManager.LocalClient.PlayerObject;
+        // NetworkObject player_object = NetworkManager.LocalClient.PlayerObject;
         for (int i = 0; i < performerList.Length; i++)
         {
             if (performerList[i].isPerforming.Value == false)
