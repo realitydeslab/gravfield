@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
 
         // Specify Role When Testing
         string local_ip = GetLocalIPAddress();
+        Debug.Log("Local IP:" + local_ip);
         if (local_ip == ServerIP)
             JoinAsServer();
     }
@@ -140,7 +141,7 @@ public class GameManager : MonoBehaviour
         var host = Dns.GetHostEntry(Dns.GetHostName());
         foreach (var ip in host.AddressList)
         {
-            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            if (ip.AddressFamily == AddressFamily.InterNetwork && ip.ToString().Contains("192.168"))
             {
                 return ip.ToString();
             }

@@ -13,8 +13,8 @@ public class Performer : NetworkBehaviour
 
     void Awake()
     {
-        isPerforming = new NetworkVariable<bool>();
-        isPerforming.Value = false;
+        //isPerforming = new NetworkVariable<bool>();
+        //isPerforming.Value = false;
     }
 
 }

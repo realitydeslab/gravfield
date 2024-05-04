@@ -7452,7 +7452,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 1517476312}
-    PlayerPrefab: {fileID: 0}
+    PlayerPrefab: {fileID: 21633727457173676, guid: c897fb3172f334c608155bea52f9fd73, type: 3}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 6ae684b61ccf446b292495002fc486ee, type: 2}
@@ -9193,6 +9193,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoleManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8760713215002518279, guid: 5f8d8317659a14464a8363a6f060c6be, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9381,10 +9385,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3895041766590085173, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 1847695420149142915, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1972514263332175594, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 5605015362074479305, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 7409420175562854156, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: f971100c778954ff6abe204b8f0bf998, type: 3}

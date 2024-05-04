@@ -36,11 +36,12 @@ public class RoleManager : NetworkBehaviour
     /// </summary>
     void Start()
     {
-        performerSynchronizer = transform.GetComponent<PerformerSynchronizer>();
+        
     }
 
     public override void OnNetworkSpawn()
     {
+        performerSynchronizer = transform.GetComponent<PerformerSynchronizer>();
         InitializePerformerList();
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
@@ -182,7 +183,7 @@ public class RoleManager : NetworkBehaviour
 
         if (NetworkManager.Singleton.LocalClientId == client_id)
         {
-            performerSynchronizer.BindPerformerTransform(performerList[index].transform);
+            performerSynchronizer.BindPerformerTransform(performerList[index].gameObject.transform);
             Debug.Log("AddPerformerRpc | Bind me");
         }
 
