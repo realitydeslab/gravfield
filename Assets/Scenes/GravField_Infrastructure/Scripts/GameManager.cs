@@ -12,8 +12,12 @@ public class GameManager : MonoBehaviour
     string performerPassword = "111";
     public string PerformerPassword { get => performerPassword; set => performerPassword = value; }
 
-    string serverIp = "192.168.0.135";
-    public string ServerIp { get => serverIp; set => serverIp = value; }
+    string serverIP = "192.168.0.135";
+    public string ServerIP { get => serverIP; set => serverIP = value; }
+
+    [SerializeField]
+    bool isInDevelopment = true;
+    public bool IsInDevelopment { get => isInDevelopment; set => isInDevelopment = value; }
 
     private ImageTrackingStablizer relocalizationStablizer;
     public ImageTrackingStablizer RelocalizationStablizer { get => relocalizationStablizer; }
@@ -30,11 +34,11 @@ public class GameManager : MonoBehaviour
             Debug.LogError("No ImageTrackingStablizer Found.");
         }
 
-        //roleManager = FindObjectOfType<RoleManager>();
-        //if (roleManager == null)
-        //{
-        //    Debug.LogError("No RoleManager Found.");
-        //}
+        roleManager = FindObjectOfType<RoleManager>();
+        if (roleManager == null)
+        {
+            Debug.LogError("No RoleManager Found.");
+        }
 
 
         // Read Command Line
@@ -57,10 +61,10 @@ public class GameManager : MonoBehaviour
 
         // Specify Role When Testing
         string local_ip = GetLocalIPAddress();
-        if (local_ip == ServerIp)
+        if (local_ip == ServerIP)
             JoinAsServer();
-        else
-            JoinAsAudience();
+        //else
+        //    JoinAsAudience();
     }
 
     public void JoinAsServer()
@@ -69,7 +73,7 @@ public class GameManager : MonoBehaviour
 
         NetworkManager.Singleton.StartServer();
 
-        //RoleManager.JoinAsServer();
+        RoleManager.JoinAsServer();
 
         Debug.Log("Join As Server.");
     }
@@ -80,7 +84,7 @@ public class GameManager : MonoBehaviour
 
         NetworkManager.Singleton.StartClient();
 
-        //RoleManager.JoinAsPerformer();
+        RoleManager.JoinAsPerformer();
 
         // Try to register as a performer
         Debug.Log("Join As Performer.");
@@ -92,7 +96,7 @@ public class GameManager : MonoBehaviour
 
         NetworkManager.Singleton.StartClient();
 
-        //RoleManager.JoinAsAudience();
+        RoleManager.JoinAsAudience();
 
         Debug.Log("Join As Audience.");
     }
@@ -117,7 +121,7 @@ public class GameManager : MonoBehaviour
         var unityTransport = NetworkManager.Singleton.GetComponent<UnityTransport>();
         if (unityTransport != null)
         {
-            unityTransport.SetConnectionData(ServerIp, (ushort)7777);
+            unityTransport.SetConnectionData(ServerIP, (ushort)7777);
         }
     }
 

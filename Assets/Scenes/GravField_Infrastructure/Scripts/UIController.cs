@@ -14,8 +14,11 @@ public class UIController : MonoBehaviour
     Transform transButtonSettings;
     Transform transPanelCalibration;
     Transform transPanelPassword;
-    Transform transPanelServerIp;
+    Transform transPanelServerIP;
     Transform transPanelWarning;
+
+    TMP_InputField inputPassword;
+    TMP_InputField inputServerIP;
 
     void Start()
     {
@@ -25,16 +28,21 @@ public class UIController : MonoBehaviour
         transButtonSettings = transform.Find("Button_Settings");
         transPanelCalibration = transform.Find("Panel_Calibration");
         transPanelPassword = transform.Find("Panel_Password");
-        transPanelServerIp = transform.Find("Panel_ServerIp");
+        transPanelServerIP = transform.Find("Panel_ServerIP");
         transPanelWarning = transform.Find("Panel_Warning");
 
+
         if (transButtonStart == null || transButtonPerformer == null || transButtonSettings == null
-            || transPanelCalibration == null || transPanelPassword == null || transPanelServerIp == null
+            || transPanelCalibration == null || transPanelPassword == null || transPanelServerIP == null
             || transPanelWarning == null)
         {
             Debug.LogError("Can't find UI elements properly.");
             return;
         }
+
+        inputPassword = transPanelPassword.Find("InputField_Password").GetComponent<TMP_InputField>();
+        inputServerIP = transPanelServerIP.Find("InputField_ServerIP").GetComponent<TMP_InputField>();
+
 
         // Bind Basic Listener
         transButtonStart.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 0));
@@ -43,10 +51,10 @@ public class UIController : MonoBehaviour
 
         transPanelCalibration.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => GotoPage(0));
         transPanelPassword.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => GotoPage(0));
-        transPanelServerIp.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => GotoPage(0));
+        transPanelServerIP.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => GotoPage(0));
 
         transPanelPassword.Find("Button_Enter").GetComponent<Button>().onClick.AddListener(OnEnterPassword);
-        transPanelServerIp.Find("Button_Enter").GetComponent<Button>().onClick.AddListener(OnEnterServerIp);
+        transPanelServerIP.Find("Button_Enter").GetComponent<Button>().onClick.AddListener(OnEnterServerIp);
 
         // Enter Home Page
         GotoPage(0);
@@ -63,7 +71,7 @@ public class UIController : MonoBehaviour
 
     public void OnEnterPassword()
     {
-        string password = transPanelPassword.Find("InputField_Password").GetComponent<TMP_InputField>().text;
+        string password = inputPassword.text;
 
 
         if (password == GameManager.Instance.PerformerPassword)
@@ -82,12 +90,12 @@ public class UIController : MonoBehaviour
 
     public void OnEnterServerIp()
     {
-        string server_ip = transPanelServerIp.Find("InputField_ServerIp").GetComponent<TMP_InputField>().text;
+        string server_ip = inputServerIP.text;
 
         if (Regex.IsMatch(server_ip, @"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$"))
         {
             // Change Server Ip
-            GameManager.Instance.ServerIp = server_ip;
+            GameManager.Instance.ServerIP = server_ip;
             GotoPage(0);
         }
         else
@@ -123,7 +131,7 @@ public class UIController : MonoBehaviour
 
             transPanelCalibration.gameObject.SetActive(false);
             transPanelPassword.gameObject.SetActive(false);
-            transPanelServerIp.gameObject.SetActive(false);
+            transPanelServerIP.gameObject.SetActive(false);
 
             return;
         }
@@ -137,15 +145,20 @@ public class UIController : MonoBehaviour
             transButtonSettings.gameObject.SetActive(false);
             switch (panel_index)
             {
+                // Calibration
                 case 0:
                     transPanelCalibration.gameObject.SetActive(true);
                     StartCalibration();
                     break;
+                //Performer
                 case 1:
                     transPanelPassword.gameObject.SetActive(true);
+                    inputPassword.text = GameManager.Instance.IsInDevelopment ? "111" : "";
                     break;
+                // ServerIp Page
                 case 2:
-                    transPanelServerIp.gameObject.SetActive(true);
+                    transPanelServerIP.gameObject.SetActive(true);
+                    inputServerIP.text = "192.168.0.";
                     break;
             }
 
@@ -162,7 +175,7 @@ public class UIController : MonoBehaviour
 
             transPanelCalibration.gameObject.SetActive(false);
             transPanelPassword.gameObject.SetActive(false);
-            transPanelServerIp.gameObject.SetActive(false);
+            transPanelServerIP.gameObject.SetActive(false);
 
             return;
         }
