@@ -7,7 +7,7 @@ public class Performer : NetworkBehaviour
 {
     public Transform transform;
     public int performerID;
-    public int networkID;
+    public NetworkVariable<ulong> clientID;
 
     public NetworkVariable<bool> isPerforming;
 
@@ -16,4 +16,5 @@ public class Performer : NetworkBehaviour
         isPerforming = new NetworkVariable<bool>();
         isPerforming.Value = false;
     }
+
 }

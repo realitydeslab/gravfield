@@ -9297,12 +9297,12 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 738145952
       objectReference: {fileID: 0}
-    - target: {fileID: 4028197874412996351, guid: 5f8d8317659a14464a8363a6f060c6be, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 3126887808
-      objectReference: {fileID: 0}
     - target: {fileID: 4268835692806024178, guid: 5f8d8317659a14464a8363a6f060c6be, type: 3}
       propertyPath: transPerformerRoot
+      value: 
+      objectReference: {fileID: 4810033708984300306}
+    - target: {fileID: 4268835692806024178, guid: 5f8d8317659a14464a8363a6f060c6be, type: 3}
+      propertyPath: performerTransformRoot
       value: 
       objectReference: {fileID: 4810033708984300306}
     - target: {fileID: 8760713215002518279, guid: 5f8d8317659a14464a8363a6f060c6be, type: 3}

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2925584447285411082}
   - component: {fileID: 4028197874412996351}
   - component: {fileID: 4268835692806024178}
+  - component: {fileID: 8221216188976746849}
   m_Layer: 0
   m_Name: RoleManager
   m_TagString: Untagged
@@ -45,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2665597989
-  InScenePlacedSourceGlobalObjectIdHash: 3593321020
+  GlobalObjectIdHash: 738145952
+  InScenePlacedSourceGlobalObjectIdHash: 3126887808
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 0
   ActiveSceneSynchronization: 0
@@ -70,3 +71,17 @@ MonoBehaviour:
   goServer: {fileID: 0}
   goPerformer: {fileID: 0}
   goAudience: {fileID: 0}
+  isPerformer: 0
+  playerRole: 0
+--- !u!114 &8221216188976746849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8760713215002518279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b05ee110d29c4a6b98c45001b41d149, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
