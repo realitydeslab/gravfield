@@ -49,8 +49,8 @@ public class RoleManager : NetworkBehaviour
 
     void OnDestroy()
     {
-        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
-        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
+        NetworkManager.OnClientConnectedCallback -= OnClientConnectedCallback;
+        NetworkManager.OnClientDisconnectCallback -= OnClientDisconnectCallback;
         base.OnDestroy();
     }
 
@@ -134,6 +134,7 @@ public class RoleManager : NetworkBehaviour
     [Rpc(SendTo.Server)]
     void RegisterPerformerRpc(RpcParams rpcParams = default)
     {
+        Debug.Log(string.Format("RegisterPerformerRpc In"));
         if (!IsServer)
             return;
 
@@ -233,7 +234,11 @@ public class RoleManager : NetworkBehaviour
         }
         performerCount = performer_count;
         audienceCount = total_count - performer_count;
+
+        Debug.Log(string.Format("Performer:{0}, Audience:{1}", performerCount, audienceCount));
     }
+
+
     void OnReceiveRegistrationResult(bool result)
     {
         if (result == true)
