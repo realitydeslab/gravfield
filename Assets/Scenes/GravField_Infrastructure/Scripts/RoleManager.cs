@@ -26,10 +26,10 @@ public class RoleManager : NetworkBehaviour
     private int performerCount = 0;
     
     public UnityEvent<bool> OnReceiveRegistrationResultEvent;
-    
-    
+    public UnityEvent<bool> OnReceiveConnectionResultEvent;
 
-    
+
+
     /// <summary>
     /// https://docs-multiplayer.unity3d.com/netcode/current/basics/networkvariable/
     /// In-Scene Placed: Since the instantiation occurs via the scene loading mechanism(s), the Start method is invoked before OnNetworkSpawn.
@@ -47,46 +47,46 @@ public class RoleManager : NetworkBehaviour
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
 
     }
-
-    void OnDestroy()
+    public override void OnNetworkDespawn()
     {
-        NetworkManager.OnClientConnectedCallback -= OnClientConnectedCallback;
-        NetworkManager.OnClientDisconnectCallback -= OnClientDisconnectCallback;
-        base.OnDestroy();
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
     }
 
-    private void OnClientConnectedCallback(ulong clientId)
-    {
-        Debug.Log("OnClientConnectedCallback | ClientID:" + clientId);
-        if (!IsServer)
-            return;
-        
-        RefreshPlayerCount();
 
-        Debug.Log("OnClientConnectedCallback | ClientID:" + clientId);
-    }
-    private void OnClientDisconnectCallback(ulong clientId)
+    private void OnClientConnectedCallback(ulong client_id)
     {
-        Debug.Log("OnClientDisconnectCallback | ClientID:" + clientId);
-        if (!IsServer)
-            return;
+        Debug.Log(string.Format("OnClientConnectedCallback | IsServer:{0}, ClientID:{1}", IsServer, client_id));
 
-        for(int i=0; i<performerList.Count; i++)
+        if(IsServer)
         {
-            if(performerList[i].clientID.Value == clientId)
-            {
-                RemovePerformerRpc(i, clientId);
-            }
+            RefreshPlayerCount();
         }
-
-        RefreshPlayerCount();
-
-        Debug.Log("OnClientDisconnectCallback | ClientID:" + clientId);
+        else
+        {
+            OnReceiveConnectionResultEvent?.Invoke(true);
+        }
     }
 
-    void Update()
+    private void OnClientDisconnectCallback(ulong client_id)
     {
-        
+        Debug.Log(string.Format("OnClientDisconnectCallback | IsServer:{0}, ClientID:{1}", IsServer, client_id));
+        if(IsServer)
+        {
+            // Unbind Performer if needed
+            int performer_index = GetPerformerIndexByID(client_id);
+
+            if (performer_index != -1)
+            {
+                RemovePerformerRpc(performer_index, client_id);
+            }
+
+            RefreshPlayerCount();
+        }
+        else
+        {
+            OnReceiveConnectionResultEvent?.Invoke(false);
+        }
     }
 
     #region Joining Functions
@@ -116,7 +116,7 @@ public class RoleManager : NetworkBehaviour
         }
         else
         {
-            GameManager.Instance.DisplayMessageOnUI("Performer Registration Time Out. Switch to audience instead.");
+            GameManager.Instance.DisplayMessageOnUI("Performer Registration Times Out. Switch to Audience Mode Instead.");
             OnReceiveRegistrationResult(false);
             
         }
@@ -137,7 +137,6 @@ public class RoleManager : NetworkBehaviour
     [Rpc(SendTo.Server)]
     void RegisterPerformerRpc(RpcParams rpcParams = default)
     {
-        Debug.Log(string.Format("RegisterPerformerRpc In"));
         if (!IsServer)
             return;
 
@@ -150,7 +149,7 @@ public class RoleManager : NetworkBehaviour
             AddPerformerRpc(available_index, rpcParams.Receive.SenderClientId);
         }
 
-        Debug.Log(string.Format("RegisterPerformerRpc | Index:{0}, ClientID:{1}", available_index, rpcParams.Receive.SenderClientId));
+        Debug.Log(string.Format("RegisterPerformerRpc | PerformerIndex:{0}, ClientID:{1}", available_index, rpcParams.Receive.SenderClientId));
     }
 
 
@@ -163,7 +162,7 @@ public class RoleManager : NetworkBehaviour
     void ReplyRegistrationResultRpc(bool result, RpcParams rpcParams = default)
     {
         OnReceiveRegistrationResult(result);
-        Debug.Log(string.Format("OnGetRegistrationResultClientRpc | ClientID:{0}, result:{1}", NetworkManager.Singleton.LocalClientId, result));
+        Debug.Log(string.Format("ReplyRegistrationResultRpc | ClientID:{0}, Result:{1}", NetworkManager.Singleton.LocalClientId, result));
     }
 
     /// <summary>
@@ -174,17 +173,18 @@ public class RoleManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void AddPerformerRpc(int index, ulong client_id)
     {
-        Debug.Log("AddPerformerRpc | index:" + index);
+        Debug.Log(string.Format("AddPerformerRpc | PerformerIndex:{0}, ClientID:{1}", index, client_id));
         if(IsServer)
         {
             performerList[index].isPerforming.Value = true;
             performerList[index].clientID.Value = client_id;
+            performerList[index].GetComponentInParent<NetworkObject>().ChangeOwnership(client_id);
         }
 
         if (NetworkManager.Singleton.LocalClientId == client_id)
         {
             performerSynchronizer.BindPerformerTransform(performerList[index].gameObject.transform);
-            Debug.Log("AddPerformerRpc | Bind me");
+            Debug.Log(string.Format("AddPerformerRpc | Bind Performer Transform:{0}", index));
         }
 
         RefreshPlayerCount();
@@ -199,17 +199,18 @@ public class RoleManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     void RemovePerformerRpc(int index, ulong client_id)
     {
-        Debug.Log("RemovePerformerRpc | index:" + index);
+        Debug.Log(string.Format("RemovePerformerRpc | PerformerIndex:{0}, ClientID:{1}", index, client_id));
         if (IsServer)
         {
             performerList[index].isPerforming.Value = false;
             performerList[index].clientID.Value = 0;
+            performerList[index].GetComponentInParent<NetworkObject>().RemoveOwnership();
         }
 
         if (NetworkManager.Singleton.LocalClientId == client_id)
         {
             performerSynchronizer.UnbindPerformTransform();
-            Debug.Log("RemovePerformerRpc | Unbind me");
+            Debug.Log(string.Format("AddPerformerRpc | Unbind Performer Transform:{0}", index));
         }
 
         RefreshPlayerCount();
@@ -271,12 +272,23 @@ public class RoleManager : NetworkBehaviour
         }
     }
 
-
     int GetAvailablePerformerIndex()
     {
         for (int i = 0; i < performerList.Count; i++)
         {
             if (performerList[i].isPerforming.Value == false)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    int GetPerformerIndexByID(ulong client_id)
+    {
+        for (int i = 0; i < performerList.Count; i++)
+        {
+            if (performerList[i].clientID.Value == client_id)
             {
                 return i;
             }

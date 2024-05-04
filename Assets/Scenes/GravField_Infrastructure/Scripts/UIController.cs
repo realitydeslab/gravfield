@@ -62,7 +62,9 @@ public class UIController : MonoBehaviour
 
     public void OnFinishRelocalization(Vector3 position, Quaternion rotation)
     {
+#if !UNITY_EDITOR
         GameManager.Instance.RelocalizationStablizer.OnTrackedImagePoseStablized.RemoveListener(OnFinishRelocalization);
+#endif
 
         // Join As Audience
         GameManager.Instance.JoinAsAudience();
@@ -117,6 +119,11 @@ public class UIController : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         transPanelWarning.gameObject.SetActive(false);
+    }
+
+    public void GoBackToHomePage()
+    {
+        GotoPage(0);
     }
 
 

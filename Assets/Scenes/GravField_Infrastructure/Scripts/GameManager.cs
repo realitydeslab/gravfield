@@ -42,6 +42,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("No RoleManager Found.");
         }
+        roleManager.OnReceiveConnectionResultEvent.AddListener(OnReceiveConnectionResult);
+        roleManager.OnReceiveRegistrationResultEvent.AddListener(OnReceiveRegistrationResult);
+
 
         uiController = FindObjectOfType<UIController>();
         if (uiController == null)
@@ -114,6 +117,13 @@ public class GameManager : MonoBehaviour
         uiController.DisplayMessageOnUI(msg);
     }
 
+    public void RestartGame()
+    {
+        NetworkManager.Singleton.Shutdown();
+
+        uiController.GoBackToHomePage();
+    }
+
 
     #region Network
     void OnBeforeHostStarted()
@@ -147,6 +157,18 @@ public class GameManager : MonoBehaviour
             }
         }
         throw new System.Exception("No network adapters with an IPv4 address in the system!");
+    }
+
+    void OnReceiveConnectionResult(bool result)
+    {
+        if (result == false)
+            RestartGame();
+    }
+
+    void OnReceiveRegistrationResult(bool result)
+    {
+        if (result == false)
+            RestartGame();
     }
     #endregion
 
