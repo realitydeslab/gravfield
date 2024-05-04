@@ -171,8 +171,12 @@ public class UIController : MonoBehaviour
 
     void StartCalibration()
     {
+#if UNITY_IOS
         ImageTrackingStablizer stablizer = GameManager.Instance.RelocalizationStablizer;
         stablizer.OnTrackedImagePoseStablized.AddListener(OnFinishRelocalization);
         stablizer.IsRelocalizing = true;
+#else
+        OnFinishRelocalization(Vector3.zero, Quaternion.identity);
+#endif
     }
 }
