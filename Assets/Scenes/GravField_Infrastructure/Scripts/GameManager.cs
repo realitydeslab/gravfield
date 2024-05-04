@@ -16,7 +16,10 @@ public class GameManager : MonoBehaviour
     public string ServerIp { get => serverIp; set => serverIp = value; }
 
     private ImageTrackingStablizer relocalizationStablizer;
-    public ImageTrackingStablizer RelocalizationStablizer{ get=> relocalizationStablizer; }
+    public ImageTrackingStablizer RelocalizationStablizer { get => relocalizationStablizer; }
+
+    private RoleManager roleManager;
+    public RoleManager RoleManager { get => roleManager; }
 
     void Start()
     {
@@ -25,6 +28,12 @@ public class GameManager : MonoBehaviour
         if (relocalizationStablizer == null)
         {
             Debug.LogError("No ImageTrackingStablizer Found.");
+        }
+
+        roleManager = FindObjectOfType<RoleManager>();
+        if (roleManager == null)
+        {
+            Debug.LogError("No RoleManager Found.");
         }
 
 
@@ -45,6 +54,11 @@ public class GameManager : MonoBehaviour
                 // Do nothing
                 break;
         }
+
+        // Specify Role When Testing
+        string local_ip = GetLocalIPAddress();
+        if (local_ip == ServerIp)
+            JoinAsServer();
     }
 
     public void JoinAsServer()
@@ -52,6 +66,10 @@ public class GameManager : MonoBehaviour
         OnBeforeHostStarted();
 
         NetworkManager.Singleton.StartServer();
+
+        RoleManager.JoinAsServer();
+
+        Debug.Log("Join As Server.");
     }
 
     public void JoinAsPerformer()
@@ -60,7 +78,10 @@ public class GameManager : MonoBehaviour
 
         NetworkManager.Singleton.StartClient();
 
+        RoleManager.JoinAsPerformer();
+
         // Try to register as a performer
+        Debug.Log("Join As Performer.");
     }
 
     public void JoinAsAudience()
@@ -68,10 +89,14 @@ public class GameManager : MonoBehaviour
         OnBeforeClientStarted();
 
         NetworkManager.Singleton.StartClient();
+
+        RoleManager.JoinAsAudience();
+
+        Debug.Log("Join As Audience.");
     }
 
 
-    
+
 
     #region Network
     void OnBeforeHostStarted()
@@ -162,7 +187,6 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < args.Length; ++i)
         {
             var arg = args[i].ToLower();
-            Debug.Log(arg);
             if (arg.StartsWith("-"))
             {
                 var value = i < args.Length - 1 ? args[i + 1].ToLower() : null;

@@ -37,7 +37,7 @@ public class UIController : MonoBehaviour
         }
 
         // Bind Basic Listener
-        transButtonStart.GetComponent<Button>().onClick.AddListener(()=>GotoPage(1, 0));
+        transButtonStart.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 0));
         transButtonPerformer.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 1));
         transButtonSettings.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 2));
 
@@ -64,9 +64,9 @@ public class UIController : MonoBehaviour
     public void OnEnterPassword()
     {
         string password = transPanelPassword.Find("InputField_Password").GetComponent<TMP_InputField>().text;
-        
 
-        if(password == GameManager.Instance.PerformerPassword)
+
+        if (password == GameManager.Instance.PerformerPassword)
         {
             // Join As Performer
             GameManager.Instance.JoinAsPerformer();
@@ -84,7 +84,7 @@ public class UIController : MonoBehaviour
     {
         string server_ip = transPanelServerIp.Find("InputField_ServerIp").GetComponent<TMP_InputField>().text;
 
-        if(Regex.IsMatch(server_ip, @"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$"))
+        if (Regex.IsMatch(server_ip, @"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$"))
         {
             // Change Server Ip
             GameManager.Instance.ServerIp = server_ip;
@@ -115,7 +115,7 @@ public class UIController : MonoBehaviour
     void GotoPage(int page_index, int panel_index = 0)
     {
         // Home Page
-        if(page_index == 0)
+        if (page_index == 0)
         {
             transButtonStart.gameObject.SetActive(true);
             transButtonPerformer.gameObject.SetActive(true);
@@ -130,7 +130,7 @@ public class UIController : MonoBehaviour
 
 
         // Calibration / Performer / ServerIp Page
-        if(page_index == 1)
+        if (page_index == 1)
         {
             transButtonStart.gameObject.SetActive(false);
             transButtonPerformer.gameObject.SetActive(false);
