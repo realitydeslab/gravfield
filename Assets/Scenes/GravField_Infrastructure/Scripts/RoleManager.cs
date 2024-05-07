@@ -17,6 +17,7 @@ public class RoleManager : NetworkBehaviour
 
     public enum PlayerRole
     {
+        Undefined,
         Audience,
         Performer,
         Server
@@ -92,7 +93,7 @@ public class RoleManager : NetworkBehaviour
     #region Joining Functions
     public void JoinAsServer()
     {
-
+        SetPlayerRole(PlayerRole.Server);
     }
 
     public void JoinAsPerformer()
@@ -125,6 +126,12 @@ public class RoleManager : NetworkBehaviour
     public void JoinAsAudience()
     {
         // do nothing
+        SetPlayerRole(PlayerRole.Audience);
+    }
+
+    public void ResetPlayerRole()
+    {
+        SetPlayerRole(PlayerRole.Undefined);
     }
     #endregion
 

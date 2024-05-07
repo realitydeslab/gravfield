@@ -80,7 +80,7 @@ public class UIController : MonoBehaviour
         {
             // Join As Performer
             GameManager.Instance.JoinAsPerformer();
-            GotoPage(2);
+            GoToRelocalizationPage();
         }
         else
         {
@@ -125,8 +125,28 @@ public class UIController : MonoBehaviour
     {
         GotoPage(0);
     }
+    public void GoIntoGame()
+    {
+        GotoPage(2);
+    }
+    public void GoToRelocalizationPage()
+    {
+        GotoPage(1, 0);
+    }
 
 
+    /// <summary>
+    /// 
+    /// Page 0: Home Page
+    ///     Start       ->      Page 1: Panel 0
+    ///     Performer   ->      Page 1: Panel 1
+    ///     Settings    ->      Page 1: Panel 2
+    ///
+    /// Page 2: Game Page(Hide UI)
+    /// 
+    /// </summary>
+    /// <param name="page_index"></param>
+    /// <param name="panel_index"></param>
     void GotoPage(int page_index, int panel_index = 0)
     {
         // Home Page

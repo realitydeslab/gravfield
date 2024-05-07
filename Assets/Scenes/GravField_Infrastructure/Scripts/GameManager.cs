@@ -19,6 +19,10 @@ public class GameManager : MonoBehaviour
     bool isInDevelopment = true;
     public bool IsInDevelopment { get => isInDevelopment; set => isInDevelopment = value; }
 
+    [SerializeField]
+    bool isOffLineMode = true;
+    public bool IsOffLineMode { get => isOffLineMode; set => isOffLineMode = value; }
+
     private ImageTrackingStablizer relocalizationStablizer;
     public ImageTrackingStablizer RelocalizationStablizer { get => relocalizationStablizer; }
 
@@ -74,8 +78,11 @@ public class GameManager : MonoBehaviour
         // Specify Role When Testing
         string local_ip = GetLocalIPAddress();
         Debug.Log("Local IP:" + local_ip);
-        if (local_ip == ServerIP)
+        if (local_ip == ServerIP || isOffLineMode)
+        {
             JoinAsServer();
+            uiController.GoIntoGame();
+        }        
     }
 
 
@@ -122,6 +129,12 @@ public class GameManager : MonoBehaviour
         NetworkManager.Singleton.Shutdown();
 
         uiController.GoBackToHomePage();
+
+        roleManager.ResetPlayerRole();
+    }
+    public void Relocalize()
+    {
+        uiController.GoToRelocalizationPage();
     }
 
 
