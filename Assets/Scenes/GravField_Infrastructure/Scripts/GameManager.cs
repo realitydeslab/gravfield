@@ -76,13 +76,17 @@ public class GameManager : MonoBehaviour
         }
 
         // Specify Role When Testing
-        string local_ip = GetLocalIPAddress();
-        Debug.Log("Local IP:" + local_ip);
-        if (local_ip == ServerIP || isOffLineMode)
+        Debug.Log("Platform:" + Application.platform.ToString());
+        if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer)
         {
-            JoinAsServer();
-            uiController.GoIntoGame();
-        }        
+            string local_ip = GetLocalIPAddress();
+            Debug.Log("Local IP:" + local_ip);
+            if (local_ip == ServerIP || isOffLineMode)
+            {
+                JoinAsServer();
+                uiController.GoIntoGame();
+            }
+        }
     }
 
 
