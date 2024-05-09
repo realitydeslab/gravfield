@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour
     public bool IsInDevelopment { get => isInDevelopment; set => isInDevelopment = value; }
 
     [SerializeField]
-    bool isOffLineMode = true;
-    public bool IsOffLineMode { get => isOffLineMode; set => isOffLineMode = value; }
+    bool isSoloMode = true;
+    public bool IsOffLineMode { get => isSoloMode; set => isSoloMode = value; }
 
     [SerializeField]
     bool showPerformerAxis = false;
@@ -93,15 +93,25 @@ public class GameManager : MonoBehaviour
         }
 
         // Specify Role When Testing
-        if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer)
+        if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer
+            || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
         {
             string local_ip = GetLocalIPAddress();
             Debug.Log("Local IP:" + local_ip);
-            if (local_ip == ServerIP || isOffLineMode)
+            if (local_ip == ServerIP || isSoloMode)
             {
                 JoinAsServer();
                 uiController.GoIntoGame();
             }
+
+            if (isSoloMode)
+            {
+                roleManager.EnterSoloMode();
+            }
+        }
+        else
+        {
+            isSoloMode = false;
         }
     }
 
@@ -172,7 +182,6 @@ public class GameManager : MonoBehaviour
             renderer.enabled = state;
         }
     }
-
 
 
     #region Network

@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clientID:
-    m_InternalValue: 0
+    m_InternalValue: 1
   isPerforming:
     m_InternalValue: 0
 --- !u!114 &2838806199080828088
@@ -862,7 +862,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clientID:
-    m_InternalValue: 0
+    m_InternalValue: 2
   isPerforming:
     m_InternalValue: 0
 --- !u!114 &5002416973441032133

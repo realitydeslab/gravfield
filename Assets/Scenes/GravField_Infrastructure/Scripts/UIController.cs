@@ -9,9 +9,11 @@ using HoloKit.ImageTrackingRelocalization;
 public class UIController : MonoBehaviour
 {
 
-    Transform transButtonStart;
+    Transform transButtonStart;    
     Transform transButtonPerformer;
     Transform transButtonSettings;
+    Transform transButtonServer;
+
     Transform transPanelCalibration;
     Transform transPanelPassword;
     Transform transPanelServerIP;
@@ -26,6 +28,7 @@ public class UIController : MonoBehaviour
         transButtonStart = transform.Find("Button_Start");
         transButtonPerformer = transform.Find("Button_Performer");
         transButtonSettings = transform.Find("Button_Settings");
+        transButtonServer = transform.Find("Button_Server"); transButtonServer.gameObject.SetActive(GameManager.Instance.IsInDevelopment ? true : false);
         transPanelCalibration = transform.Find("Panel_Calibration");
         transPanelPassword = transform.Find("Panel_Password");
         transPanelServerIP = transform.Find("Panel_ServerIP");
@@ -48,6 +51,7 @@ public class UIController : MonoBehaviour
         transButtonStart.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 0));
         transButtonPerformer.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 1));
         transButtonSettings.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 2));
+        transButtonServer.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 3));
 
         transPanelCalibration.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => GotoPage(0));
         transPanelPassword.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => GotoPage(0));
@@ -159,6 +163,7 @@ public class UIController : MonoBehaviour
             transButtonStart.gameObject.SetActive(true);
             transButtonPerformer.gameObject.SetActive(true);
             transButtonSettings.gameObject.SetActive(true);
+            transButtonServer.gameObject.SetActive(GameManager.Instance.IsInDevelopment ? true : false);
 
             transPanelCalibration.gameObject.SetActive(false);
             transPanelPassword.gameObject.SetActive(false);
@@ -174,6 +179,7 @@ public class UIController : MonoBehaviour
             transButtonStart.gameObject.SetActive(false);
             transButtonPerformer.gameObject.SetActive(false);
             transButtonSettings.gameObject.SetActive(false);
+            transButtonServer.gameObject.SetActive(false);
             switch (panel_index)
             {
                 // Calibration
@@ -203,6 +209,7 @@ public class UIController : MonoBehaviour
             transButtonStart.gameObject.SetActive(false);
             transButtonPerformer.gameObject.SetActive(false);
             transButtonSettings.gameObject.SetActive(false);
+            transButtonServer.gameObject.SetActive(false);
 
             transPanelCalibration.gameObject.SetActive(false);
             transPanelPassword.gameObject.SetActive(false);

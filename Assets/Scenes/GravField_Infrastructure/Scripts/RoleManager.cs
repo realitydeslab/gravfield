@@ -37,15 +37,14 @@ public class RoleManager : NetworkBehaviour
     /// https://docs-multiplayer.unity3d.com/netcode/current/basics/networkvariable/
     /// In-Scene Placed: Since the instantiation occurs via the scene loading mechanism(s), the Start method is invoked before OnNetworkSpawn.
     /// </summary>
-    void Start()
+    void Awake()
     {
-        
+        performerSynchronizer = transform.GetComponent<PerformerSynchronizer>();
+        InitializePerformerList();
     }
 
     public override void OnNetworkSpawn()
     {
-        performerSynchronizer = transform.GetComponent<PerformerSynchronizer>();
-        InitializePerformerList();
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
 
@@ -139,6 +138,15 @@ public class RoleManager : NetworkBehaviour
     public PlayerRole GetPlayerRole()
     {
         return playerRole;
+    }
+
+    public void EnterSoloMode()
+    {
+        for(int i=0; i<performerList.Count; i++)
+        {
+            performerList[i].isPerforming.Value = true;
+            performerList[i].clientID.Value = (ulong)i;
+        }
     }
     #endregion
 

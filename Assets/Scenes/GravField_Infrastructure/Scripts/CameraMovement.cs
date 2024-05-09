@@ -89,6 +89,14 @@ public class CameraMovement : MonoBehaviour
             initialized = true;
             Debug.Log("Change Camera to Cinemachine Mode");
         }
+        else
+        {
+            holokitCameraManager.enabled = true;
+            cinemachineCameraManager.enabled = false;
+
+            mixingCamera.enabled = false;
+            dollyCart.enabled = false;
+        }
     }
 
     public void ChangeFocusTo(int index)
