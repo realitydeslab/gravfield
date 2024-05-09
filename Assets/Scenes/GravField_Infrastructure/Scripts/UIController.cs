@@ -20,7 +20,7 @@ public class UIController : MonoBehaviour
     TMP_InputField inputPassword;
     TMP_InputField inputServerIP;
 
-    void Start()
+    void Awake()
     {
         // Initialize
         transButtonStart = transform.Find("Button_Start");
@@ -55,9 +55,12 @@ public class UIController : MonoBehaviour
 
         transPanelPassword.Find("Button_Enter").GetComponent<Button>().onClick.AddListener(OnEnterPassword);
         transPanelServerIP.Find("Button_Enter").GetComponent<Button>().onClick.AddListener(OnEnterServerIp);
+    }
 
+    void Start()
+    {
         // Enter Home Page
-        GotoPage(0);
+        //GotoPage(0);
     }
 
     public void OnFinishRelocalization(Vector3 position, Quaternion rotation)
@@ -149,6 +152,7 @@ public class UIController : MonoBehaviour
     /// <param name="panel_index"></param>
     void GotoPage(int page_index, int panel_index = 0)
     {
+        Debug.Log("Go to Page " + page_index + "," + panel_index);
         // Home Page
         if (page_index == 0)
         {

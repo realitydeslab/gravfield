@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     bool isOffLineMode = true;
     public bool IsOffLineMode { get => isOffLineMode; set => isOffLineMode = value; }
 
+    [SerializeField]
+    bool showPerformerAxis = false;
+
     private ImageTrackingStablizer relocalizationStablizer;
     public ImageTrackingStablizer RelocalizationStablizer { get => relocalizationStablizer; }
 
@@ -32,7 +35,8 @@ public class GameManager : MonoBehaviour
     private UIController uiController;
     public UIController UIController { get => uiController; }
 
-    void Start()
+    public RoleManager.PlayerRole PlayerRole { get => roleManager.GetPlayerRole(); }
+    void InitializeReferences()
     {
         // Initialize References
         relocalizationStablizer = FindObjectOfType<ImageTrackingStablizer>();
@@ -46,8 +50,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("No RoleManager Found.");
         }
-        roleManager.OnReceiveConnectionResultEvent.AddListener(OnReceiveConnectionResult);
-        roleManager.OnReceiveRegistrationResultEvent.AddListener(OnReceiveRegistrationResult);
+        
 
 
         uiController = FindObjectOfType<UIController>();
@@ -55,8 +58,22 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("No UIController Found.");
         }
+    }
 
+    void OnEnable()
+    {
+        roleManager.OnReceiveConnectionResultEvent.AddListener(OnReceiveConnectionResult);
+        roleManager.OnReceiveRegistrationResultEvent.AddListener(OnReceiveRegistrationResult);
+    }
 
+    void OnDisable()
+    {
+        roleManager.OnReceiveConnectionResultEvent.RemoveListener(OnReceiveConnectionResult);
+        roleManager.OnReceiveRegistrationResultEvent.RemoveListener(OnReceiveRegistrationResult);
+    }
+
+    void Start()
+    {
         // Read Command Line
         string mode_from_command = GetModeFromCommandLine();
         switch (mode_from_command)
@@ -76,7 +93,6 @@ public class GameManager : MonoBehaviour
         }
 
         // Specify Role When Testing
-        Debug.Log("Platform:" + Application.platform.ToString());
         if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer)
         {
             string local_ip = GetLocalIPAddress();
@@ -140,6 +156,23 @@ public class GameManager : MonoBehaviour
     {
         uiController.GoToRelocalizationPage();
     }
+
+    public void TogglePerformerAxis()
+    {
+        SetPerformerAxisState(!showPerformerAxis);
+    }
+
+    public void SetPerformerAxisState(bool state)
+    {
+        showPerformerAxis = state;
+
+        MeshRenderer[] mesh_renderers = roleManager.PerformerTransformRoot.GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer renderer in mesh_renderers)
+        {
+            renderer.enabled = state;
+        }
+    }
+
 
 
     #region Network
@@ -214,6 +247,18 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        //if (_Instance == null)
+        //{
+        //    _Instance = this;
+        //    DontDestroyOnLoad(this.gameObject);
+        //}
+        //else
+        //{
+        //    Destroy(this);
+        //}
+
+        InitializeReferences();
     }
 
     private void OnDestroy()

@@ -10,6 +10,7 @@ public class RoleManager : NetworkBehaviour
 {
     [SerializeField]
     private Transform performerTransformRoot;
+    public Transform PerformerTransformRoot { get => performerTransformRoot; }
 
     private PerformerSynchronizer performerSynchronizer;
 
@@ -28,6 +29,7 @@ public class RoleManager : NetworkBehaviour
     
     public UnityEvent<bool> OnReceiveRegistrationResultEvent;
     public UnityEvent<bool> OnReceiveConnectionResultEvent;
+    public UnityEvent<PlayerRole> OnSpecifyPlayerRoleEvent;
 
 
 
@@ -132,6 +134,11 @@ public class RoleManager : NetworkBehaviour
     public void ResetPlayerRole()
     {
         SetPlayerRole(PlayerRole.Undefined);
+    }
+
+    public PlayerRole GetPlayerRole()
+    {
+        return playerRole;
     }
     #endregion
 
@@ -266,6 +273,10 @@ public class RoleManager : NetworkBehaviour
     void SetPlayerRole(PlayerRole role)
     {
         playerRole = role;
+
+        OnSpecifyPlayerRoleEvent?.Invoke(role);
+
+        Debug.Log("Send Event OnSpecifyPlayerRole");
     }
 
 
