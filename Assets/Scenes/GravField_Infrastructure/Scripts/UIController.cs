@@ -48,12 +48,12 @@ public class UIController : MonoBehaviour
 
 
         // Bind Basic Listener
-        transButtonStart.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 0));
+        transButtonStart.GetComponent<Button>().onClick.AddListener(() => OnClickStart());
         transButtonPerformer.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 1));
         transButtonSettings.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 2));
-        transButtonServer.GetComponent<Button>().onClick.AddListener(() => GotoPage(1, 3));
+        transButtonServer.GetComponent<Button>().onClick.AddListener(() => OnClickServer());
 
-        transPanelCalibration.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => GotoPage(0));
+        transPanelCalibration.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => HideRelocalizationPage());
         transPanelPassword.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => GotoPage(0));
         transPanelServerIP.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => GotoPage(0));
 
@@ -73,9 +73,21 @@ public class UIController : MonoBehaviour
         GameManager.Instance.RelocalizationStablizer.OnTrackedImagePoseStablized.RemoveListener(OnFinishRelocalization);
 #endif
 
-        // Join As Audience
+        HideRelocalizationPage();
+    }
+
+    void OnClickStart()
+    {
         GameManager.Instance.JoinAsAudience();
-        GotoPage(2);
+
+        GoToRelocalizationPage();
+    }
+
+    void OnClickServer()
+    {
+        GameManager.Instance.JoinAsServer();
+
+        GoToRelocalizationPage();
     }
 
     public void OnEnterPassword()
@@ -139,6 +151,10 @@ public class UIController : MonoBehaviour
     public void GoToRelocalizationPage()
     {
         GotoPage(1, 0);
+    }
+    public void HideRelocalizationPage()
+    {
+        transPanelCalibration.gameObject.SetActive(false);
     }
 
 
