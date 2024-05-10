@@ -31,6 +31,8 @@ public class RoleManager : NetworkBehaviour
     public UnityEvent<bool> OnReceiveConnectionResultEvent;
     public UnityEvent<PlayerRole> OnSpecifyPlayerRoleEvent;
 
+    public UnityEvent<int> OnAddPerformerEvent;
+    public UnityEvent<int> OnRemovePerformerEvent;
 
 
     /// <summary>
@@ -210,6 +212,8 @@ public class RoleManager : NetworkBehaviour
             performerSynchronizer.BindPerformerTransform(performerList[index].gameObject.transform);
             Debug.Log(string.Format("AddPerformerRpc | Bind Performer Transform:{0}", index));
         }
+
+        OnAddPerformerEvent?.Invoke(index);
     }
 
 
@@ -234,6 +238,8 @@ public class RoleManager : NetworkBehaviour
             performerSynchronizer.UnbindPerformTransform();
             Debug.Log(string.Format("AddPerformerRpc | Unbind Performer Transform:{0}", index));
         }
+
+        OnRemovePerformerEvent?.Invoke(index);
     }
     #endregion
 

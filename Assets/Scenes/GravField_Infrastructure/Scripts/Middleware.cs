@@ -254,6 +254,10 @@ public class Middleware : MonoBehaviour
         {
             EnableMiddleWare();
         }
+        else
+        {
+            DisableMiddleWare();
+        }
     }
 
     void EnableMiddleWare()
