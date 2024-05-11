@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     bool isSoloMode = true;
-    public bool IsOffLineMode { get => isSoloMode; set => isSoloMode = value; }
+    public bool IsSoloMode { get => isSoloMode; set => isSoloMode = value; }
 
     [SerializeField]
     bool showPerformerAxis = false;
@@ -96,9 +96,10 @@ public class GameManager : MonoBehaviour
         if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer
             || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
         {
-            string local_ip = GetLocalIPAddress();
-            Debug.Log("Local IP:" + local_ip);
-            if (local_ip == ServerIP || isSoloMode)
+            //string local_ip = GetLocalIPAddress();
+            //Debug.Log("Local IP:" + local_ip);
+            //if (local_ip == ServerIP || isSoloMode)
+            if(isSoloMode)
             {
                 JoinAsServer();
                 uiController.GoIntoGame();
@@ -190,8 +191,8 @@ public class GameManager : MonoBehaviour
         var unityTransport = NetworkManager.Singleton.GetComponent<UnityTransport>();
         if (unityTransport != null)
         {
-            string localIPAddress = GetLocalIPAddress();
-            unityTransport.SetConnectionData(localIPAddress, (ushort)7777);
+            //string localIPAddress = GetLocalIPAddress();
+            unityTransport.SetConnectionData("127.0.0.1", (ushort)7777);
             unityTransport.ConnectionData.ServerListenAddress = "0.0.0.0";
             //m_HostIPAddress.text = $"Host IP Address: {localIPAddress}";
         }
@@ -207,10 +208,11 @@ public class GameManager : MonoBehaviour
 
     string GetLocalIPAddress()
     {
+
         var host = Dns.GetHostEntry(Dns.GetHostName());
         foreach (var ip in host.AddressList)
         {
-            if (ip.AddressFamily == AddressFamily.InterNetwork && ip.ToString().Contains("192.168"))
+            if (ip.AddressFamily == AddressFamily.InterNetwork) // && ip.ToString().Contains("192.168"))
             {
                 return ip.ToString();
             }

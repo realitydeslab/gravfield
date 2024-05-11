@@ -37,21 +37,12 @@ public class CameraMovement : MonoBehaviour
         if (!initialized || mixingCamera.ChildCameras.Length != dstWeight.Count)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        for(int i=0; i<7; i++)
         {
-            ChangeFocusTo(0);
-        }
-        else if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            ChangeFocusTo(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            ChangeFocusTo(2);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            ChangeFocusTo(3);
+            if(Input.GetKeyDown(KeyCode.Alpha0 + i))
+            {
+                ChangeFocusTo(i);
+            }
         }
 
         for (int i=0; i<dstWeight.Count; i++)
@@ -85,6 +76,9 @@ public class CameraMovement : MonoBehaviour
             mixingCamera.SetWeight(1, 0);     dstWeight.Add(0);
             mixingCamera.SetWeight(2, 0);     dstWeight.Add(0);
             mixingCamera.SetWeight(3, 0);     dstWeight.Add(0);
+            mixingCamera.SetWeight(4, 0); dstWeight.Add(0);
+            mixingCamera.SetWeight(5, 0); dstWeight.Add(0);
+            mixingCamera.SetWeight(6, 0); dstWeight.Add(0);
 
             initialized = true;
             Debug.Log("Change Camera to Cinemachine Mode");

@@ -65,8 +65,8 @@ public class RopeManager : MonoBehaviour
     void UpdateAllRopeState()
     {
         SetRopeState(0, performerList[0].isPerforming.Value == true && performerList[1].isPerforming.Value == true);
-        SetRopeState(1, performerList[0].isPerforming.Value == true && performerList[1].isPerforming.Value == true);
-        SetRopeState(2, performerList[0].isPerforming.Value == true && performerList[1].isPerforming.Value == true);
+        SetRopeState(1, performerList[0].isPerforming.Value == true && performerList[2].isPerforming.Value == true);
+        SetRopeState(2, performerList[1].isPerforming.Value == true && performerList[2].isPerforming.Value == true);
     }
 
     void SetRopeState(int index, bool state)

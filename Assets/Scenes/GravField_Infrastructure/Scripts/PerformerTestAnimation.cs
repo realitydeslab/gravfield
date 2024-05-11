@@ -49,7 +49,7 @@ public class PerformerTestAnimation : MonoBehaviour
 
     void OnSpecifyPlayerRole(RoleManager.PlayerRole role)
     {
-        if (role == RoleManager.PlayerRole.Server && Application.platform != RuntimePlatform.IPhonePlayer)
+        if (GameManager.Instance.IsSoloMode && role == RoleManager.PlayerRole.Server && Application.platform != RuntimePlatform.IPhonePlayer)
         {
             initialized = true;
 

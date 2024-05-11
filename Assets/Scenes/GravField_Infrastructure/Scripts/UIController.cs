@@ -99,6 +99,7 @@ public class UIController : MonoBehaviour
         {
             // Join As Performer
             GameManager.Instance.JoinAsPerformer();
+            transPanelPassword.gameObject.SetActive(false);
             GoToRelocalizationPage();
         }
         else
