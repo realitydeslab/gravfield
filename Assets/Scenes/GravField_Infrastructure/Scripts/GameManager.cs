@@ -6,7 +6,9 @@ using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
+using System;
 
+[DefaultExecutionOrder(-20)]
 public class GameManager : MonoBehaviour
 {
     string performerPassword = "111";
@@ -26,6 +28,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     bool showPerformerAxis = false;
 
+    private NetcodeConnectionManager connectionManager;
+    public NetcodeConnectionManager ConnectionManager { get => connectionManager; }
+
     private ImageTrackingStablizer relocalizationStablizer;
     public ImageTrackingStablizer RelocalizationStablizer { get => relocalizationStablizer; }
 
@@ -36,41 +41,7 @@ public class GameManager : MonoBehaviour
     public UIController UIController { get => uiController; }
 
     public RoleManager.PlayerRole PlayerRole { get => roleManager.GetPlayerRole(); }
-    void InitializeReferences()
-    {
-        // Initialize References
-        relocalizationStablizer = FindObjectOfType<ImageTrackingStablizer>();
-        if (relocalizationStablizer == null)
-        {
-            Debug.LogError("No ImageTrackingStablizer Found.");
-        }
-
-        roleManager = FindObjectOfType<RoleManager>();
-        if (roleManager == null)
-        {
-            Debug.LogError("No RoleManager Found.");
-        }
-        
-
-
-        uiController = FindObjectOfType<UIController>();
-        if (uiController == null)
-        {
-            Debug.LogError("No UIController Found.");
-        }
-    }
-
-    void OnEnable()
-    {
-        roleManager.OnReceiveConnectionResultEvent.AddListener(OnReceiveConnectionResult);
-        roleManager.OnReceiveRegistrationResultEvent.AddListener(OnReceiveRegistrationResult);
-    }
-
-    void OnDisable()
-    {
-        roleManager.OnReceiveConnectionResultEvent.RemoveListener(OnReceiveConnectionResult);
-        roleManager.OnReceiveRegistrationResultEvent.RemoveListener(OnReceiveRegistrationResult);
-    }
+    
 
     void Start()
     {
@@ -92,82 +63,203 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        // Specify Role When Testing
-        if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer
-            || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
-        {
-            //string local_ip = GetLocalIPAddress();
-            //Debug.Log("Local IP:" + local_ip);
-            //if (local_ip == ServerIP || isSoloMode)
-            if(isSoloMode)
-            {
-                JoinAsServer();
-                uiController.GoIntoGame();
-            }
+        //// Specify Role When Testing
+        //if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer
+        //    || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
+        //{
+        //    //string local_ip = GetLocalIPAddress();
+        //    //Debug.Log("Local IP:" + local_ip);
+        //    //if (local_ip == ServerIP || isSoloMode)
+        //    if(isSoloMode)
+        //    {
+        //        JoinAsServer();
+        //        uiController.GoIntoGame();
+        //    }
 
-            if (isSoloMode)
-            {
-                roleManager.EnterSoloMode();
-            }
+        //    if (isSoloMode)
+        //    {
+        //        roleManager.EnterSoloMode();
+        //    }
+        //}
+        //else
+        //{
+        //    isSoloMode = false;
+        //}
+    }
+
+    #region Join As Specific Role
+    public void JoinAsAudience()
+    {
+        Debug.Log("Join As Audience.");
+
+        ConnectionManager.StartClient(callback: OnReceiveResult_JoinAsAudience);
+
+        UIController.GotoWaitingPage("Connecting to server.");
+    }
+
+    void OnReceiveResult_JoinAsAudience(bool result, string msg)
+    {
+        if (result == true)
+        {
+            RoleManager.JoinAsAudience();
+
+            UIController.GotoWaitingPage("Connected.");
+
+            StartRelocalization();
         }
         else
         {
-            isSoloMode = false;
+            UIController.GotoWaitingPage(msg);
+
+            RestartGame();
         }
     }
 
+    public void JoinAsPerformer(string password="")
+    {
+        Debug.Log("Join As Performer.");
+
+        if(password == PerformerPassword)
+        {
+            ConnectionManager.StartClient(callback: OnReceiveResult_JoinAsPerformer);
+
+            UIController.GotoWaitingPage("Connecting to server.");
+        }
+        else
+        {
+            UIController.ShowWarningText("Wrong Password.");
+        }
+    }
+    void OnReceiveResult_JoinAsPerformer(bool result, string msg)
+    {
+        if (result == true)
+        {
+            RoleManager.ApplyPerformer(callback: OnReceiveResult_ApplyPeroformer);
+
+            UIController.GotoWaitingPage("Applying to be a performer.");
+        }
+        else
+        {
+            UIController.GotoWaitingPage(msg);
+
+            RestartGame();
+        }
+    }
+
+    void OnReceiveResult_ApplyPeroformer(bool result, string msg)
+    {
+        if (result == true)
+        {
+            RoleManager.JoinAsPerformer();
+
+            UIController.GotoWaitingPage("Succeed.");
+
+            StartRelocalization();
+        }
+        else
+        {
+            UIController.GotoWaitingPage(msg);
+
+            RestartGame();
+        }
+    }
 
     public void JoinAsServer()
     {
-        OnBeforeHostStarted();
+        Debug.Log("Join As Server.");
 
-        NetworkManager.Singleton.StartServer();
-
-        RoleManager.JoinAsServer();
-
-        Debug.Log("Server Started.");
+        connectionManager.StartServer(callback: OnReceiveResult_JoinAsServer);
     }
 
-    public void JoinAsPerformer()
+    void OnReceiveResult_JoinAsServer(bool result, string msg)
     {
-        OnBeforeClientStarted();
+        if (result == true)
+        {
+            RoleManager.JoinAsServer();
 
-        NetworkManager.Singleton.StartClient();
+            uiController.GotoWaitingPage("Connected.");
 
-        RoleManager.JoinAsPerformer();
+            StartRelocalization();
+        }
+        else
+        {
+            uiController.GotoWaitingPage(msg);
 
-        Debug.Log("Join As Performer.");
+            RestartGame();
+        }
+    }
+    #endregion
+
+
+    #region Connection Event Listener
+    void OnEnable()
+    {
+        ConnectionManager.OnClientJoinedEvent.AddListener(OnClientJoined);
+        ConnectionManager.OnClientLostEvent.AddListener(OnClientLost);
+        ConnectionManager.OnServerLostEvent.AddListener(OnServerLost);
     }
 
-    public void JoinAsAudience()
+    void OnDisable()
     {
-        OnBeforeClientStarted();
-
-        NetworkManager.Singleton.StartClient();
-
-        RoleManager.JoinAsAudience();
-
-        Debug.Log("Join As Audience.");
+        ConnectionManager.OnClientJoinedEvent.RemoveListener(OnClientJoined);
+        ConnectionManager.OnClientLostEvent.RemoveListener(OnClientLost);
+        ConnectionManager.OnServerLostEvent.RemoveListener(OnServerLost);
     }
 
-    public void DisplayMessageOnUI(string msg)
+    void OnClientJoined(ulong client_id)
     {
-        uiController.DisplayMessageOnUI(msg);
+        RoleManager.OnClientJoined(client_id);
+    }
+    void OnClientLost(ulong client_id)
+    {
+        RoleManager.OnClientLost(client_id);
+
+    }
+    void OnServerLost()
+    {
+        RestartGame();
+    }
+    #endregion
+
+
+    #region UI Related Functions
+    public void StartRelocalization()
+    {
+        UIController.GoToRelocalizationPage();
+
+#if !UNITY_EDITOR
+        RelocalizationStablizer.OnTrackedImagePoseStablized.AddListener(OnFinishRelocalization);
+#else
+        OnFinishRelocalization(Vector3.zero, Quaternion.identity);
+#endif
+    }   
+
+    void OnFinishRelocalization(Vector3 position, Quaternion rotation)
+    {
+#if !UNITY_EDITOR
+            GameManager.Instance.RelocalizationStablizer.OnTrackedImagePoseStablized.RemoveListener(OnFinishRelocalization);
+#endif
+
+        UIController.GoIntoGame();
     }
 
     public void RestartGame()
     {
-        NetworkManager.Singleton.Shutdown();
+        ConnectionManager.ShutDown();
 
-        uiController.GoBackToHomePage();
+        RoleManager.ResetPlayerRole();
 
-        roleManager.ResetPlayerRole();
+        UIController.GoBackToHomePage();
     }
-    public void Relocalize()
+
+    public void DisplayMessageOnUI(string msg)
     {
-        uiController.GoToRelocalizationPage();
+        uiController.ShowWarningText(msg);
     }
+    #endregion
 
+
+    #region Helping Functions
     public void TogglePerformerAxis()
     {
         SetPerformerAxisState(!showPerformerAxis);
@@ -183,55 +275,37 @@ public class GameManager : MonoBehaviour
             renderer.enabled = state;
         }
     }
-
-
-    #region Network
-    void OnBeforeHostStarted()
-    {
-        var unityTransport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-        if (unityTransport != null)
-        {
-            //string localIPAddress = GetLocalIPAddress();
-            unityTransport.SetConnectionData("127.0.0.1", (ushort)7777);
-            unityTransport.ConnectionData.ServerListenAddress = "0.0.0.0";
-            //m_HostIPAddress.text = $"Host IP Address: {localIPAddress}";
-        }
-    }
-    void OnBeforeClientStarted()
-    {
-        var unityTransport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-        if (unityTransport != null)
-        {
-            unityTransport.SetConnectionData(ServerIP, (ushort)7777);
-        }
-    }
-
-    string GetLocalIPAddress()
-    {
-
-        var host = Dns.GetHostEntry(Dns.GetHostName());
-        foreach (var ip in host.AddressList)
-        {
-            if (ip.AddressFamily == AddressFamily.InterNetwork) // && ip.ToString().Contains("192.168"))
-            {
-                return ip.ToString();
-            }
-        }
-        throw new System.Exception("No network adapters with an IPv4 address in the system!");
-    }
-
-    void OnReceiveConnectionResult(bool result)
-    {
-        if (result == false)
-            RestartGame();
-    }
-
-    void OnReceiveRegistrationResult(bool result)
-    {
-        if (result == false)
-            RestartGame();
-    }
     #endregion
+
+    
+
+    void InitializeReferences()
+    {
+        // Initialize References
+        connectionManager = FindObjectOfType<NetcodeConnectionManager>();
+        if (connectionManager == null)
+        {
+            Debug.LogError("No NetcodeConnectionManager Found.");
+        }
+
+        relocalizationStablizer = FindObjectOfType<ImageTrackingStablizer>();
+        if (relocalizationStablizer == null)
+        {
+            Debug.LogError("No ImageTrackingStablizer Found.");
+        }
+
+        roleManager = FindObjectOfType<RoleManager>();
+        if (roleManager == null)
+        {
+            Debug.LogError("No RoleManager Found.");
+        }
+
+        uiController = FindObjectOfType<UIController>();
+        if (uiController == null)
+        {
+            Debug.LogError("No UIController Found.");
+        }
+    }
 
     #region Instance
     private static GameManager _Instance;
@@ -258,16 +332,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        //if (_Instance == null)
-        //{
-        //    _Instance = this;
-        //    DontDestroyOnLoad(this.gameObject);
-        //}
-        //else
-        //{
-        //    Destroy(this);
-        //}
 
         InitializeReferences();
     }

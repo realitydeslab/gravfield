@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using HoloKit.ImageTrackingRelocalization.iOS;
@@ -8,9 +9,13 @@ using UnityEngine.Events;
 
 public class RoleManager : NetworkBehaviour
 {
+    
     [SerializeField]
     private Transform performerTransformRoot;
     public Transform PerformerTransformRoot { get => performerTransformRoot; }
+
+    [SerializeField]
+    private float performerApplyTimeout = 10;
 
     private PerformerSynchronizer performerSynchronizer;
 
@@ -27,7 +32,8 @@ public class RoleManager : NetworkBehaviour
     private int audienceCount = 0;
     private int performerCount = 0;
     
-    public UnityEvent<bool> OnReceiveRegistrationResultEvent;
+    public UnityEvent<bool, string> OnReceiveRegistrationResultEvent;
+    public Action<bool, string> OnReceiveRegistrationResultAction;
     public UnityEvent<bool> OnReceiveConnectionResultEvent;
     public UnityEvent<PlayerRole> OnSpecifyPlayerRoleEvent;
 
@@ -44,63 +50,12 @@ public class RoleManager : NetworkBehaviour
         performerSynchronizer = transform.GetComponent<PerformerSynchronizer>();
         InitializePerformerList();
     }
-
-    public override void OnNetworkSpawn()
+    
+    #region Joining As Specific Role
+    public void ApplyPerformer(Action<bool, string> callback)
     {
-        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
-        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
+        OnReceiveRegistrationResultAction = callback;
 
-    }
-    public override void OnNetworkDespawn()
-    {
-        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
-        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
-    }
-
-
-    private void OnClientConnectedCallback(ulong client_id)
-    {
-        Debug.Log(string.Format("OnClientConnectedCallback | IsServer:{0}, ClientID:{1}", IsServer, client_id));
-
-        if(IsServer)
-        {
-            RefreshPlayerCount();
-        }
-        else
-        {
-            OnReceiveConnectionResultEvent?.Invoke(true);
-        }
-    }
-
-    private void OnClientDisconnectCallback(ulong client_id)
-    {
-        Debug.Log(string.Format("OnClientDisconnectCallback | IsServer:{0}, ClientID:{1}", IsServer, client_id));
-        if(IsServer)
-        {
-            // Unbind Performer if needed
-            int performer_index = GetPerformerIndexByID(client_id);
-
-            if (performer_index != -1)
-            {
-                RemovePerformerRpc(performer_index, client_id);
-            }
-
-            RefreshPlayerCount();
-        }
-        else
-        {
-            OnReceiveConnectionResultEvent?.Invoke(false);
-        }
-    }
-
-    #region Joining Functions
-    public void JoinAsServer()
-    {
-        SetPlayerRole(PlayerRole.Server);
-    }
-
-    public void JoinAsPerformer()
-    {
         // As Network Object needs serveral frames to be intialized after the connection has been built,
         // we need to wait to call Rpcs until it's been spawned.
         StartCoroutine(WaitToApplyPerformer());
@@ -109,7 +64,7 @@ public class RoleManager : NetworkBehaviour
     IEnumerator WaitToApplyPerformer()
     {
         float start_time = Time.fixedTime; ;
-        while(Time.fixedTime - start_time < 5 && IsSpawned == false)
+        while(Time.fixedTime - start_time < performerApplyTimeout && IsSpawned == false)
         {
             yield return new WaitForSeconds(0.1f);
         }
@@ -120,26 +75,33 @@ public class RoleManager : NetworkBehaviour
         }
         else
         {
-            GameManager.Instance.DisplayMessageOnUI("Performer Registration Times Out. Switch to Audience Mode Instead.");
-            OnReceiveRegistrationResult(false);
-            
+            OnReceiveRegistrationResult(false, "Performer Registration Times Out");
         }
     }
 
     public void JoinAsAudience()
     {
-        // do nothing
         SetPlayerRole(PlayerRole.Audience);
     }
 
-    public void ResetPlayerRole()
+    public void JoinAsPerformer()
     {
-        SetPlayerRole(PlayerRole.Undefined);
+        SetPlayerRole(PlayerRole.Performer);
+    }
+
+    public void JoinAsServer()
+    {
+        SetPlayerRole(PlayerRole.Server);
     }
 
     public PlayerRole GetPlayerRole()
     {
         return playerRole;
+    }
+
+    public void ResetPlayerRole()
+    {
+        SetPlayerRole(PlayerRole.Undefined);
     }
 
     public void EnterSoloMode()
@@ -154,10 +116,6 @@ public class RoleManager : NetworkBehaviour
 
 
     #region RPCs
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="rpcParams"></param>
     [Rpc(SendTo.Server)]
     void RegisterPerformerRpc(RpcParams rpcParams = default)
     {
@@ -179,23 +137,20 @@ public class RoleManager : NetworkBehaviour
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="result"></param>
-    /// <param name="rpcParams"></param>
     [Rpc(SendTo.SpecifiedInParams)]
     void ReplyRegistrationResultRpc(bool result, RpcParams rpcParams = default)
     {
-        OnReceiveRegistrationResult(result);
+        OnReceiveRegistrationResult(result, result ? "Succeed" : "Performers are full.");
+
         Debug.Log(string.Format("ReplyRegistrationResultRpc | ClientID:{0}, Result:{1}", NetworkManager.Singleton.LocalClientId, result));
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="client_id"></param>
+    void OnReceiveRegistrationResult(bool result, string msg = "")
+    {
+        OnReceiveRegistrationResultAction?.Invoke(result, msg);
+        OnReceiveRegistrationResultAction = null;
+    }
+
     [Rpc(SendTo.Everyone)]
     void AddPerformerRpc(int index, ulong client_id)
     {
@@ -217,11 +172,6 @@ public class RoleManager : NetworkBehaviour
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="client_id"></param>
     [Rpc(SendTo.Everyone)]
     void RemovePerformerRpc(int index, ulong client_id)
     {
@@ -244,7 +194,77 @@ public class RoleManager : NetworkBehaviour
     #endregion
 
 
+    #region Connection Event Listener
+    //public override void OnNetworkSpawn()
+    //{
+    //    NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
+    //    NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
 
+    //}
+    //public override void OnNetworkDespawn()
+    //{
+    //    NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
+    //    NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
+    //}
+
+    public void OnClientJoined(ulong client_id)
+    {
+        if (IsServer)
+        {
+            RefreshPlayerCount();
+        }
+    }
+
+    public void OnClientLost(ulong client_id)
+    {
+        if (IsServer)
+        {
+            int performer_index = GetPerformerIndexByID(client_id);
+
+            if (performer_index != -1)
+            {
+                RemovePerformerRpc(performer_index, client_id);
+            }
+
+            RefreshPlayerCount();
+        }
+    }
+
+    //private void OnClientConnectedCallback(ulong client_id)
+    //{
+    //    Debug.Log(string.Format("OnClientConnectedCallback | IsServer:{0}, ClientID:{1}", IsServer, client_id));
+
+    //    if(IsServer)
+    //    {
+    //        RefreshPlayerCount();
+    //    }
+    //    else
+    //    {
+    //        OnReceiveConnectionResultEvent?.Invoke(true);
+    //    }
+    //}
+
+    //private void OnClientDisconnectCallback(ulong client_id)
+    //{
+    //    Debug.Log(string.Format("OnClientDisconnectCallback | IsServer:{0}, ClientID:{1}", IsServer, client_id));
+    //    if(IsServer)
+    //    {
+    //        // Unbind Performer if needed
+    //        int performer_index = GetPerformerIndexByID(client_id);
+
+    //        if (performer_index != -1)
+    //        {
+    //            RemovePerformerRpc(performer_index, client_id);
+    //        }
+
+    //        RefreshPlayerCount();
+    //    }
+    //    else
+    //    {
+    //        OnReceiveConnectionResultEvent?.Invoke(false);
+    //    }
+    //}
+    #endregion
 
 
     #region Private Functions
@@ -269,19 +289,7 @@ public class RoleManager : NetworkBehaviour
     }
 
 
-    void OnReceiveRegistrationResult(bool result)
-    {
-        if (result == true)
-        {
-            SetPlayerRole(PlayerRole.Performer);
-        }
-        else
-        {
-            SetPlayerRole(PlayerRole.Audience);
-            GameManager.Instance.DisplayMessageOnUI("Performers Are Full . Switch to audience instead.");
-        }
-        OnReceiveRegistrationResultEvent?.Invoke(result);
-    }
+    
 
 
     void SetPlayerRole(PlayerRole role)
