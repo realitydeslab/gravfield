@@ -41,7 +41,9 @@ public class GameManager : MonoBehaviour
     public UIController UIController { get => uiController; }
 
     public RoleManager.PlayerRole PlayerRole { get => roleManager.GetPlayerRole(); }
-    
+
+    private bool isPlaying = false;
+    public bool IsPlaying { get => isPlaying; }
 
     void Start()
     {
@@ -105,6 +107,8 @@ public class GameManager : MonoBehaviour
 
             UIController.GotoWaitingPage("Connected.");
 
+            isPlaying = true;
+
             StartRelocalization();
         }
         else
@@ -154,6 +158,8 @@ public class GameManager : MonoBehaviour
 
             UIController.GotoWaitingPage("Succeed.");
 
+            isPlaying = true;
+
             StartRelocalization();
         }
         else
@@ -178,6 +184,8 @@ public class GameManager : MonoBehaviour
             RoleManager.JoinAsServer();
 
             uiController.GotoWaitingPage("Connected.");
+
+            isPlaying = true;
 
             StartRelocalization();
         }
@@ -246,6 +254,8 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         ConnectionManager.ShutDown();
+
+        isPlaying = false;
 
         RoleManager.ResetPlayerRole();
 

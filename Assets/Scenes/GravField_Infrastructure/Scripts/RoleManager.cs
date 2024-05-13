@@ -140,13 +140,15 @@ public class RoleManager : NetworkBehaviour
     [Rpc(SendTo.SpecifiedInParams)]
     void ReplyRegistrationResultRpc(bool result, RpcParams rpcParams = default)
     {
-        OnReceiveRegistrationResult(result, result ? "Succeed" : "Performers are full.");
-
         Debug.Log(string.Format("ReplyRegistrationResultRpc | ClientID:{0}, Result:{1}", NetworkManager.Singleton.LocalClientId, result));
+
+        OnReceiveRegistrationResult(result, result ? "Succeed" : "Performers are full.");
     }
 
     void OnReceiveRegistrationResult(bool result, string msg = "")
     {
+        Debug.Log(string.Format("OnReceiveRegistrationResult | ClientID:{0}, Result:{1}, Msg:{2}", NetworkManager.Singleton.LocalClientId, result, msg));
+
         OnReceiveRegistrationResultAction?.Invoke(result, msg);
         OnReceiveRegistrationResultAction = null;
     }
@@ -298,7 +300,7 @@ public class RoleManager : NetworkBehaviour
 
         OnSpecifyPlayerRoleEvent?.Invoke(role);
 
-        Debug.Log("Send Event OnSpecifyPlayerRole");
+        Debug.Log("Send Event OnSpecifyPlayerRole: " + role.ToString());
     }
 
 
@@ -326,7 +328,7 @@ public class RoleManager : NetworkBehaviour
     {
         for (int i = 0; i < performerList.Count; i++)
         {
-            if (performerList[i].clientID.Value == client_id)
+            if (performerList[i].isPerforming.Value == true && performerList[i].clientID.Value == client_id)
             {
                 return i;
             }

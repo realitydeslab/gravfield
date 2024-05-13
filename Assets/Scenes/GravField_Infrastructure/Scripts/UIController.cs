@@ -20,11 +20,16 @@ public class UIController : MonoBehaviour
     Transform transPanelWarning;
     Transform transPanelWaiting;
 
+    Transform transPanelExtraMenu;
+
     TMP_InputField inputPassword;
     TMP_InputField inputServerIP;
     TextMeshProUGUI waitingMessageText;
 
     Dictionary<string, Transform> registeredUIElements = new Dictionary<string, Transform>();
+
+    public float LongPressedTimeThreshold = 3;
+    float longPressedTime = 0;
 
     void Awake()
     {
@@ -40,7 +45,9 @@ public class UIController : MonoBehaviour
         transPanelWaiting = FindTransformAndRegister("Panel_Waiting");
 
         transPanelCalibration = FindTransformAndRegister("Panel_Calibration");
-        
+
+        transPanelExtraMenu = FindTransformAndRegister("Panel_ExtraMenu");
+
         transPanelWarning = transform.Find("Panel_Warning"); // WarningPanel is different because it's independent
 
         // Text Field
@@ -67,17 +74,42 @@ public class UIController : MonoBehaviour
     void Start()
     {
         // Bind Basic Listener
-        transButtonStart.GetComponent<Button>().onClick.AddListener(() => OnClickStart());
-        transButtonServer.GetComponent<Button>().onClick.AddListener(() => OnClickServer());
-        transButtonPerformer.GetComponent<Button>().onClick.AddListener(() => OnClickPerformer());
-        transButtonSettings.GetComponent<Button>().onClick.AddListener(() => OnClickSettings());
+        transButtonStart.GetComponent<Button>().onClick.AddListener(OnClickStart);
+        transButtonServer.GetComponent<Button>().onClick.AddListener(OnClickServer);
+        transButtonPerformer.GetComponent<Button>().onClick.AddListener(OnClickPerformer);
+        transButtonSettings.GetComponent<Button>().onClick.AddListener(OnClickSettings);
 
         transPanelPassword.Find("Button_Enter").GetComponent<Button>().onClick.AddListener(OnEnterPassword);
         transPanelServerIP.Find("Button_Enter").GetComponent<Button>().onClick.AddListener(OnEnterServerIp);
 
-        transPanelPassword.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => GoBackToHomePage());
-        transPanelServerIP.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => GoBackToHomePage());
-        transPanelCalibration.Find("Button_Close").GetComponent<Button>().onClick.AddListener(() => HideRelocalizationPage());        
+        transPanelPassword.Find("Button_Close").GetComponent<Button>().onClick.AddListener(GoBackToHomePage);
+        transPanelServerIP.Find("Button_Close").GetComponent<Button>().onClick.AddListener(GoBackToHomePage);
+        transPanelCalibration.Find("Button_Close").GetComponent<Button>().onClick.AddListener(HideRelocalizationPage);
+
+        transPanelExtraMenu.Find("Button_Calibrate").GetComponent<Button>().onClick.AddListener(GameManager.Instance.StartRelocalization);
+        transPanelExtraMenu.Find("Button_Exit").GetComponent<Button>().onClick.AddListener(GameManager.Instance.RestartGame);
+        transPanelExtraMenu.Find("Button_Return").GetComponent<Button>().onClick.AddListener(HideExtraMenu);
+    }
+
+    void Update()
+    {
+        // Long Pressed
+        if(Input.GetMouseButton(0))
+        {
+            longPressedTime += Time.deltaTime;
+            if(longPressedTime >= LongPressedTimeThreshold)
+            {
+                if(GameManager.Instance.IsPlaying)
+                {
+                    ShowExtraMenu();
+                    longPressedTime = 0;
+                }
+            }
+        }
+        else
+        {
+            longPressedTime = 0;
+        }
     }
 
 
@@ -236,6 +268,16 @@ public class UIController : MonoBehaviour
             }
             element.gameObject.SetActive(match);
         }
+    }
+
+    void ShowExtraMenu()
+    {
+        transPanelExtraMenu.gameObject.SetActive(true);
+    }
+
+    void HideExtraMenu()
+    {
+        transPanelExtraMenu.gameObject.SetActive(false);
     }
     #endregion
 
