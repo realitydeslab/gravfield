@@ -14,13 +14,6 @@ public class RoleManager : NetworkBehaviour
     private Transform performerTransformRoot;
     public Transform PerformerTransformRoot { get => performerTransformRoot; }
 
-    [SerializeField]
-    private float performerApplyTimeout = 10;
-
-    private PerformerSynchronizer performerSynchronizer;
-
-    private List<Performer> performerList = new List<Performer>();
-
     public enum PlayerRole
     {
         Undefined,
@@ -28,18 +21,25 @@ public class RoleManager : NetworkBehaviour
         Performer,
         Server
     }
-    private PlayerRole playerRole = PlayerRole.Audience;
+    private PlayerRole playerRole = PlayerRole.Undefined;
+    public PlayerRole Role { get => playerRole; }
+
     private int audienceCount = 0;
+    public int AudienceCount { get => audienceCount; }
+
     private int performerCount = 0;
-    
-    public UnityEvent<bool, string> OnReceiveRegistrationResultEvent;
-    public Action<bool, string> OnReceiveRegistrationResultAction;
-    public UnityEvent<bool> OnReceiveConnectionResultEvent;
-    public UnityEvent<PlayerRole> OnSpecifyPlayerRoleEvent;
+    public int PerformerCount { get => performerCount; }
 
     public UnityEvent<int> OnAddPerformerEvent;
     public UnityEvent<int> OnRemovePerformerEvent;
+    public UnityEvent<PlayerRole> OnSpecifyPlayerRoleEvent;
 
+    [SerializeField]
+    private float performerApplyTimeout = 10;
+    private Action<bool, string> OnReceiveRegistrationResultAction;
+
+    private PerformerSynchronizer performerSynchronizer;
+    private List<Performer> performerList = new List<Performer>();
 
     /// <summary>
     /// https://docs-multiplayer.unity3d.com/netcode/current/basics/networkvariable/
@@ -47,7 +47,7 @@ public class RoleManager : NetworkBehaviour
     /// </summary>
     void Awake()
     {
-        performerSynchronizer = transform.GetComponent<PerformerSynchronizer>();
+        performerSynchronizer = FindObjectOfType<PerformerSynchronizer>();
         InitializePerformerList();
     }
     
@@ -111,6 +111,8 @@ public class RoleManager : NetworkBehaviour
             performerList[i].isPerforming.Value = true;
             performerList[i].clientID.Value = (ulong)i;
         }
+
+        RefreshPlayerCount();
     }
     #endregion
 
@@ -187,7 +189,7 @@ public class RoleManager : NetworkBehaviour
 
         if (NetworkManager.Singleton.LocalClientId == client_id)
         {
-            performerSynchronizer.UnbindPerformTransform();
+            performerSynchronizer.UnbindPerformTransform(performerList[index].gameObject.transform);
             Debug.Log(string.Format("AddPerformerRpc | Unbind Performer Transform:{0}", index));
         }
 
@@ -197,18 +199,6 @@ public class RoleManager : NetworkBehaviour
 
 
     #region Connection Event Listener
-    //public override void OnNetworkSpawn()
-    //{
-    //    NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
-    //    NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
-
-    //}
-    //public override void OnNetworkDespawn()
-    //{
-    //    NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
-    //    NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
-    //}
-
     public void OnClientJoined(ulong client_id)
     {
         if (IsServer)
@@ -231,41 +221,6 @@ public class RoleManager : NetworkBehaviour
             RefreshPlayerCount();
         }
     }
-
-    //private void OnClientConnectedCallback(ulong client_id)
-    //{
-    //    Debug.Log(string.Format("OnClientConnectedCallback | IsServer:{0}, ClientID:{1}", IsServer, client_id));
-
-    //    if(IsServer)
-    //    {
-    //        RefreshPlayerCount();
-    //    }
-    //    else
-    //    {
-    //        OnReceiveConnectionResultEvent?.Invoke(true);
-    //    }
-    //}
-
-    //private void OnClientDisconnectCallback(ulong client_id)
-    //{
-    //    Debug.Log(string.Format("OnClientDisconnectCallback | IsServer:{0}, ClientID:{1}", IsServer, client_id));
-    //    if(IsServer)
-    //    {
-    //        // Unbind Performer if needed
-    //        int performer_index = GetPerformerIndexByID(client_id);
-
-    //        if (performer_index != -1)
-    //        {
-    //            RemovePerformerRpc(performer_index, client_id);
-    //        }
-
-    //        RefreshPlayerCount();
-    //    }
-    //    else
-    //    {
-    //        OnReceiveConnectionResultEvent?.Invoke(false);
-    //    }
-    //}
     #endregion
 
 
@@ -287,20 +242,17 @@ public class RoleManager : NetworkBehaviour
         performerCount = performer_count;
         audienceCount = total_count - performer_count;
 
-        Debug.Log(string.Format("Performer:{0}, Audience:{1}", performerCount, audienceCount));
+        Debug.Log(string.Format("RefreshPlayerCount | Performer:{0}, Audience:{1}", performerCount, audienceCount));
     }
-
-
-    
 
 
     void SetPlayerRole(PlayerRole role)
     {
         playerRole = role;
 
-        OnSpecifyPlayerRoleEvent?.Invoke(role);
-
         Debug.Log("Send Event OnSpecifyPlayerRole: " + role.ToString());
+
+        OnSpecifyPlayerRoleEvent?.Invoke(role);
     }
 
 

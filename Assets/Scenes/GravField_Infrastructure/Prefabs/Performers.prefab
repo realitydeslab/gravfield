@@ -108,7 +108,7 @@ MonoBehaviour:
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 1
   SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
+  DontDestroyWithOwner: 1
   AutoObjectParentSync: 1
 --- !u!114 &8742406241424475587
 MonoBehaviour:
@@ -291,7 +291,7 @@ MonoBehaviour:
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 1
   SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
+  DontDestroyWithOwner: 1
   AutoObjectParentSync: 1
 --- !u!114 &851591320732394642
 MonoBehaviour:
@@ -816,7 +816,7 @@ MonoBehaviour:
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 1
   SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
+  DontDestroyWithOwner: 1
   AutoObjectParentSync: 1
 --- !u!114 &8006635692287799068
 MonoBehaviour:
@@ -901,6 +901,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2386362520638764014}
   - component: {fileID: 5841723620387128820}
+  - component: {fileID: 6790830247122997414}
   m_Layer: 0
   m_Name: Performers
   m_TagString: Untagged
@@ -945,8 +946,20 @@ MonoBehaviour:
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 1
   SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
+  DontDestroyWithOwner: 1
   AutoObjectParentSync: 1
+--- !u!114 &6790830247122997414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7375516848168713379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b05ee110d29c4a6b98c45001b41d149, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7409420175562854156
 GameObject:
   m_ObjectHideFlags: 0

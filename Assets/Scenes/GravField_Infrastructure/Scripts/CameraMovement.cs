@@ -32,6 +32,20 @@ public class CameraMovement : MonoBehaviour
         roleManager?.OnSpecifyPlayerRoleEvent.RemoveListener(OnSpecifyPlayerRole);
     }
 
+    void Start()
+    {
+        dstWeight.Clear();
+        for (int i = 0; i < mixingCamera.ChildCameras.Length; i++)
+        {
+            if (i == 0)
+                mixingCamera.SetWeight(i, 1);
+            else
+                mixingCamera.SetWeight(i, 0);
+
+            dstWeight.Add(mixingCamera.GetWeight(i));
+        }
+    }
+
     void Update()
     {
         if (!initialized || mixingCamera.ChildCameras.Length != dstWeight.Count)
@@ -57,57 +71,61 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    void OnSpecifyPlayerRole(RoleManager.PlayerRole role)
+    void ChangeFocusTo(int index)
     {
-        if (role == RoleManager.PlayerRole.Server && Application.platform != RuntimePlatform.IPhonePlayer)
+        for (int i = 0; i < dstWeight.Count; i++)
         {
-            holokitCameraManager.enabled = false;
-            cinemachineCameraManager.enabled = true;
-
-            mixingCamera.enabled = true;
-            dollyCart.enabled = true;
-
-            dollyCart.m_Speed = 1;
-
-            //srcWeight.Clear();
-            dstWeight.Clear();
-
-            mixingCamera.SetWeight(0, 1);     dstWeight.Add(1);
-            mixingCamera.SetWeight(1, 0);     dstWeight.Add(0);
-            mixingCamera.SetWeight(2, 0);     dstWeight.Add(0);
-            mixingCamera.SetWeight(3, 0);     dstWeight.Add(0);
-            mixingCamera.SetWeight(4, 0); dstWeight.Add(0);
-            mixingCamera.SetWeight(5, 0); dstWeight.Add(0);
-            mixingCamera.SetWeight(6, 0); dstWeight.Add(0);
-
-            initialized = true;
-            Debug.Log("Change Camera to Cinemachine Mode");
-        }
-        else
-        {
-            holokitCameraManager.enabled = true;
-            cinemachineCameraManager.enabled = false;
-
-            mixingCamera.enabled = false;
-            dollyCart.enabled = false;
-        }
-    }
-
-    public void ChangeFocusTo(int index)
-    {
-        for(int i=0; i<dstWeight.Count; i++)
-        {
-            if(i == index)
+            if (i == index)
             {
-                //srcWeight[i] = mixingCamera.GetWeight(i);
                 dstWeight[i] = 1;
             }
             else
             {
-                //srcWeight[i] = mixingCamera.GetWeight(i);
                 dstWeight[i] = 0;
             }
         }
-        Debug.Log("Focus Camera to " + (index == 0 ? "Group" : ("Performer"+index.ToString())));
+        Debug.Log("Focus Camera to " + (index == 0 ? "Group" : (index < 4 ? "Performer" + (index-1).ToString() : "Performer-FPV" + (index-4).ToString())));
+    }
+
+    public void StartCinemachineMode()
+    {
+        holokitCameraManager.enabled = false;
+        cinemachineCameraManager.enabled = true;
+
+        mixingCamera.enabled = true;
+        dollyCart.enabled = true;
+
+        dollyCart.m_Speed = 1;
+
+        initialized = true;
+    }
+
+    public void StopCinemachineMode()
+    {
+        holokitCameraManager.enabled = true;
+        cinemachineCameraManager.enabled = false;
+
+        mixingCamera.enabled = false;
+        dollyCart.enabled = false;
+
+        initialized = false;
+    }
+
+    void OnSpecifyPlayerRole(RoleManager.PlayerRole role)
+    {
+        if (IsValidEnvironment() && role == RoleManager.PlayerRole.Server)
+        {
+            StartCinemachineMode();
+            Debug.Log("Change Camera to Cinemachine Mode");
+        }
+        else
+        {
+            StopCinemachineMode();
+        }
+    }
+
+    bool IsValidEnvironment()
+    {
+        return Application.platform != RuntimePlatform.IPhonePlayer;
     }
 }

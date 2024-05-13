@@ -14,9 +14,6 @@ public class GameManager : MonoBehaviour
     string performerPassword = "111";
     public string PerformerPassword { get => performerPassword; set => performerPassword = value; }
 
-    string serverIP = "192.168.0.135";
-    public string ServerIP { get => serverIP; set => serverIP = value; }
-
     [SerializeField]
     bool isInDevelopment = true;
     public bool IsInDevelopment { get => isInDevelopment; set => isInDevelopment = value; }
@@ -66,27 +63,18 @@ public class GameManager : MonoBehaviour
         }
 
         //// Specify Role When Testing
-        //if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer
-        //    || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
-        //{
-        //    //string local_ip = GetLocalIPAddress();
-        //    //Debug.Log("Local IP:" + local_ip);
-        //    //if (local_ip == ServerIP || isSoloMode)
-        //    if(isSoloMode)
-        //    {
-        //        JoinAsServer();
-        //        uiController.GoIntoGame();
-        //    }
-
-        //    if (isSoloMode)
-        //    {
-        //        roleManager.EnterSoloMode();
-        //    }
-        //}
-        //else
-        //{
-        //    isSoloMode = false;
-        //}
+        if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer
+            || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
+        {
+            if (isSoloMode)
+            {
+                EnterSoloMode();
+            }
+        }
+        else
+        {
+            isSoloMode = false;
+        }
     }
 
     #region Join As Specific Role
@@ -187,7 +175,8 @@ public class GameManager : MonoBehaviour
 
             isPlaying = true;
 
-            StartRelocalization();
+            //StartRelocalization();
+            UIController.GoIntoGame(); // No need to relocalize as server
         }
         else
         {
@@ -195,6 +184,13 @@ public class GameManager : MonoBehaviour
 
             RestartGame();
         }
+    }
+
+    void EnterSoloMode()
+    {
+        JoinAsServer();
+
+        RoleManager.EnterSoloMode();
     }
     #endregion
 

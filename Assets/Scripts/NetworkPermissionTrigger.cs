@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 
 namespace HoloKit.ColocatedMultiplayerBoilerplate
 {
+    [DefaultExecutionOrder(-20)]
     public class NetworkPermissionTrigger : MonoBehaviour
     {
         // URL to trigger network permission - it should be a valid URL

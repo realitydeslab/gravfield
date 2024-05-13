@@ -6,38 +6,76 @@ using UnityEngine.XR.ARFoundation;
 
 public class PerformerSynchronizer : NetworkBehaviour
 {
-    private Transform transPerformer;
 
-    private ARCameraManager m_ARCameraManager;
+    Transform performerTransform = null;
 
-    private void Update()
+    private ARCameraManager arCameraManager;
+
+    void Awake()
     {
-        if (transPerformer == null)
+        arCameraManager = FindFirstObjectByType<ARCameraManager>();
+    }
+
+    void Update()
+    {
+        if (IsSpawned == false || performerTransform == null || arCameraManager == null)
             return;
 
-        if (IsSpawned)
-        {
-            if (m_ARCameraManager == null)
-            {
-                m_ARCameraManager = FindFirstObjectByType<ARCameraManager>();
-            }
+        performerTransform.SetPositionAndRotation(arCameraManager.transform.position, arCameraManager.transform.rotation);
+    }
 
-            if (m_ARCameraManager != null)
-            {
-                Debug.Log("SetPositionAndRotation");
-                transPerformer.SetPositionAndRotation(m_ARCameraManager.transform.position, m_ARCameraManager.transform.rotation);
-            }
+    public void BindPerformerTransform(Transform performer)
+    {
+        performerTransform = performer;
+    }
+
+    public void UnbindPerformTransform(Transform performer)
+    {
+        performerTransform = null;
+    }
+
+
+    /*
+    List<(Transform, Transform)> bondedTransformList = new List<(Transform, Transform)>();
+
+    private ARCameraManager arCameraManager;
+
+    void Awake()
+    {
+        arCameraManager = FindFirstObjectByType<ARCameraManager>();
+    }
+    void Update()
+    {
+        if (bondedTransformList.Count == 0 || IsSpawned == false)
+            return;
+
+        foreach ((Transform, Transform) bond in bondedTransformList)
+        {
+            bond.Item1.SetPositionAndRotation(bond.Item2.position, bond.Item2.rotation);
         }
     }
 
-    public void BindPerformerTransform(Transform trans)
+    public void BindPerformerTransform(Transform performer, Transform source = null)
     {
-        transPerformer = trans;
+        if (source == null)
+        {
+            source = arCameraManager.transform;
+            bondedTransformList.Clear();
+        }
+
+        bondedTransformList.Add((performer, source));
     }
 
-    public void UnbindPerformTransform()
+    public void UnbindPerformTransform(Transform performer)
     {
-        transPerformer = null;
+        foreach((Transform, Transform) bond in bondedTransformList)
+        {
+            if(bond.Item1 == performer)
+            {
+                bondedTransformList.Remove(bond);
+                return;
+            }
+        }
     }
-
+    */
 }
