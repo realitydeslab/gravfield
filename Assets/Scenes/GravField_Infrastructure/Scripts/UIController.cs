@@ -223,12 +223,15 @@ public class UIController : MonoBehaviour
         foreach(Transform element in registeredUIElements.Values)
         {
             bool match = false;
-            foreach(Transform dst_element in dst_elemetns)
+            if(dst_elemetns != null)
             {
-                if (element == dst_element)
+                foreach (Transform dst_element in dst_elemetns)
                 {
-                    match = true;
-                    break;
+                    if (element == dst_element)
+                    {
+                        match = true;
+                        break;
+                    }
                 }
             }
             element.gameObject.SetActive(match);
