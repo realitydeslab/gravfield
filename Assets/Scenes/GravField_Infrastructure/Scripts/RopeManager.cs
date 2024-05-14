@@ -147,7 +147,7 @@ public class RopeManager : MonoBehaviour
                 //
                 GameObject rope_root = new GameObject("Rope" + i.ToString()+k.ToString());
                 rope_root.transform.parent = transform;
-                PerformerRope performer_rope = rope_root.AddComponent<PerformerRope>();
+                RopeEffect performer_rope = rope_root.AddComponent<RopeEffect>();
                 performer_rope.performer1 = performerTransformRoot.GetChild(i);
                 performer_rope.performer2 = performerTransformRoot.GetChild(k);
                 AddSplineMeshComponent(rope_root);

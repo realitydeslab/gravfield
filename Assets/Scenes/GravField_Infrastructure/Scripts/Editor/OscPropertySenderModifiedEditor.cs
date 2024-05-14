@@ -10,8 +10,8 @@ using System.Linq;
 
 namespace OscJack
 {
-    [CanEditMultipleObjects, CustomEditor(typeof(OscPropertySenderRange))]
-    class OscPropertySenderRangeEditor : Editor
+    [CanEditMultipleObjects, CustomEditor(typeof(OscPropertySenderModified))]
+    class OscPropertySenderModifiedEditor : Editor
     {
         #region Editable properties
 

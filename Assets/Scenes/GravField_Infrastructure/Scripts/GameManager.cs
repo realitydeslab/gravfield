@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     private bool isPlaying = false;
     public bool IsPlaying { get => isPlaying; }
 
+    bool isInitialzed = false;
     void Start()
     {
         // Read Command Line
@@ -75,7 +76,16 @@ public class GameManager : MonoBehaviour
         {
             isSoloMode = false;
         }
+
+        //StartCoroutine(CheckIfNeedJoinAsServer());
     }
+
+    IEnumerator CheckIfNeedJoinAsServer()
+    {
+        yield return new WaitForSeconds(5f);
+        
+    }
+
 
     #region Join As Specific Role
     public void JoinAsAudience()

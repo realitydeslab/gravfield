@@ -157,6 +157,32 @@ MonoBehaviour:
     m_InternalValue: 0
   isPerforming:
     m_InternalValue: 0
+  floatValue1:
+    m_InternalValue: 0
+  floatValue2:
+    m_InternalValue: 0
+  floatValue3:
+    m_InternalValue: 0
+  floatValue4:
+    m_InternalValue: 0
+  floatValue5:
+    m_InternalValue: 0
+  intValue1:
+    m_InternalValue: 0
+  intValue2:
+    m_InternalValue: 0
+  intValue3:
+    m_InternalValue: 0
+  intValue4:
+    m_InternalValue: 0
+  intValue5:
+    m_InternalValue: 0
+  vectorValue1:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  vectorValue2:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  vectorValue3:
+    m_InternalValue: {x: 0, y: 0, z: 0}
 --- !u!114 &1947458010434256164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,6 +366,32 @@ MonoBehaviour:
     m_InternalValue: 1
   isPerforming:
     m_InternalValue: 0
+  floatValue1:
+    m_InternalValue: 0
+  floatValue2:
+    m_InternalValue: 0
+  floatValue3:
+    m_InternalValue: 0
+  floatValue4:
+    m_InternalValue: 0
+  floatValue5:
+    m_InternalValue: 0
+  intValue1:
+    m_InternalValue: 0
+  intValue2:
+    m_InternalValue: 0
+  intValue3:
+    m_InternalValue: 0
+  intValue4:
+    m_InternalValue: 0
+  intValue5:
+    m_InternalValue: 0
+  vectorValue1:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  vectorValue2:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  vectorValue3:
+    m_InternalValue: {x: 0, y: 0, z: 0}
 --- !u!114 &2838806199080828088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,6 +917,32 @@ MonoBehaviour:
     m_InternalValue: 2
   isPerforming:
     m_InternalValue: 0
+  floatValue1:
+    m_InternalValue: 0
+  floatValue2:
+    m_InternalValue: 0
+  floatValue3:
+    m_InternalValue: 0
+  floatValue4:
+    m_InternalValue: 0
+  floatValue5:
+    m_InternalValue: 0
+  intValue1:
+    m_InternalValue: 0
+  intValue2:
+    m_InternalValue: 0
+  intValue3:
+    m_InternalValue: 0
+  intValue4:
+    m_InternalValue: 0
+  intValue5:
+    m_InternalValue: 0
+  vectorValue1:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  vectorValue2:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  vectorValue3:
+    m_InternalValue: {x: 0, y: 0, z: 0}
 --- !u!114 &5002416973441032133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,6 +980,7 @@ GameObject:
   - component: {fileID: 2386362520638764014}
   - component: {fileID: 5841723620387128820}
   - component: {fileID: 6790830247122997414}
+  - component: {fileID: 2025799917615018390}
   m_Layer: 0
   m_Name: Performers
   m_TagString: Untagged
@@ -960,6 +1039,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b05ee110d29c4a6b98c45001b41d149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2025799917615018390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7375516848168713379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81ee627b228d04506864cbb49ca00ac4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floatValue1:
+    m_InternalValue: 0
+  floatValue2:
+    m_InternalValue: 0
+  floatValue3:
+    m_InternalValue: 0
+  floatValue4:
+    m_InternalValue: 0
+  floatValue5:
+    m_InternalValue: 0
+  intValue1:
+    m_InternalValue: 0
+  intValue2:
+    m_InternalValue: 0
+  intValue3:
+    m_InternalValue: 0
+  intValue4:
+    m_InternalValue: 0
+  intValue5:
+    m_InternalValue: 0
+  vectorValue1:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  vectorValue2:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  vectorValue3:
+    m_InternalValue: {x: 0, y: 0, z: 0}
 --- !u!1 &7409420175562854156
 GameObject:
   m_ObjectHideFlags: 0

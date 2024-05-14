@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using SplineMesh;
 
-public class PerformerRope : MonoBehaviour
+public class RopeEffect : MonoBehaviour
 {
     public Transform performer1;
     public Transform performer2;

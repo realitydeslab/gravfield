@@ -12,16 +12,21 @@ using System.Reflection;
 
 namespace OscJack
 {
-    [AddComponentMenu("OSC/Property Sender Range")]
-    public sealed class OscPropertySenderRange : MonoBehaviour
+    [AddComponentMenu("OSC/Property Sender Modified")]
+    public sealed class OscPropertySenderModified : MonoBehaviour
     {
         #region Editable fields
 
-        [SerializeField] OscConnection _connection = null;
+        [SerializeField]
+        public OscConnection _connection = null;
+        [SerializeField]
         public string _oscAddress = "/unity";
-        [SerializeField] Component _dataSource = null;
-        [SerializeField] string _propertyName = "";
-        [SerializeField] bool _keepSending = false;
+        [SerializeField]
+        public Component _dataSource = null;
+        [SerializeField]
+        public string _propertyName = "";
+        [SerializeField]
+        public bool _keepSending = false;
 
         [SerializeField] bool _needRemapping = true;
         public bool _needClamp = true;
