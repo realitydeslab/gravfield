@@ -6,7 +6,6 @@ public class Helper : MonoBehaviour
 {
 
     public Transform performerTransformRoot;
-
     void Start()
     {
         

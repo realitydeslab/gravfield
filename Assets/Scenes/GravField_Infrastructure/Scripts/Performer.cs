@@ -48,6 +48,7 @@ public class Performer : NetworkBehaviour
 
 
     public PerformerLocalData localData = new PerformerLocalData();
+    
 
     public override void OnNetworkSpawn()
     {
@@ -85,12 +86,11 @@ public class Performer : NetworkBehaviour
 
         }
         localData.isPerforming = isPerforming.Value;
-
-
         if (localData.isPerforming == false)
             return;
 
 
+        // Update local data
         Vector3 new_pos = transform.localPosition;
         Vector3 new_vel = (new_pos - localData.position) / Time.deltaTime;
 
@@ -104,9 +104,16 @@ public class Performer : NetworkBehaviour
         if (!IsServer)
             return;
 
+        
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("mass"), new UnityAction<float>(OnReceive_Mass));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("drag"), new UnityAction<float>(OnReceive_Drag));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("thickness"), new UnityAction<float>(OnReceive_Thickness));
+    }
+
+    string FormatedOscAddress(string param)
+    {
         string performer_name = transform.GetSiblingIndex() == 1 ? "B" : (transform.GetSiblingIndex() == 2 ? "C" : "A");
-        string prefix = "/" + performer_name + "-";
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(prefix + "mass", new UnityAction<float>(OnReceive_Mass));
+        return "/" + performer_name + "-" + param;
     }
 
     void OnReceive_Mass(float v)
@@ -114,6 +121,29 @@ public class Performer : NetworkBehaviour
         if (!IsServer)
             return;
 
-        floatValue1.Value = v;
+        
+        floatValue1.Value = SmoothValue(floatValue1.Value, v);
+    }
+
+    void OnReceive_Drag(float v)
+    {
+        if (!IsServer)
+            return;
+
+        floatValue2.Value = SmoothValue(floatValue2.Value, v);
+    }
+
+    void OnReceive_Thickness(float v)
+    {
+        if (!IsServer)
+            return;
+
+        floatValue3.Value = SmoothValue(floatValue3.Value, v);
+    }
+
+    float SmoothValue(float cur, float dst, float t = 0)
+    {
+        float cur_vel = 0;
+        return Mathf.SmoothDamp(cur, dst, ref cur_vel, t);
     }
 }
