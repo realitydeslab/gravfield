@@ -49,6 +49,7 @@ public class NetcodeConnectionManager : MonoBehaviour
         networkManager.OnServerStarted += OnServerStarted;
         networkManager.OnServerStopped += OnServerStopped;
         networkManager.OnTransportFailure += OnTransportFailure;
+        networkManager.OnConnectionEvent += OnConnectionEvent;
     }
 
     void OnDisable()
@@ -61,6 +62,7 @@ public class NetcodeConnectionManager : MonoBehaviour
         networkManager.OnServerStarted -= OnServerStarted;
         networkManager.OnServerStopped -= OnServerStopped;
         networkManager.OnTransportFailure -= OnTransportFailure;
+        networkManager.OnConnectionEvent -= OnConnectionEvent;
     }
 
     void OnClientStarted()
@@ -86,6 +88,11 @@ public class NetcodeConnectionManager : MonoBehaviour
     void OnTransportFailure()
     {
         Debug.Log("OnTransportFailure");
+    }
+
+    void OnConnectionEvent(NetworkManager manager, ConnectionEventData data)
+    {
+        //Debug.Log("OnConnectionEvent | " + data.ClientId + "Remain Count " + manager.ConnectedClientsList.Count + "," + manager.ConnectedClients.Count + ", " + manager.ConnectedClientsIds.Count);
     }
 
     void OnClientConnectedCallback(ulong client_id)

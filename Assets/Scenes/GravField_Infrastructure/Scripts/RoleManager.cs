@@ -185,6 +185,8 @@ public class RoleManager : NetworkBehaviour
             performerList[index].isPerforming.Value = false;
             performerList[index].clientID.Value = 0;
             performerList[index].GetComponent<NetworkObject>().RemoveOwnership();
+
+            RefreshPlayerCount(client_id);
         }
 
         if (NetworkManager.Singleton.LocalClientId == client_id)
@@ -218,19 +220,46 @@ public class RoleManager : NetworkBehaviour
                 RemovePerformerRpc(performer_index, client_id);
             }
 
-            RefreshPlayerCount();
+            RefreshPlayerCount(client_id);
         }
     }
     #endregion
 
-
-    #region Private Functions
-    void RefreshPlayerCount()
+    void Update()
     {
         if (!IsServer)
             return;
 
-        int total_count = NetworkManager.Singleton.ConnectedClients.Count;
+        audienceCount = NetworkManager.Singleton.ConnectedClients.Count - performerCount;
+    }
+
+
+    #region Private Functions
+    void RefreshPlayerCount(ulong just_deleted_id = ulong.MaxValue)
+    {
+        if (!IsServer)
+            return;
+
+
+        // Total Count
+        // Has to deal with ConnectedClientsIds this way because the following issue 
+        // https://github.com/Unity-Technologies/com.unity.netcode.gameobjects/issues/2927
+        int total_count = 0;
+        if (just_deleted_id == ulong.MaxValue)
+        {
+            total_count = NetworkManager.Singleton.ConnectedClients.Count;
+        }
+        else
+        {
+            for (int i = 0; i < NetworkManager.Singleton.ConnectedClientsIds.Count; i++)
+            {
+                if (just_deleted_id != NetworkManager.Singleton.ConnectedClientsIds[i])
+                    total_count++;
+            }
+        }
+
+
+        // Performer Count
         int performer_count = 0;
         for(int i=0; i<performerList.Count; i++)
         {
@@ -238,7 +267,8 @@ public class RoleManager : NetworkBehaviour
             {
                 performer_count++;
             }
-        }
+        }        
+
         performerCount = performer_count;
         audienceCount = total_count - performer_count;
 
