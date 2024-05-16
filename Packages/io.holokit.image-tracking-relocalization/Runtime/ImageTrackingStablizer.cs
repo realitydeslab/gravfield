@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: Copyright 2023 Reality Design Lab <dev@reality.design>
 // SPDX-FileContributor: Yuchen Zhang <yuchenz27@outlook.com>
 // SPDX-License-Identifier: MIT
-
+#if UNITY_IOS
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -37,6 +37,11 @@ namespace HoloKit.ImageTrackingRelocalization
                 else
                     StopRelocalization();
             }
+        }
+
+        public float Progress
+        {
+            get => (float)m_TrackedImagePoses.Count / (float)m_DesiredNumOfSamples;
         }
 
         [Tooltip("The maximum timestamp gap between two consecutive tracked image poses.")]
@@ -95,6 +100,8 @@ namespace HoloKit.ImageTrackingRelocalization
 
                     CleanUpOldPoses();
 
+                    Debug.Log($"[ImageTrackingRelocalizationManager] m_TrackedImagePoses.Count: {m_TrackedImagePoses.Count}");
+
                     if (m_TrackedImagePoses.Count >= m_DesiredNumOfSamples)
                     {
                         CalculateStableTrackedImagePose();
@@ -145,7 +152,8 @@ namespace HoloKit.ImageTrackingRelocalization
             Quaternion meanRotation = Quaternion.identity;
             foreach (var pose in m_TrackedImagePoses)
             {
-                meanRotation = Quaternion.Slerp(meanRotation, pose.Rotation, 1.0f / m_TrackedImagePoses.Count);
+                //meanRotation = Quaternion.Slerp(meanRotation, pose.Rotation, 1.0f / m_TrackedImagePoses.Count);
+                meanRotation *= Quaternion.Slerp(Quaternion.identity, pose.Rotation, 1.0f / m_TrackedImagePoses.Count);
             }
             return meanRotation;
         }
@@ -171,3 +179,4 @@ namespace HoloKit.ImageTrackingRelocalization
         }
     }
 }
+#endif

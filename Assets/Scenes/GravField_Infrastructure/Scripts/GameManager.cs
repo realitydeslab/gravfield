@@ -243,10 +243,23 @@ public class GameManager : MonoBehaviour
 
 #if !UNITY_EDITOR
         RelocalizationStablizer.OnTrackedImagePoseStablized.AddListener(OnFinishRelocalization);
+
+        RelocalizationStablizer.IsRelocalizing = true;
 #else
         OnFinishRelocalization(Vector3.zero, Quaternion.identity);
 #endif
-    }   
+    }
+
+    public void StopRelocalization()
+    {
+        UIController.HideRelocalizationPage();
+
+#if !UNITY_EDITOR
+        GameManager.Instance.RelocalizationStablizer.OnTrackedImagePoseStablized.RemoveListener(OnFinishRelocalization);
+
+        RelocalizationStablizer.IsRelocalizing = false;
+#endif
+    }
 
     void OnFinishRelocalization(Vector3 position, Quaternion rotation)
     {

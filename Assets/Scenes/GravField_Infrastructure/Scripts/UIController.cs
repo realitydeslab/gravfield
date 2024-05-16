@@ -25,6 +25,7 @@ public class UIController : MonoBehaviour
     TMP_InputField inputPassword;
     TMP_InputField inputServerIP;
     TextMeshProUGUI waitingMessageText;
+    TextMeshProUGUI progressText;
 
     Dictionary<string, Transform> registeredUIElements = new Dictionary<string, Transform>();
 
@@ -54,6 +55,7 @@ public class UIController : MonoBehaviour
         inputPassword = transPanelPassword.Find("InputField_Password").GetComponent<TMP_InputField>();
         inputServerIP = transPanelServerIP.Find("InputField_ServerIP").GetComponent<TMP_InputField>();
         waitingMessageText = transPanelWaiting.Find("Message").GetComponent<TextMeshProUGUI>();
+        progressText = transPanelCalibration.Find("Progress").GetComponent<TextMeshProUGUI>();
     }
 
     Transform FindTransformAndRegister(string name)
@@ -84,7 +86,7 @@ public class UIController : MonoBehaviour
 
         transPanelPassword.Find("Button_Close").GetComponent<Button>().onClick.AddListener(GoBackToHomePage);
         transPanelServerIP.Find("Button_Close").GetComponent<Button>().onClick.AddListener(GoBackToHomePage);
-        transPanelCalibration.Find("Button_Close").GetComponent<Button>().onClick.AddListener(HideRelocalizationPage);
+        transPanelCalibration.Find("Button_Close").GetComponent<Button>().onClick.AddListener(GameManager.Instance.StopRelocalization);
 
         transPanelExtraMenu.Find("Button_Calibrate").GetComponent<Button>().onClick.AddListener(GameManager.Instance.StartRelocalization);
         transPanelExtraMenu.Find("Button_Exit").GetComponent<Button>().onClick.AddListener(GameManager.Instance.RestartGame);
@@ -110,6 +112,9 @@ public class UIController : MonoBehaviour
         {
             longPressedTime = 0;
         }
+
+        if (GameManager.Instance.RelocalizationStablizer.IsRelocalizing)
+            progressText.text = Mathf.FloorToInt(GameManager.Instance.RelocalizationStablizer.Progress * 100f).ToString() + "%";
     }
 
 
