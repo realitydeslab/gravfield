@@ -373,16 +373,15 @@
       "url": "https://packages.unity.com"
     },
     "io.holokit.image-tracking-relocalization": {
-      "version": "https://github.com/holokit/holokit-image-tracking-relocalization.git",
+      "version": "file:io.holokit.image-tracking-relocalization",
       "depth": 0,
-      "source": "git",
+      "source": "embedded",
       "dependencies": {
         "com.unity.xr.arfoundation": "5.1.2",
         "com.unity.xr.arkit": "5.1.2",
         "com.unity.netcode.gameobjects": "1.8.1",
         "com.unity.shadergraph": "14.0.10"
-      },
-      "hash": "b674b563eab9d3bad6d2f3dc053cd2e9bf73133b"
+      }
     },
     "io.holokit.unity-sdk": {
       "version": "https://github.com/holokit/holokit-unity-sdk.git",
