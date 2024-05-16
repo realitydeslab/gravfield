@@ -33,6 +33,8 @@ namespace OscJack
         public Vector2 _srcRange = new Vector2(0, 1);
         public Vector2 _dstRange = new Vector2(0, 1);
 
+        public bool successfullySend = false;
+
         #endregion
 
         #region Internal members
@@ -110,7 +112,16 @@ namespace OscJack
 
             if (!_keepSending && data == _intValue) return;
 
-            _client.Send(_oscAddress, data);
+            try
+            {
+                _client.Send(_oscAddress, data);
+                successfullySend = true;
+            }
+            catch
+            {
+                successfullySend = false;
+            }
+
             _intValue = data;
         }
 
@@ -127,8 +138,11 @@ namespace OscJack
             try
             {
                 _client.Send(_oscAddress, data);
+                successfullySend = true;
             }
-            catch { }
+            catch {
+                successfullySend = false;
+            }
             _floatValue = data;
         }
 
@@ -144,7 +158,16 @@ namespace OscJack
 
             if (!_keepSending && data == _vector2Value) return;
 
-            _client.Send(_oscAddress, data.x, data.y);
+            try
+            {
+                _client.Send(_oscAddress, data.x, data.y);
+                successfullySend = true;
+            }
+            catch
+            {
+                successfullySend = false;
+            }
+
             _vector2Value = data;
         }
 
@@ -160,8 +183,16 @@ namespace OscJack
             }
 
             if (!_keepSending && data == _vector3Value) return;
-
-            _client.Send(_oscAddress, data.x, data.y, data.z);
+            try
+            {
+                _client.Send(_oscAddress, data.x, data.y, data.z);
+                successfullySend = true;
+            }
+            catch
+            {
+                successfullySend = false;
+            }
+           
             _vector3Value = data;
         }
 
@@ -179,7 +210,16 @@ namespace OscJack
 
             if (!_keepSending && data == _vector4Value) return;
 
-            _client.Send(_oscAddress, data.x, data.y, data.z, data.w);
+            try
+            {
+                _client.Send(_oscAddress, data.x, data.y, data.z, data.w);
+                successfullySend = true;
+            }
+            catch
+            {
+                successfullySend = false;
+            }
+            
             _vector4Value = data;
         }
 

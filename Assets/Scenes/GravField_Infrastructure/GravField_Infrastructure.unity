@@ -22413,7 +22413,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 804112450}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e43cc78b62f2184d8bebe41bd574f9e, type: 3}
+  m_Script: {fileID: 11500000, guid: fc13d23ca708746a9802cc66fe0e9d86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _connection: {fileID: 11400000, guid: 1a8ff00812e674549b1727692aeba8e6, type: 2}
@@ -22421,6 +22421,13 @@ MonoBehaviour:
   _dataSource: {fileID: 216093201}
   _propertyName: position
   _keepSending: 0
+  _needRemapping: 0
+  _needClamp: 0
+  _srcRange: {x: 0, y: 1}
+  _dstRange: {x: 0, y: 1}
+  successfullySend: 0
+  _floatValue: 3.4028235e+38
+  _originalFloatValue: 3.4028235e+38
 --- !u!114 &804112453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22430,7 +22437,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 804112450}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e43cc78b62f2184d8bebe41bd574f9e, type: 3}
+  m_Script: {fileID: 11500000, guid: fc13d23ca708746a9802cc66fe0e9d86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _connection: {fileID: 11400000, guid: 1a8ff00812e674549b1727692aeba8e6, type: 2}
@@ -22438,6 +22445,13 @@ MonoBehaviour:
   _dataSource: {fileID: 557992899}
   _propertyName: position
   _keepSending: 0
+  _needRemapping: 0
+  _needClamp: 0
+  _srcRange: {x: 0, y: 1}
+  _dstRange: {x: 0, y: 1}
+  successfullySend: 0
+  _floatValue: 3.4028235e+38
+  _originalFloatValue: 3.4028235e+38
 --- !u!114 &804112454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22447,7 +22461,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 804112450}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e43cc78b62f2184d8bebe41bd574f9e, type: 3}
+  m_Script: {fileID: 11500000, guid: fc13d23ca708746a9802cc66fe0e9d86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _connection: {fileID: 11400000, guid: 1a8ff00812e674549b1727692aeba8e6, type: 2}
@@ -22455,6 +22469,13 @@ MonoBehaviour:
   _dataSource: {fileID: 1917423072}
   _propertyName: position
   _keepSending: 0
+  _needRemapping: 0
+  _needClamp: 0
+  _srcRange: {x: 0, y: 1}
+  _dstRange: {x: 0, y: 1}
+  successfullySend: 0
+  _floatValue: 3.4028235e+38
+  _originalFloatValue: 3.4028235e+38
 --- !u!1 &806141793
 GameObject:
   m_ObjectHideFlags: 0
@@ -32876,6 +32897,7 @@ MonoBehaviour:
   _needClamp: 0
   _srcRange: {x: 0, y: 1}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541125
@@ -32899,6 +32921,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 100}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541126
@@ -32922,6 +32945,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 180}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541127
@@ -32945,6 +32969,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 180}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541128
@@ -32968,6 +32993,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 30}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541129
@@ -32991,6 +33017,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 30}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541130
@@ -33014,6 +33041,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 10}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541131
@@ -33037,6 +33065,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 10}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541132
@@ -33060,6 +33089,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 10}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541133
@@ -33083,6 +33113,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 10}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541134
@@ -33106,6 +33137,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 20}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541135
@@ -33129,6 +33161,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: -10, y: 10}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541136
@@ -33152,6 +33185,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: -10, y: 10}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541137
@@ -33175,6 +33209,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 3}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541138
@@ -33198,6 +33233,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: 0, y: 3}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541139
@@ -33221,6 +33257,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: -10, y: 10}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!114 &1190541140
@@ -33244,6 +33281,7 @@ MonoBehaviour:
   _needClamp: 1
   _srcRange: {x: -10, y: 10}
   _dstRange: {x: 0, y: 1}
+  successfullySend: 0
   _floatValue: 3.4028235e+38
   _originalFloatValue: 3.4028235e+38
 --- !u!1 &1194823207
@@ -33578,7 +33616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInDevelopment: 1
-  isSoloMode: 0
+  isSoloMode: 1
   showPerformerAxis: 0
 --- !u!4 &1215605116
 Transform:

@@ -76,6 +76,8 @@ namespace OscJack
 
             EditorGUILayout.PropertyField(_keepSending);
 
+            EditorGUILayout.PropertyField(_needRemapping);
+
             EditorGUILayout.PropertyField(_needClamp);
 
             EditorGUILayout.PropertyField(_srcRange);
