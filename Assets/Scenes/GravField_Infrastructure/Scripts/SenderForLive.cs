@@ -20,8 +20,6 @@ public class SenderForLive : MonoBehaviour
 
     List<OscPropertyForSending> propertiesForSending = new List<OscPropertyForSending>();
 
-    Transform transSender;
-
     OscClient _client = null;
 
     bool controlPanelCreated = false;
@@ -84,6 +82,7 @@ public class SenderForLive : MonoBehaviour
 
             property.mappedValue = data;
 
+            //Debug.Log($"SenderForLive | Send Address:{property.oscAddress}, Value:{data}");
             _client.Send(property.oscAddress, data);
         }
         else if (property.dataType == typeof(Vector3))
@@ -172,6 +171,9 @@ public class SenderForLive : MonoBehaviour
 
             new_item.transform.Find("Toggle_Enabled").GetComponent<Toggle>().onValueChanged.AddListener((bool v) => {
                 property.enabled = v;
+            });
+            new_item.transform.Find("Toggle_Remap").GetComponent<Toggle>().onValueChanged.AddListener((bool v) => {
+                property.needRemap = v;
             });
             new_item.transform.Find("Toggle_Clamp").GetComponent<Toggle>().onValueChanged.AddListener((bool v) => {
                 property.needClamp = v;

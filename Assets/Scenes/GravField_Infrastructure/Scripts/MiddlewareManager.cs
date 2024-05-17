@@ -58,18 +58,7 @@ public class MiddlewareManager : MonoBehaviour
     }
 
     void OnSpecifyPlayerRole(RoleManager.PlayerRole role)
-    {
-        // A phone might receive parameters from others
-        if (role == RoleManager.PlayerRole.Server)
-        {
-            parameterReceiver.TurnOn();
-        }
-        else
-        {
-            parameterReceiver.TurnOff();
-        }
-
-
+    {        
         // A phone can not send data to coda or live
         if (role == RoleManager.PlayerRole.Server && Application.platform != RuntimePlatform.IPhonePlayer)
         {
@@ -88,5 +77,14 @@ public class MiddlewareManager : MonoBehaviour
             senderForLive.TurnOff();
         }
 
+        // A phone might receive parameters from others
+        if (role == RoleManager.PlayerRole.Server)
+        {
+            parameterReceiver.TurnOn();
+        }
+        else
+        {
+            parameterReceiver.TurnOff();
+        }
     }
 }

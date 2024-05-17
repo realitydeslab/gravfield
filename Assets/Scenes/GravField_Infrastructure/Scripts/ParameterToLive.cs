@@ -14,12 +14,13 @@ public class ParameterToLive<T>
         set
         {
             if (!originalValue.Equals(value))
-                changed = true;
+                originalValueChanged = true;
             else
-                changed = false;
+                originalValueChanged = false;
             originalValue = value;
         }
     }
+    bool originalValueChanged = false;
 
     private T codaValue;
     public T CodaValue
@@ -28,14 +29,19 @@ public class ParameterToLive<T>
         set
         {
             if (!codaValue.Equals(value))
-                changed = true;
+            {
+                codaValueChanged = true;
+                lastTimeFromCoda = Time.time;
+            }
             else
-                changed = false;
+            {
+                codaValueChanged = false;
+            }  
 
             codaValue = value;
-            lastTimeFromCoda = Time.time;
         }
     }
+    bool codaValueChanged = false;
 
     public T Value
     {
@@ -46,8 +52,14 @@ public class ParameterToLive<T>
         }
     }
 
-    private bool changed = false;
-    public bool Changed { get => changed; }
+    public bool Changed
+    {
+        get
+        {
+            if (Time.time - lastTimeFromCoda > delayDuration) return originalValueChanged;
+            else return codaValueChanged;
+        }
+    }
 
     //private T minValue;
     //public T MinValue { get => minValue; set => minValue = value; }

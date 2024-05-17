@@ -8,9 +8,23 @@ using Unity.Netcode;
 public class SenderForCoda : MonoBehaviour
 {
     [SerializeField] OscConnection senderConnection = null;
-
+    
+    private bool connectedWithCoda = false;
+    public bool ConnectedWithCoda { get => connectedWithCoda; }
 
     Transform transSender;
+
+    List<OscPropertySenderModified> sernderList = new List<OscPropertySenderModified>();
+
+
+    void Awake()
+    {
+        transSender = transform.Find("Sender");
+        for(int i=0; i<transSender.childCount; i++)
+        {
+            sernderList.Add(transSender.GetChild(i).GetComponent<OscPropertySenderModified>());
+        }
+    }
 
 
     public void TurnOn()
@@ -34,7 +48,18 @@ public class SenderForCoda : MonoBehaviour
     }
 
 
+    void Update()
+    {
+        if (!NetworkManager.Singleton.IsServer) return;
 
+        bool successfully_send = true;
+        foreach (OscPropertySenderModified sender in sernderList)
+        {
+            successfully_send = successfully_send & sender.successfullySend;
+        }
+
+        connectedWithCoda = successfully_send;
+    }
 
 
 
@@ -85,7 +110,7 @@ public class SenderForCoda : MonoBehaviour
 
     //}
 
-    
+
 
     //[ContextMenu("SetSenderConnection")]
     //public void SetSenderConnection()

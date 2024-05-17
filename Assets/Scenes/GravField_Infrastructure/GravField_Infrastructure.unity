@@ -8328,7 +8328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 294894201}
   m_Layer: 0
-  m_Name: Sender
+  m_Name: Sender-NoNeedToActivate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34596,7 +34596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   senderConnection: {fileID: 11400000, guid: a33eda55807434cb6a0eb485f7d5daf5, type: 2}
-  useControlPanel: 0
+  useControlPanel: 1
   transformControlPanel: {fileID: 380434689}
   prefabPropertyItem: {fileID: 402260973484212089, guid: b6ee385a909ff48bb8801efc9e516192, type: 3}
 --- !u!1 &1294559145

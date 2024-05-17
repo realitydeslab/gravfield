@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.Events;
+using System;
 
 public class DataProcessor : MonoBehaviour
 {
@@ -61,28 +63,59 @@ public class DataProcessor : MonoBehaviour
 
         Debug.Log("DataProcessor | RegisterProperties");
 
-        SenderForLive.Instance.RegisterOscPropertyToSend("/posxmin", PosXMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/posxmax", PosXMax);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/posymin", PosYMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/posymax", PosYMax);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/poszmin", PosZMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/poszmax", PosZMax);
+        RegisterPropertiesFromCoda();
 
-        SenderForLive.Instance.RegisterOscPropertyToSend("/velmin", VelMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/velmin", VelMax);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/accmin", AccMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/accmax", AccMax);
-
-        SenderForLive.Instance.RegisterOscPropertyToSend("/distotal", DisTotal);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/dismin", DisMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/dismax", DisMax);
-
-        SenderForLive.Instance.RegisterOscPropertyToSend("/anglemin", AngleMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/anglemax", AngleMax);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/area", Area);
+        RegisterPropertiesToLive();
 
         propertiesRegistered = true;
     }
+
+    void RegisterPropertiesToLive()
+    {
+        SenderForLive.Instance.RegisterOscPropertyToSend("/posXMin", PosXMin);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/posXMax", PosXMax);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/posYMin", PosYMin);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/posYMax", PosYMax);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/posZMin", PosZMin);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/posZMax", PosZMax);
+
+        SenderForLive.Instance.RegisterOscPropertyToSend("/velMin", VelMin);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/velMax", VelMax);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/accMin", AccMin);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/accMax", AccMax);
+
+        SenderForLive.Instance.RegisterOscPropertyToSend("/disTotal", DisTotal);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/disMin", DisMin);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/disMax", DisMax);
+
+        SenderForLive.Instance.RegisterOscPropertyToSend("/angleMin", AngleMin);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/angleMax", AngleMax);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/area", Area);
+    }
+
+    void RegisterPropertiesFromCoda()
+    {
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posXMin", new UnityAction<float>(OnReceive_posXMin));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posXMax", new UnityAction<float>(OnReceive_posXMax));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posYMin", new UnityAction<float>(OnReceive_posYMin));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posYMax", new UnityAction<float>(OnReceive_posYMax));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posZMin", new UnityAction<float>(OnReceive_posZMin));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posZMax", new UnityAction<float>(OnReceive_posZMax));
+
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/velMin", new UnityAction<float>(OnReceive_velMin));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/velMax", new UnityAction<float>(OnReceive_velMax));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/accMin", new UnityAction<float>(OnReceive_accMin));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/accMax", new UnityAction<float>(OnReceive_accMax));
+
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/disTotal", new UnityAction<float>(OnReceive_disTotal));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/disMin", new UnityAction<float>(OnReceive_disMin));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/disMax", new UnityAction<float>(OnReceive_disMax));
+
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/angleMin", new UnityAction<float>(OnReceive_angleMin));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/angleMax", new UnityAction<float>(OnReceive_angleMax));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/area", new UnityAction<float>(OnReceive_area));
+    }
+
 
     public void TurnOn()
     {
@@ -197,4 +230,86 @@ public class DataProcessor : MonoBehaviour
             AngleMax.OrginalValue = Mathf.Max(angle1, Mathf.Max(angle2, angle3));
         }
     }
+
+    #region Callbacks
+    private void OnReceive_posXMin(float v)
+    {
+        PosXMin.CodaValue = v;
+    }
+
+    private void OnReceive_posXMax(float v)
+    {
+        PosXMax.CodaValue = v;
+    }
+
+    private void OnReceive_posYMin(float v)
+    {
+        PosYMin.CodaValue = v;
+    }
+
+    private void OnReceive_posYMax(float v)
+    {
+        PosYMax.CodaValue = v;
+    }
+
+    private void OnReceive_posZMin(float v)
+    {
+        PosZMin.CodaValue = v;
+    }
+
+    private void OnReceive_posZMax(float v)
+    {
+        PosZMax.CodaValue = v;
+    }
+
+    private void OnReceive_velMin(float v)
+    {
+        VelMin.CodaValue = v;
+    }
+
+    private void OnReceive_velMax(float v)
+    {
+        VelMax.CodaValue = v;
+    }
+
+    private void OnReceive_accMin(float v)
+    {
+        AccMin.CodaValue = v;
+    }
+
+    private void OnReceive_accMax(float v)
+    {
+        AccMax.CodaValue = v;
+    }
+
+    private void OnReceive_disTotal(float v)
+    {
+        DisTotal.CodaValue = v;
+    }
+
+    private void OnReceive_disMin(float v)
+    {
+        DisMin.CodaValue = v;
+    }
+
+    private void OnReceive_disMax(float v)
+    {
+        DisMax.CodaValue = v;
+    }
+
+    private void OnReceive_angleMin(float v)
+    {
+        AngleMin.CodaValue = v;
+    }
+
+    private void OnReceive_angleMax(float v)
+    {
+        AngleMax.CodaValue = v;
+    }
+
+    private void OnReceive_area(float v)
+    {
+        Area.CodaValue = v;
+    }
+    #endregion
 }
