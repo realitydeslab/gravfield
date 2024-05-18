@@ -59,7 +59,7 @@ public class MiddlewareManager : MonoBehaviour
 
     void OnSpecifyPlayerRole(RoleManager.PlayerRole role)
     {        
-        // A phone can not send data to coda or live
+        // A phone server can not send data to coda or live
         if (role == RoleManager.PlayerRole.Server && Application.platform != RuntimePlatform.IPhonePlayer)
         {
             dataProcessor.TurnOn();
@@ -77,7 +77,8 @@ public class MiddlewareManager : MonoBehaviour
             senderForLive.TurnOff();
         }
 
-        // A phone might receive parameters from others
+        // A phone server might receive parameters from coda or others
+        // ParameterReceiver has to be turned on at the end because it needs to add OscReceiver for parameters that were registed during previous TurnOn functions
         if (role == RoleManager.PlayerRole.Server)
         {
             parameterReceiver.TurnOn();

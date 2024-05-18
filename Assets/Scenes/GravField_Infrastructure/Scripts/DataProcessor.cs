@@ -31,6 +31,23 @@ public class DataProcessor : MonoBehaviour
     public ParameterToLive<float> AngleMax = new ParameterToLive<float>();
     public ParameterToLive<float> Area = new ParameterToLive<float>();
 
+    public ParameterToLive<float> ay = new ParameterToLive<float>();
+    public ParameterToLive<float> by = new ParameterToLive<float>();
+    public ParameterToLive<float> cy = new ParameterToLive<float>();
+
+
+    public ParameterToLive<float> disab = new ParameterToLive<float>();
+    public ParameterToLive<float> disac = new ParameterToLive<float>();
+    public ParameterToLive<float> disbc = new ParameterToLive<float>();
+
+    public ParameterToLive<float> valuef1 = new ParameterToLive<float>();
+    public ParameterToLive<float> valuef2 = new ParameterToLive<float>();
+    public ParameterToLive<float> valuef3 = new ParameterToLive<float>();
+
+    public ParameterToLive<float> valuef4 = new ParameterToLive<float>();
+    public ParameterToLive<float> valuef5 = new ParameterToLive<float>();
+    public ParameterToLive<float> valuef6 = new ParameterToLive<float>();
+
 
     List<Performer> performerList = new List<Performer>();
 
@@ -52,13 +69,11 @@ public class DataProcessor : MonoBehaviour
         {
             performerList.Add(performer_root.GetChild(i).GetComponent<Performer>());
         }
-
-        RegisterProperties();
     }
 
     void RegisterProperties()
     {
-        if (propertiesRegistered)
+        if (propertiesRegistered || !NetworkManager.Singleton.IsServer)
             return;
 
         Debug.Log("DataProcessor | RegisterProperties");
@@ -72,48 +87,63 @@ public class DataProcessor : MonoBehaviour
 
     void RegisterPropertiesToLive()
     {
-        SenderForLive.Instance.RegisterOscPropertyToSend("/posXMin", PosXMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/posXMax", PosXMax);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/posYMin", PosYMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/posYMax", PosYMax);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/posZMin", PosZMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/posZMax", PosZMax);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/posXMin", PosXMin);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/posXMax", PosXMax);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/posYMin", PosYMin);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/posYMax", PosYMax);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/posZMin", PosZMin);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/posZMax", PosZMax);
 
-        SenderForLive.Instance.RegisterOscPropertyToSend("/velMin", VelMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/velMax", VelMax);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/accMin", AccMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/accMax", AccMax);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/velMin", VelMin);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/velMax", VelMax);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/accMin", AccMin);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/accMax", AccMax);
 
-        SenderForLive.Instance.RegisterOscPropertyToSend("/disTotal", DisTotal);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/disMin", DisMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/disMax", DisMax);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/disTotal", DisTotal);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/disMin", DisMin);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/disMax", DisMax);
 
-        SenderForLive.Instance.RegisterOscPropertyToSend("/angleMin", AngleMin);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/angleMax", AngleMax);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/area", Area);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/angleMin", AngleMin);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/angleMax", AngleMax);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/area", Area);
+
+        SenderForLive.Instance.RegisterOscPropertyToSend("/ay", ay);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/by", by);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/cy", cy);
+
+        SenderForLive.Instance.RegisterOscPropertyToSend("/disab", disab);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/disac", disac);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/disbc", disbc);
     }
 
     void RegisterPropertiesFromCoda()
     {
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posXMin", new UnityAction<float>(OnReceive_posXMin));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posXMax", new UnityAction<float>(OnReceive_posXMax));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posYMin", new UnityAction<float>(OnReceive_posYMin));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posYMax", new UnityAction<float>(OnReceive_posYMax));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posZMin", new UnityAction<float>(OnReceive_posZMin));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/posZMax", new UnityAction<float>(OnReceive_posZMax));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/posXMin", new UnityAction<float>(OnReceive_posXMin));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/posXMax", new UnityAction<float>(OnReceive_posXMax));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/posYMin", new UnityAction<float>(OnReceive_posYMin));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/posYMax", new UnityAction<float>(OnReceive_posYMax));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/posZMin", new UnityAction<float>(OnReceive_posZMin));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/posZMax", new UnityAction<float>(OnReceive_posZMax));
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/velMin", new UnityAction<float>(OnReceive_velMin));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/velMax", new UnityAction<float>(OnReceive_velMax));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/accMin", new UnityAction<float>(OnReceive_accMin));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/accMax", new UnityAction<float>(OnReceive_accMax));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/velMin", new UnityAction<float>(OnReceive_velMin));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/velMax", new UnityAction<float>(OnReceive_velMax));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/accMin", new UnityAction<float>(OnReceive_accMin));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/accMax", new UnityAction<float>(OnReceive_accMax));
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/disTotal", new UnityAction<float>(OnReceive_disTotal));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/disMin", new UnityAction<float>(OnReceive_disMin));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/disMax", new UnityAction<float>(OnReceive_disMax));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/disTotal", new UnityAction<float>(OnReceive_disTotal));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/disMin", new UnityAction<float>(OnReceive_disMin));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/disMax", new UnityAction<float>(OnReceive_disMax));
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/angleMin", new UnityAction<float>(OnReceive_angleMin));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/angleMax", new UnityAction<float>(OnReceive_angleMax));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/area", new UnityAction<float>(OnReceive_area));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/angleMin", new UnityAction<float>(OnReceive_angleMin));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/angleMax", new UnityAction<float>(OnReceive_angleMax));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/area", new UnityAction<float>(OnReceive_area));
+
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef1", new UnityAction<float>(OnReceive_valuef1));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef2", new UnityAction<float>(OnReceive_valuef2));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef3", new UnityAction<float>(OnReceive_valuef3));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef4", new UnityAction<float>(OnReceive_valuef4));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef5", new UnityAction<float>(OnReceive_valuef5));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef6", new UnityAction<float>(OnReceive_valuef6));
     }
 
 
@@ -229,87 +259,141 @@ public class DataProcessor : MonoBehaviour
             AngleMin.OrginalValue = Mathf.Min(angle1, Mathf.Min(angle2, angle3));
             AngleMax.OrginalValue = Mathf.Max(angle1, Mathf.Max(angle2, angle3));
         }
+
+
+        // ay/by/cy, disab,disac,disbc
+        for (int i = 0; i < performerList.Count; i++)
+        {
+            if (performerList[i].isPerforming.Value == false)
+                continue;
+            
+            if (i == 0) ay.OrginalValue = performerList[i].transform.position.y;
+            else if (i == 1) by.OrginalValue = performerList[i].transform.position.y;
+            else cy.OrginalValue = performerList[i].transform.position.y;
+            
+            for (int k = i+1; k < performerList.Count; k++)
+            {
+                if (performerList[k].isPerforming.Value == false)
+                    continue;
+
+                int index = i + k - 1;
+                if (index == 0) disab.OrginalValue = Vector3.Distance(performerList[i].transform.position, performerList[k].transform.position);
+                else if(index == 1) disac.OrginalValue = Vector3.Distance(performerList[i].transform.position, performerList[k].transform.position);
+                else disbc.OrginalValue = Vector3.Distance(performerList[i].transform.position, performerList[k].transform.position);
+            }
+        }
     }
 
     #region Callbacks
-    private void OnReceive_posXMin(float v)
+    //private void OnReceive_posXMin(float v)
+    //{
+    //    PosXMin.CodaValue = v;
+    //}
+
+    //private void OnReceive_posXMax(float v)
+    //{
+    //    PosXMax.CodaValue = v;
+    //}
+
+    //private void OnReceive_posYMin(float v)
+    //{
+    //    PosYMin.CodaValue = v;
+    //}
+
+    //private void OnReceive_posYMax(float v)
+    //{
+    //    PosYMax.CodaValue = v;
+    //}
+
+    //private void OnReceive_posZMin(float v)
+    //{
+    //    PosZMin.CodaValue = v;
+    //}
+
+    //private void OnReceive_posZMax(float v)
+    //{
+    //    PosZMax.CodaValue = v;
+    //}
+
+    //private void OnReceive_velMin(float v)
+    //{
+    //    VelMin.CodaValue = v;
+    //}
+
+    //private void OnReceive_velMax(float v)
+    //{
+    //    VelMax.CodaValue = v;
+    //}
+
+    //private void OnReceive_accMin(float v)
+    //{
+    //    AccMin.CodaValue = v;
+    //}
+
+    //private void OnReceive_accMax(float v)
+    //{
+    //    AccMax.CodaValue = v;
+    //}
+
+    //private void OnReceive_disTotal(float v)
+    //{
+    //    DisTotal.CodaValue = v;
+    //}
+
+    //private void OnReceive_disMin(float v)
+    //{
+    //    DisMin.CodaValue = v;
+    //}
+
+    //private void OnReceive_disMax(float v)
+    //{
+    //    DisMax.CodaValue = v;
+    //}
+
+    //private void OnReceive_angleMin(float v)
+    //{
+    //    AngleMin.CodaValue = v;
+    //}
+
+    //private void OnReceive_angleMax(float v)
+    //{
+    //    AngleMax.CodaValue = v;
+    //}
+
+    //private void OnReceive_area(float v)
+    //{
+    //    Area.CodaValue = v;
+    //}
+
+    private void OnReceive_valuef1(float v)
     {
-        PosXMin.CodaValue = v;
+        valuef1.CodaValue = v;
     }
 
-    private void OnReceive_posXMax(float v)
+    private void OnReceive_valuef2(float v)
     {
-        PosXMax.CodaValue = v;
+        valuef2.CodaValue = v;
     }
 
-    private void OnReceive_posYMin(float v)
+    private void OnReceive_valuef3(float v)
     {
-        PosYMin.CodaValue = v;
+        valuef3.CodaValue = v;
     }
 
-    private void OnReceive_posYMax(float v)
+    private void OnReceive_valuef4(float v)
     {
-        PosYMax.CodaValue = v;
+        valuef4.CodaValue = v;
     }
 
-    private void OnReceive_posZMin(float v)
+    private void OnReceive_valuef5(float v)
     {
-        PosZMin.CodaValue = v;
+        valuef5.CodaValue = v;
     }
 
-    private void OnReceive_posZMax(float v)
+    private void OnReceive_valuef6(float v)
     {
-        PosZMax.CodaValue = v;
+        valuef6.CodaValue = v;
     }
 
-    private void OnReceive_velMin(float v)
-    {
-        VelMin.CodaValue = v;
-    }
-
-    private void OnReceive_velMax(float v)
-    {
-        VelMax.CodaValue = v;
-    }
-
-    private void OnReceive_accMin(float v)
-    {
-        AccMin.CodaValue = v;
-    }
-
-    private void OnReceive_accMax(float v)
-    {
-        AccMax.CodaValue = v;
-    }
-
-    private void OnReceive_disTotal(float v)
-    {
-        DisTotal.CodaValue = v;
-    }
-
-    private void OnReceive_disMin(float v)
-    {
-        DisMin.CodaValue = v;
-    }
-
-    private void OnReceive_disMax(float v)
-    {
-        DisMax.CodaValue = v;
-    }
-
-    private void OnReceive_angleMin(float v)
-    {
-        AngleMin.CodaValue = v;
-    }
-
-    private void OnReceive_angleMax(float v)
-    {
-        AngleMax.CodaValue = v;
-    }
-
-    private void OnReceive_area(float v)
-    {
-        Area.CodaValue = v;
-    }
     #endregion
 }

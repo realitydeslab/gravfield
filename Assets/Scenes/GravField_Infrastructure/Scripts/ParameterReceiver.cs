@@ -68,39 +68,8 @@ public class ParameterReceiver : MonoBehaviour
         Debug.Log("ParameterReceiver | InitializeAllOscReceiver");
         for (int i = 0; i < propertiesForReceiving.Count; i++)
         {
-            OscEventReceiverModified receiver = transReceiver.gameObject.AddComponent<OscEventReceiverModified>();
             OscPropertyForReceiving property = propertiesForReceiving[i];
-            receiver._connection = receiverConnection;
-            receiver._oscAddress = property.oscAddress;
-
-            if (property.dataType == typeof(float))
-            {
-                receiver._dataType = OscEventReceiverModified.DataType.Float;
-                receiver._floatEvent = new OscEventReceiverModified.FloatEvent();
-                receiver._floatEvent.AddListener(property.floatAction);
-                receiver.Initialize();
-            }
-            else if (property.dataType == typeof(Vector3))
-            {
-                receiver._dataType = OscEventReceiverModified.DataType.Vector3;
-                receiver._vector3Event = new OscEventReceiverModified.Vector3Event();
-                receiver._vector3Event.AddListener(property.vector3Action);
-                receiver.Initialize();
-            }
-            else if (property.dataType == typeof(int))
-            {
-                receiver._dataType = OscEventReceiverModified.DataType.Int;
-                receiver._intEvent = new OscEventReceiverModified.IntEvent();
-                receiver._intEvent.AddListener(property.intAction);
-                receiver.Initialize();
-            }
-            else if (property.dataType == typeof(string))
-            {
-                receiver._dataType = OscEventReceiverModified.DataType.String;
-                receiver._stringEvent = new OscEventReceiverModified.StringEvent();
-                receiver._stringEvent.AddListener(property.stringAction);
-                receiver.Initialize();
-            }
+            AddReceiverComponent(property);
         }
     }
 
@@ -115,6 +84,48 @@ public class ParameterReceiver : MonoBehaviour
         foreach (OscEventReceiverModified receiver in transReceiver.GetComponents<OscEventReceiverModified>())
         {
             Destroy(receiver);
+        }
+    }
+
+    void AddReceiverComponent(OscPropertyForReceiving property)
+    {
+        if (transReceiver == null)
+        {
+            transReceiver = transform.Find("Receiver");
+        }
+
+       
+        OscEventReceiverModified receiver = transReceiver.gameObject.AddComponent<OscEventReceiverModified>();
+        receiver._connection = receiverConnection;
+        receiver._oscAddress = property.oscAddress;
+
+        if (property.dataType == typeof(float))
+        {
+            receiver._dataType = OscEventReceiverModified.DataType.Float;
+            receiver._floatEvent = new OscEventReceiverModified.FloatEvent();
+            receiver._floatEvent.AddListener(property.floatAction);
+            receiver.Initialize();
+        }
+        else if (property.dataType == typeof(Vector3))
+        {
+            receiver._dataType = OscEventReceiverModified.DataType.Vector3;
+            receiver._vector3Event = new OscEventReceiverModified.Vector3Event();
+            receiver._vector3Event.AddListener(property.vector3Action);
+            receiver.Initialize();
+        }
+        else if (property.dataType == typeof(int))
+        {
+            receiver._dataType = OscEventReceiverModified.DataType.Int;
+            receiver._intEvent = new OscEventReceiverModified.IntEvent();
+            receiver._intEvent.AddListener(property.intAction);
+            receiver.Initialize();
+        }
+        else if (property.dataType == typeof(string))
+        {
+            receiver._dataType = OscEventReceiverModified.DataType.String;
+            receiver._stringEvent = new OscEventReceiverModified.StringEvent();
+            receiver._stringEvent.AddListener(property.stringAction);
+            receiver.Initialize();
         }
     }
 
