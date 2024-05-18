@@ -13,7 +13,6 @@ public class SenderForLive : MonoBehaviour
     public bool ConnectedWithLive { get => connectedWithLive; }
 
     [Header("Control Panel")]
-    [SerializeField] bool useControlPanel = false;
     [SerializeField] Transform transformControlPanel;
     [SerializeField] GameObject prefabPropertyItem;
 
@@ -22,24 +21,39 @@ public class SenderForLive : MonoBehaviour
 
     OscClient _client = null;
 
-    bool controlPanelCreated = false;
     bool controlPanelShown = false;
 
     public void RegisterOscPropertyToSend(string address, ParameterToLive<float> param)
     {
-        propertiesForSending.Add(new OscPropertyForSending(address, param));
+        OscPropertyForSending property = new OscPropertyForSending(address, param);
+
+        propertiesForSending.Add(property);
+
+        AddProperyItemInControlPanel(property);
     }
     public void RegisterOscPropertyToSend(string address, ParameterToLive<Vector3> param)
     {
-        propertiesForSending.Add(new OscPropertyForSending(address, param));
+        OscPropertyForSending property = new OscPropertyForSending(address, param);
+
+        propertiesForSending.Add(property);
+
+        AddProperyItemInControlPanel(property);
     }
     public void RegisterOscPropertyToSend(string address, ParameterToLive<int> param)
     {
-        propertiesForSending.Add(new OscPropertyForSending(address, param));
+        OscPropertyForSending property = new OscPropertyForSending(address, param);
+
+        propertiesForSending.Add(property);
+
+        AddProperyItemInControlPanel(property);
     }
     public void RegisterOscPropertyToSend(string address, ParameterToLive<string> param)
     {
-        propertiesForSending.Add(new OscPropertyForSending(address, param));
+        OscPropertyForSending property = new OscPropertyForSending(address, param);
+
+        propertiesForSending.Add(property);
+
+        AddProperyItemInControlPanel(property);
     }
 
 
@@ -63,13 +77,13 @@ public class SenderForLive : MonoBehaviour
         connectedWithLive = !error_occured;
 
 
-        if (useControlPanel && controlPanelCreated && transformControlPanel.gameObject.activeSelf)
+        if(controlPanelShown)
         {
             UpdateControlPanel();
         }
 
 
-        if(Input.GetKeyDown(KeyCode.F5) && controlPanelCreated)
+        if(Input.GetKeyDown(KeyCode.F5))
         {
             if (controlPanelShown) HideControlPanel();
             else ShowControlPanel();
@@ -140,15 +154,15 @@ public class SenderForLive : MonoBehaviour
         else
             _client = null;
 
-        if(useControlPanel)
-        {
-            if (!controlPanelCreated)
-            {
-                GenerateControlPanel();
-            }
+        //if(useControlPanel)
+        //{
+        //    //if (!controlPanelCreated)
+        //    //{
+        //    //    GenerateControlPanel();
+        //    //}
 
-            ShowControlPanel();
-        }
+        //    ShowControlPanel();
+        //}
     }
 
 
@@ -163,54 +177,60 @@ public class SenderForLive : MonoBehaviour
     }
 
 
-    void GenerateControlPanel()
+    //void GenerateControlPanel()
+    //{
+    //    for (int i = 0; i < propertiesForSending.Count; i++)
+    //    {
+    //        OscPropertyForSending property = propertiesForSending[i];
+    //        AddProperyItemInControlPanel(property);            
+    //    }
+
+    //    controlPanelCreated = true;
+    //}
+
+    void AddProperyItemInControlPanel(OscPropertyForSending property)
     {
-        for (int i = 0; i < propertiesForSending.Count; i++)
-        {
-            OscPropertyForSending property = propertiesForSending[i];
-            GameObject new_item = Instantiate(prefabPropertyItem, transformControlPanel.transform);
-            new_item.name = property.oscAddress;
+        GameObject new_item = Instantiate(prefabPropertyItem, transformControlPanel.transform);
+        new_item.name = property.oscAddress;
 
-            new_item.transform.Find("Toggle_Enabled").GetComponent<Toggle>().isOn = property.enabled;
-            new_item.transform.Find("Address").GetComponent<TextMeshProUGUI>().text = property.oscAddress;
-            new_item.transform.Find("OriginalValue").GetComponent<TextMeshProUGUI>().text = property.floatParameter.Value.ToString("0.00");
-            new_item.transform.Find("Value").GetComponent<TextMeshProUGUI>().text = property.mappedValue.ToString("0.00");
-            new_item.transform.Find("Toggle_Clamp").GetComponent<Toggle>().isOn = property.needClamp;
-            new_item.transform.Find("InputField_Min").GetComponent<TMP_InputField>().text = property.srcRange.x.ToString("0.00");
-            new_item.transform.Find("InputField_Max").GetComponent<TMP_InputField>().text = property.srcRange.y.ToString("0.00");
+        new_item.transform.Find("Toggle_Enabled").GetComponent<Toggle>().isOn = property.enabled;
+        new_item.transform.Find("Address").GetComponent<TextMeshProUGUI>().text = property.oscAddress;
+        new_item.transform.Find("OriginalValue").GetComponent<TextMeshProUGUI>().text = property.floatParameter.Value.ToString("0.00");
+        new_item.transform.Find("Value").GetComponent<TextMeshProUGUI>().text = property.mappedValue.ToString("0.00");
+        new_item.transform.Find("Toggle_Clamp").GetComponent<Toggle>().isOn = property.needClamp;
+        new_item.transform.Find("InputField_Min").GetComponent<TMP_InputField>().text = property.srcRange.x.ToString("0.00");
+        new_item.transform.Find("InputField_Max").GetComponent<TMP_InputField>().text = property.srcRange.y.ToString("0.00");
 
 
-            new_item.transform.Find("Toggle_Enabled").GetComponent<Toggle>().onValueChanged.AddListener((bool v) => {
-                property.enabled = v;
-            });
-            new_item.transform.Find("Toggle_Remap").GetComponent<Toggle>().onValueChanged.AddListener((bool v) => {
-                property.needRemap = v;
-            });
-            new_item.transform.Find("Toggle_Clamp").GetComponent<Toggle>().onValueChanged.AddListener((bool v) => {
-                property.needClamp = v;
-            });
-            new_item.transform.Find("InputField_Min").GetComponent<TMP_InputField>().onEndEdit.AddListener((string str) => {
-                Debug.Log("Edit InputField_Min:" + property.oscAddress);
-                try
-                {
-                    property.srcRange.x = float.Parse(str);
-                }
-                catch
-                { }
+        new_item.transform.Find("Toggle_Enabled").GetComponent<Toggle>().onValueChanged.AddListener((bool v) => {
+            property.enabled = v;
+        });
+        new_item.transform.Find("Toggle_Remap").GetComponent<Toggle>().onValueChanged.AddListener((bool v) => {
+            property.needRemap = v;
+        });
+        new_item.transform.Find("Toggle_Clamp").GetComponent<Toggle>().onValueChanged.AddListener((bool v) => {
+            property.needClamp = v;
+        });
+        new_item.transform.Find("InputField_Min").GetComponent<TMP_InputField>().onEndEdit.AddListener((string str) => {
+            Debug.Log("Edit InputField_Min:" + property.oscAddress);
+            try
+            {
+                property.srcRange.x = float.Parse(str);
+            }
+            catch
+            { }
 
-            });
+        });
 
-            new_item.transform.Find("InputField_Max").GetComponent<TMP_InputField>().onEndEdit.AddListener((string str) => {
-                Debug.Log("Edit InputField_Max:" + property.oscAddress);
-                try
-                {
-                    property.srcRange.y = float.Parse(str);
-                }
-                catch
-                { }
-            });
-        }
-        controlPanelCreated = true;
+        new_item.transform.Find("InputField_Max").GetComponent<TMP_InputField>().onEndEdit.AddListener((string str) => {
+            Debug.Log("Edit InputField_Max:" + property.oscAddress);
+            try
+            {
+                property.srcRange.y = float.Parse(str);
+            }
+            catch
+            { }
+        });
     }
 
     void UpdateControlPanel()
@@ -238,10 +258,7 @@ public class SenderForLive : MonoBehaviour
         controlPanelShown = false;
     }
 
-    string PropertyValueToString(float v)
-    {
-        return Mathf.Abs(v) > 10000 ? "NaN" : v.ToString("0.00");
-    }
+
 
     #region Remap Function
     static float Remap(float v, float src_min, float src_max, float dst_min, float dst_max, bool clamp = true)

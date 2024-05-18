@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using Unity.Netcode;
 using HoloKit.ColocatedMultiplayerBoilerplate;
+using OscJack;
 
 public class Helper : MonoBehaviour
 {

@@ -261,13 +261,12 @@ public class RoleManager : NetworkBehaviour
     }
     #endregion
 
-    void Update()
-    {
-        if (!IsServer)
-            return;
+    //void Update()
+    //{
+    //    if (IsSpawned == false || IsServer == false)
+    //        return;
 
-        audienceCount = NetworkManager.Singleton.ConnectedClients.Count - performerCount;
-    }
+    //}
 
 
     #region Private Functions
