@@ -63,12 +63,6 @@ public class PerformerGroup : NetworkBehaviour
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshsize", new UnityAction<float>(OnReceive_MeshSize));
     }
 
-    string FormatedOscAddress(string param)
-    {
-        string performer_name = transform.GetSiblingIndex() == 1 ? "B" : (transform.GetSiblingIndex() == 2 ? "C" : "A");
-        return "/" + performer_name + "-" + param;
-    }
-
     void OnReceive_MeshY(float v)
     {
         if (!IsServer)

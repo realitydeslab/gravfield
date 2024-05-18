@@ -30,9 +30,17 @@ public class RoleManager : NetworkBehaviour
     private int performerCount = 0;
     public int PerformerCount { get => performerCount; }
 
-    public UnityEvent<int> OnAddPerformerEvent;
-    public UnityEvent<int> OnRemovePerformerEvent;
     public UnityEvent<PlayerRole> OnSpecifyPlayerRoleEvent;
+
+
+    public UnityEvent<int, ulong> OnStartPerformingEvent;
+    public UnityEvent<int, ulong> OnStopPerformingEvent;
+
+    // When OnAddPerformerEvent triggers, each clients' NetworkVariable may has not been updated
+    // So these two events can not be used as an indicator to trigger effects, they are more like server events
+    private UnityEvent<int> OnAddPerformerEvent;
+    private UnityEvent<int> OnRemovePerformerEvent;
+    
 
     [SerializeField]
     private float performerApplyTimeout = 10;
@@ -50,7 +58,35 @@ public class RoleManager : NetworkBehaviour
         performerSynchronizer = FindObjectOfType<PerformerSynchronizer>();
         InitializePerformerList();
     }
-    
+
+    void OnEnable()
+    {
+        for (int i = 0; i < performerList.Count; i++)
+        {
+            performerList[i].OnStartPerforming.AddListener(OnStartPerforming);
+            performerList[i].OnStopPerforming.AddListener(OnStopPerforming);
+        }
+    }
+    void OnDisable()
+    {
+        for (int i = 0; i < performerList.Count; i++)
+        {
+            performerList[i].OnStartPerforming.RemoveListener(OnStartPerforming);
+            performerList[i].OnStopPerforming.RemoveListener(OnStopPerforming);
+        }
+    }
+
+    void OnStartPerforming(int index, ulong cliend_id)
+    {
+        OnStartPerformingEvent?.Invoke(index, cliend_id);
+    }
+
+    void OnStopPerforming(int index, ulong cliend_id)
+    {
+        OnStopPerformingEvent?.Invoke(index, cliend_id);
+    }
+
+
     #region Joining As Specific Role
     public void ApplyPerformer(Action<bool, string> callback)
     {

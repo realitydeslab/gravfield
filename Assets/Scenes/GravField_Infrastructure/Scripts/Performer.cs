@@ -47,8 +47,21 @@ public class Performer : NetworkBehaviour
     public NetworkVariable<Vector3> vectorValue3;
 
 
+    int performerIndex = 0;
+
+    string performerName = "A";
+
     public PerformerLocalData localData = new PerformerLocalData();
-    
+
+    public UnityEvent<int, ulong> OnStartPerforming;
+
+    public UnityEvent<int, ulong> OnStopPerforming;
+
+    void Awake()
+    {
+        performerIndex = transform.GetSiblingIndex();
+        performerName = performerIndex == 1 ? "B" : performerIndex == 2 ? "C" : "A";
+    }
 
     public override void OnNetworkSpawn()
     {
@@ -79,11 +92,13 @@ public class Performer : NetworkBehaviour
             localData.position = transform.localPosition;
             localData.velocity = Vector3.zero;
             localData.acceleration = Vector3.zero;
+
+            OnStartPerforming?.Invoke(performerIndex, clientID.Value);
         }
         // Just Stop Performing
         else if (isPerforming.Value == false && localData.isPerforming == true)
         {
-
+            OnStopPerforming?.Invoke(performerIndex, clientID.Value);
         }
         localData.isPerforming = isPerforming.Value;
         if (localData.isPerforming == false)
@@ -112,8 +127,7 @@ public class Performer : NetworkBehaviour
 
     string FormatedOscAddress(string param)
     {
-        string performer_name = transform.GetSiblingIndex() == 1 ? "B" : (transform.GetSiblingIndex() == 2 ? "C" : "A");
-        return "/" + performer_name + "-" + param;
+        return "/" + performerName + "-" + param;
     }
 
     void OnReceive_Mass(float v)

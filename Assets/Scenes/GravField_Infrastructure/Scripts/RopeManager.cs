@@ -45,32 +45,32 @@ public class RopeManager : MonoBehaviour
 
     void OnEnable()
     {
-        roleManager.OnAddPerformerEvent.AddListener(OnAddPerformer);
-        roleManager.OnRemovePerformerEvent.AddListener(OnRemovePerformer);
+        roleManager.OnStartPerformingEvent.AddListener(OnStartPerforming);
+        roleManager.OnStopPerformingEvent.AddListener(OnStopPerforming);
     }
     void OnDisable()
     {
-        roleManager.OnAddPerformerEvent.RemoveListener(OnAddPerformer);
-        roleManager.OnRemovePerformerEvent.RemoveListener(OnRemovePerformer);
+        roleManager.OnStartPerformingEvent.RemoveListener(OnStartPerforming);
+        roleManager.OnStopPerformingEvent.RemoveListener(OnStopPerforming);
     }
 
 
     // Problem!!!
-    void OnAddPerformer(int index)
+    void OnStartPerforming(int index, ulong client_index)
     {
         UpdateAllRopeState();
     }
 
-    void OnRemovePerformer(int index)
+    void OnStopPerforming(int index, ulong client_index)
     {
         UpdateAllRopeState();
     }
 
-    void Update()
-    {
-        // Need to keep updating the state because NetworkVariable's value will not be changed immediatlly when event triggers
-        UpdateAllRopeState();
-    }
+    //void Update()
+    //{
+    //    // Need to keep updating the state because NetworkVariable's value will not be changed immediatlly when event triggers
+    //    UpdateAllRopeState();
+    //}
 
     void UpdateAllRopeState()
     {

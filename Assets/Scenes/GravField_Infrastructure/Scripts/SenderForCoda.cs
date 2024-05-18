@@ -14,16 +14,14 @@ public class SenderForCoda : MonoBehaviour
 
     Transform transSender;
 
-    List<OscPropertySenderModified> sernderList = new List<OscPropertySenderModified>();
+    List<OscPropertySenderModified> sernderList;
 
 
     void Awake()
     {
         transSender = transform.Find("Sender");
-        for(int i=0; i<transSender.childCount; i++)
-        {
-            sernderList.Add(transSender.GetChild(i).GetComponent<OscPropertySenderModified>());
-        }
+
+        sernderList = new List<OscPropertySenderModified>(transSender.GetComponents<OscPropertySenderModified>());
     }
 
 
@@ -125,5 +123,24 @@ public class SenderForCoda : MonoBehaviour
     //        sender._connection = senderConnection;
     //    }
     //}
+    #region Instance
+    private static SenderForCoda _Instance;
 
+    public static SenderForCoda Instance
+    {
+        get
+        {
+            if (_Instance == null)
+            {
+                _Instance = GameObject.FindObjectOfType<SenderForCoda>();
+                if (_Instance == null)
+                {
+                    GameObject go = new GameObject();
+                    _Instance = go.AddComponent<SenderForCoda>();
+                }
+            }
+            return _Instance;
+        }
+    }
+    #endregion
 }

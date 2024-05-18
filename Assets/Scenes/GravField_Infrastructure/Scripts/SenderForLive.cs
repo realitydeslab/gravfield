@@ -23,6 +23,7 @@ public class SenderForLive : MonoBehaviour
     OscClient _client = null;
 
     bool controlPanelCreated = false;
+    bool controlPanelShown = false;
 
     public void RegisterOscPropertyToSend(string address, ParameterToLive<float> param)
     {
@@ -56,7 +57,7 @@ public class SenderForLive : MonoBehaviour
             }
             catch
             {
-                error_occured |= error_occured;
+                error_occured = true;
             }
         }
         connectedWithLive = !error_occured;
@@ -65,6 +66,13 @@ public class SenderForLive : MonoBehaviour
         if (useControlPanel && controlPanelCreated && transformControlPanel.gameObject.activeSelf)
         {
             UpdateControlPanel();
+        }
+
+
+        if(Input.GetKeyDown(KeyCode.F5) && controlPanelCreated)
+        {
+            if (controlPanelShown) HideControlPanel();
+            else ShowControlPanel();
         }
     }
 
@@ -83,7 +91,8 @@ public class SenderForLive : MonoBehaviour
             property.mappedValue = data;
 
             //Debug.Log($"SenderForLive | Send Address:{property.oscAddress}, Value:{data}");
-            _client.Send(property.oscAddress, data);
+
+             _client.Send(property.oscAddress, data);
         }
         else if (property.dataType == typeof(Vector3))
         {
@@ -134,9 +143,11 @@ public class SenderForLive : MonoBehaviour
         if(useControlPanel)
         {
             if (!controlPanelCreated)
+            {
                 GenerateControlPanel();
-            else
-                ShowControlPanel();
+            }
+
+            ShowControlPanel();
         }
     }
 
@@ -219,10 +230,12 @@ public class SenderForLive : MonoBehaviour
     void ShowControlPanel()
     {
         transformControlPanel.gameObject.SetActive(true);
+        controlPanelShown = true;
     }
     void HideControlPanel()
     {
         transformControlPanel.gameObject.SetActive(false);
+        controlPanelShown = false;
     }
 
     string PropertyValueToString(float v)

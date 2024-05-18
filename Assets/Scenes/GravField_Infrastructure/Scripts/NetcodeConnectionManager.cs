@@ -13,20 +13,20 @@ public class NetcodeConnectionManager : MonoBehaviour
     string serverIP = "192.168.0.135";
     public string ServerIP { get => serverIP; set => serverIP = value; }
 
-    public delegate void ResultDelegate(bool result, string msg);
-
-
-    Action<bool, string> OnReceiveConnectionResultAction;
+    string localIP = "";
+    public string LocalIP { get => localIP; }
+ 
 
     public UnityEvent<ulong> OnClientJoinedEvent;
     public UnityEvent<ulong> OnClientLostEvent;
 
     public UnityEvent OnServerLostEvent;
 
-    NetworkManager networkManager;
-    UIController uiController;
+    Action<bool, string> OnReceiveConnectionResultAction;
 
-    public string networkStateMessage;
+    NetworkManager networkManager;
+
+
 
     void Awake()
     {
@@ -68,6 +68,7 @@ public class NetcodeConnectionManager : MonoBehaviour
     void OnClientStarted()
     {
         Debug.Log("Listener : OnClientStarted");
+        localIP = GetLocalIPAddress();
     }
 
     void OnClientStopped(bool result)
@@ -78,6 +79,7 @@ public class NetcodeConnectionManager : MonoBehaviour
     void OnServerStarted()
     {
         Debug.Log("Listener : OnServerStarted");
+        localIP = GetLocalIPAddress();
     }
 
     void OnServerStopped(bool result)
@@ -224,7 +226,8 @@ public class NetcodeConnectionManager : MonoBehaviour
                 return ip.ToString();
             }
         }
-        throw new System.Exception("No network adapters with an IPv4 address in the system!");
+        //throw new System.Exception("No network adapters with an IPv4 address in the system!");
+        return "";
     }
 
 }
