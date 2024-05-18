@@ -24,6 +24,7 @@ public class RopeManager : MonoBehaviour
 
     RoleManager roleManager;
     List<Performer> performerList = new List<Performer>();
+    List<bool> ropeStateList = new List<bool>();
 
     void Awake()
     {
@@ -33,6 +34,7 @@ public class RopeManager : MonoBehaviour
         for (int i=0; i<performerTransformRoot.childCount; i++)
         {
             performerList.Add(performerTransformRoot.GetChild(i).GetComponent<Performer>());
+            ropeStateList.Add(false);
         }
     }
 
@@ -52,6 +54,8 @@ public class RopeManager : MonoBehaviour
         roleManager.OnRemovePerformerEvent.RemoveListener(OnRemovePerformer);
     }
 
+
+    // Problem!!!
     void OnAddPerformer(int index)
     {
         UpdateAllRopeState();
@@ -59,6 +63,12 @@ public class RopeManager : MonoBehaviour
 
     void OnRemovePerformer(int index)
     {
+        UpdateAllRopeState();
+    }
+
+    void Update()
+    {
+        // Need to keep updating the state because NetworkVariable's value will not be changed immediatlly when event triggers
         UpdateAllRopeState();
     }
 
