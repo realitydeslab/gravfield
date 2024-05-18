@@ -8,7 +8,17 @@ public class ShieldEffect : MonoBehaviour
     public PerformerGroup performerGroup;
     public Material shieldMat;
 
-    // Update is called once per frame
+    AutoSwitchedParameter<float> meshy = new AutoSwitchedParameter<float>();
+    AutoSwitchedParameter<float> meshnoise = new AutoSwitchedParameter<float>();
+    AutoSwitchedParameter<float> meshsize = new AutoSwitchedParameter<float>();
+
+
+    void Start()
+    {
+        meshy.OrginalValue = 4;
+        meshnoise.OrginalValue = 4;
+        meshsize.OrginalValue = 0.28f;
+    }
     void Update()
     {
         if ((NetworkManager.Singleton.IsClient && NetworkManager.Singleton.IsConnectedClient)
@@ -23,16 +33,16 @@ public class ShieldEffect : MonoBehaviour
         if (performerGroup == null || performerGroup.IsSpawned == false)
             return;
 
-        float mesh_y = performerGroup.floatValue1.Value;
-        float mesh_noise = performerGroup.floatValue2.Value;
-        float mesh_size = performerGroup.floatValue3.Value;
+        meshy.CodaValue = performerGroup.floatValue1.Value;
+        meshnoise.CodaValue = performerGroup.floatValue2.Value;
+        meshsize.CodaValue = performerGroup.floatValue3.Value;
 
 
-        transform.localPosition = new Vector3(0, 4 + mesh_y, 0);
+        transform.localPosition = new Vector3(0, meshy.Value, 0);
 
-        shieldMat.SetFloat("_DisplacementNoiseScale", 4 + mesh_noise);
+        shieldMat.SetFloat("_DisplacementNoiseScale", 4 + meshnoise.Value);
 
-        shieldMat.SetFloat("_DisplaceStrength", 0.28f + mesh_size);
+        shieldMat.SetFloat("_DisplaceStrength", 0.28f + meshsize.Value);
 
         
     }

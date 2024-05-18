@@ -9,44 +9,44 @@ public class DataProcessor : MonoBehaviour
 {
     public float PerformerCount { get; set; }
 
-    public ParameterToLive<float> PosXMin = new ParameterToLive<float>();
-    public ParameterToLive<float> PosXMax = new ParameterToLive<float>();
-    public ParameterToLive<float> PosYMin = new ParameterToLive<float>();
-    public ParameterToLive<float> PosYMax = new ParameterToLive<float>();
-    public ParameterToLive<float> PosZMin = new ParameterToLive<float>();
-    public ParameterToLive<float> PosZMax = new ParameterToLive<float>();
+    public AutoSwitchedParameter<float> PosXMin = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> PosXMax = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> PosYMin = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> PosYMax = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> PosZMin = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> PosZMax = new AutoSwitchedParameter<float>();
 
-    public ParameterToLive<float> VelMin = new ParameterToLive<float>();
-    public ParameterToLive<float> VelMax = new ParameterToLive<float>();
-    public ParameterToLive<float> AccMin = new ParameterToLive<float>();
-    public ParameterToLive<float> AccMax = new ParameterToLive<float>();
-
-
-    public ParameterToLive<float> DisTotal = new ParameterToLive<float>();
-    public ParameterToLive<float> DisMin = new ParameterToLive<float>();
-    public ParameterToLive<float> DisMax = new ParameterToLive<float>();
+    public AutoSwitchedParameter<float> VelMin = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> VelMax = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> AccMin = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> AccMax = new AutoSwitchedParameter<float>();
 
 
-    public ParameterToLive<float> AngleMin = new ParameterToLive<float>();
-    public ParameterToLive<float> AngleMax = new ParameterToLive<float>();
-    public ParameterToLive<float> Area = new ParameterToLive<float>();
-
-    public ParameterToLive<float> ay = new ParameterToLive<float>();
-    public ParameterToLive<float> by = new ParameterToLive<float>();
-    public ParameterToLive<float> cy = new ParameterToLive<float>();
+    public AutoSwitchedParameter<float> DisTotal = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> DisMin = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> DisMax = new AutoSwitchedParameter<float>();
 
 
-    public ParameterToLive<float> disab = new ParameterToLive<float>();
-    public ParameterToLive<float> disac = new ParameterToLive<float>();
-    public ParameterToLive<float> disbc = new ParameterToLive<float>();
+    public AutoSwitchedParameter<float> AngleMin = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> AngleMax = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> Area = new AutoSwitchedParameter<float>();
 
-    public ParameterToLive<float> valuef1 = new ParameterToLive<float>();
-    public ParameterToLive<float> valuef2 = new ParameterToLive<float>();
-    public ParameterToLive<float> valuef3 = new ParameterToLive<float>();
+    public AutoSwitchedParameter<float> ay = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> by = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> cy = new AutoSwitchedParameter<float>();
 
-    public ParameterToLive<float> valuef4 = new ParameterToLive<float>();
-    public ParameterToLive<float> valuef5 = new ParameterToLive<float>();
-    public ParameterToLive<float> valuef6 = new ParameterToLive<float>();
+
+    public AutoSwitchedParameter<float> disab = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> disac = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> disbc = new AutoSwitchedParameter<float>();
+
+    public AutoSwitchedParameter<float> valuef1 = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> valuef2 = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> valuef3 = new AutoSwitchedParameter<float>();
+
+    public AutoSwitchedParameter<float> valuef4 = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> valuef5 = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> valuef6 = new AutoSwitchedParameter<float>();
 
 
     List<Performer> performerList = new List<Performer>();

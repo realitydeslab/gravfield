@@ -23,7 +23,7 @@ public class SenderForLive : MonoBehaviour
 
     bool controlPanelShown = false;
 
-    public void RegisterOscPropertyToSend(string address, ParameterToLive<float> param)
+    public void RegisterOscPropertyToSend(string address, AutoSwitchedParameter<float> param)
     {
         OscPropertyForSending property = new OscPropertyForSending(address, param);
 
@@ -31,7 +31,7 @@ public class SenderForLive : MonoBehaviour
 
         AddProperyItemInControlPanel(property);
     }
-    public void RegisterOscPropertyToSend(string address, ParameterToLive<Vector3> param)
+    public void RegisterOscPropertyToSend(string address, AutoSwitchedParameter<Vector3> param)
     {
         OscPropertyForSending property = new OscPropertyForSending(address, param);
 
@@ -39,7 +39,7 @@ public class SenderForLive : MonoBehaviour
 
         AddProperyItemInControlPanel(property);
     }
-    public void RegisterOscPropertyToSend(string address, ParameterToLive<int> param)
+    public void RegisterOscPropertyToSend(string address, AutoSwitchedParameter<int> param)
     {
         OscPropertyForSending property = new OscPropertyForSending(address, param);
 
@@ -47,7 +47,7 @@ public class SenderForLive : MonoBehaviour
 
         AddProperyItemInControlPanel(property);
     }
-    public void RegisterOscPropertyToSend(string address, ParameterToLive<string> param)
+    public void RegisterOscPropertyToSend(string address, AutoSwitchedParameter<string> param)
     {
         OscPropertyForSending property = new OscPropertyForSending(address, param);
 

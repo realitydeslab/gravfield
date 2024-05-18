@@ -2,8 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParameterToLive<T>
+public class AutoSwitchedParameter<T>
 {
+    public AutoSwitchedParameter()
+    {
+
+    }
+    public AutoSwitchedParameter(T v)
+    {
+        originalValue = v;
+    }
+
     private const float delayDuration = 10;
     private float lastTimeFromCoda = float.MinValue;
 

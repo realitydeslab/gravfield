@@ -126,14 +126,14 @@ public class PerformerGroup : NetworkBehaviour
                 Performer start = performerList[i];
                 Performer end = performerList[k];
 
-                float mass_start = Mathf.Max(0.1f, start.floatValue1.Value);
-                float mass_end = Mathf.Max(0.1f, end.floatValue1.Value);
+                float mass_start = Mathf.Max(0.1f, start.mass.Value);
+                float mass_end = Mathf.Max(0.1f, end.mass.Value);
 
-                float drag_start = Mathf.Max(0.1f, start.floatValue2.Value);
-                float drag_end = Mathf.Max(0.1f, end.floatValue2.Value);
+                float drag_start = Mathf.Max(0.1f, start.drag.Value);
+                float drag_end = Mathf.Max(0.1f, end.drag.Value);
 
-                float thickness_start = Mathf.Max(0.1f, start.floatValue3.Value);
-                float thickness_end = Mathf.Max(0.1f, end.floatValue3.Value);
+                float thickness_start = Mathf.Max(0.1f, start.thickness.Value);
+                float thickness_end = Mathf.Max(0.1f, end.thickness.Value);
 
                 Transform rope_transform = ropeTransformRoot.GetChild(i + k - 1);
                 Transform segment_root = rope_transform.Find("Segments");

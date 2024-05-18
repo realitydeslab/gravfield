@@ -31,12 +31,8 @@ public class RopeEffect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (ropeCorner1 == null) Debug.Log("1");
-        if(performer1 == null) Debug.Log("2");
-        if (ropeCorner2 == null) Debug.Log("11");
-        if (performer2 == null) Debug.Log("22");
-        ropeCorner1.transform.localPosition = performer1.localPosition + Vector3.up * 0.2f;
-        ropeCorner2.transform.localPosition = performer2.localPosition + Vector3.up * 0.2f;
+        ropeCorner1.transform.localPosition = performer1.localPosition - Vector3.up * 0.5f;
+        ropeCorner2.transform.localPosition = performer2.localPosition - Vector3.up * 0.5f;
 
         if(useSplineMesh)
             UpdateNodes();
@@ -44,8 +40,6 @@ public class RopeEffect : MonoBehaviour
 
     void UpdateNodes()
     {
-        if (wayPoints == null) Debug.Log("3");
-        if (spline == null) Debug.Log("4");
         int i = 0;
         foreach (GameObject wayPoint in wayPoints)
         {
@@ -57,7 +51,7 @@ public class RopeEffect : MonoBehaviour
             //}
 
                 node.Position =wayPoint.transform.position;
-                node.Up = wayPoint.transform.up;
+                //node.Up = wayPoint.transform.up;
         }
     }
 

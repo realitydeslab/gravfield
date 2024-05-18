@@ -66,12 +66,6 @@ public class RopeManager : MonoBehaviour
         UpdateAllRopeState();
     }
 
-    //void Update()
-    //{
-    //    // Need to keep updating the state because NetworkVariable's value will not be changed immediatlly when event triggers
-    //    UpdateAllRopeState();
-    //}
-
     void UpdateAllRopeState()
     {
         SetRopeState(0, performerList[0].isPerforming.Value == true && performerList[1].isPerforming.Value == true);
@@ -290,6 +284,7 @@ public class RopeManager : MonoBehaviour
 
         SplineSmoother smoother = go.AddComponent<SplineSmoother>();
 
+        meshTilling.rotation = new Vector3(0, 0, 90);
         meshTilling.scale = Vector3.one * 0.01f;
 
         meshTilling.generateCollider = false;

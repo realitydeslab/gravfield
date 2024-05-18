@@ -82,6 +82,12 @@ public class Helper : MonoBehaviour
         infoItemList[name].text = text;
     }
 
+    public void ToggleInfoPanel()
+    {
+        if (infoPanelEnabled) HideInfoPanel();
+        else ShowInfoPanel();
+    }
+
     void ShowInfoPanel()
     {
         infoPanelRoot.gameObject.SetActive(true);

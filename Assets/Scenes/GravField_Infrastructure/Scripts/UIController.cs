@@ -87,10 +87,14 @@ public class UIController : MonoBehaviour
         transPanelPassword.Find("Button_Close").GetComponent<Button>().onClick.AddListener(GoBackToHomePage);
         transPanelServerIP.Find("Button_Close").GetComponent<Button>().onClick.AddListener(GoBackToHomePage);
         transPanelCalibration.Find("Button_Close").GetComponent<Button>().onClick.AddListener(GameManager.Instance.StopRelocalization);
-
+        
         transPanelExtraMenu.Find("Button_Calibrate").GetComponent<Button>().onClick.AddListener(GameManager.Instance.StartRelocalization);
         transPanelExtraMenu.Find("Button_Exit").GetComponent<Button>().onClick.AddListener(GameManager.Instance.RestartGame);
         transPanelExtraMenu.Find("Button_Return").GetComponent<Button>().onClick.AddListener(HideExtraMenu);
+
+        transPanelExtraMenu.Find("Button_InfoPanel").gameObject.SetActive(GameManager.Instance.IsInDevelopment);
+        transPanelExtraMenu.Find("Button_InfoPanel").GetComponent<Button>().onClick.AddListener(ToggleInfoPanel);
+        
     }
 
     void Update()
@@ -283,6 +287,11 @@ public class UIController : MonoBehaviour
     void HideExtraMenu()
     {
         transPanelExtraMenu.gameObject.SetActive(false);
+    }
+
+    void ToggleInfoPanel()
+    {
+        Helper.Instance.ToggleInfoPanel();
     }
     #endregion
 

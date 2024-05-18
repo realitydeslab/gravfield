@@ -100,8 +100,6 @@ namespace HoloKit.ImageTrackingRelocalization
 
                     CleanUpOldPoses();
 
-                    Debug.Log($"[ImageTrackingRelocalizationManager] m_TrackedImagePoses.Count: {m_TrackedImagePoses.Count}");
-
                     if (m_TrackedImagePoses.Count >= m_DesiredNumOfSamples)
                     {
                         CalculateStableTrackedImagePose();

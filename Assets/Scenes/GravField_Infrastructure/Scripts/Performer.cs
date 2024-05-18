@@ -47,6 +47,11 @@ public class Performer : NetworkBehaviour
     public NetworkVariable<Vector3> vectorValue3;
 
 
+    public AutoSwitchedParameter<float> mass = new AutoSwitchedParameter<float>(1);
+    public AutoSwitchedParameter<float> drag = new AutoSwitchedParameter<float>(10);
+    public AutoSwitchedParameter<float> thickness = new AutoSwitchedParameter<float>(10);
+
+
     int performerIndex = 0;
 
     string performerName = "A";
@@ -134,9 +139,9 @@ public class Performer : NetworkBehaviour
     {
         if (!IsServer)
             return;
-
-        
+                
         floatValue1.Value = SmoothValue(floatValue1.Value, v);
+        mass.CodaValue = floatValue1.Value;
     }
 
     void OnReceive_Drag(float v)
@@ -145,6 +150,7 @@ public class Performer : NetworkBehaviour
             return;
 
         floatValue2.Value = SmoothValue(floatValue2.Value, v);
+        drag.CodaValue = floatValue2.Value;
     }
 
     void OnReceive_Thickness(float v)
@@ -153,6 +159,7 @@ public class Performer : NetworkBehaviour
             return;
 
         floatValue3.Value = SmoothValue(floatValue3.Value, v);
+        thickness.CodaValue = floatValue3.Value;
     }
 
     float SmoothValue(float cur, float dst, float t = 0)

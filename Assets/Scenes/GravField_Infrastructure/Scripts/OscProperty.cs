@@ -21,23 +21,23 @@ public class OscPropertyForSending
     {
         oscAddress = _adress;
     }
-    public OscPropertyForSending(string _address, ParameterToLive<float> _param) : this(_address)
+    public OscPropertyForSending(string _address, AutoSwitchedParameter<float> _param) : this(_address)
     {
         floatParameter = _param;
         dataType = typeof(float);
     }
 
-    public OscPropertyForSending(string _address, ParameterToLive<Vector3> _param) : this(_address)
+    public OscPropertyForSending(string _address, AutoSwitchedParameter<Vector3> _param) : this(_address)
     {
         vector3Parameter = _param;
         dataType = typeof(Vector3);
     }
-    public OscPropertyForSending(string _address, ParameterToLive<int> _param) : this(_address)
+    public OscPropertyForSending(string _address, AutoSwitchedParameter<int> _param) : this(_address)
     {
         intParameter = _param;
         dataType = typeof(int);
     }
-    public OscPropertyForSending(string _address, ParameterToLive<string> _param) : this(_address)
+    public OscPropertyForSending(string _address, AutoSwitchedParameter<string> _param) : this(_address)
     {
         stringParameter = _param;
         dataType = typeof(string);
@@ -54,10 +54,10 @@ public class OscPropertyForSending
     public Vector2 dstRange = new Vector2(0, 1);
     public float mappedValue = 0;
 
-    public ParameterToLive<float> floatParameter;
-    public ParameterToLive<Vector3> vector3Parameter;
-    public ParameterToLive<int> intParameter;
-    public ParameterToLive<string> stringParameter;
+    public AutoSwitchedParameter<float> floatParameter;
+    public AutoSwitchedParameter<Vector3> vector3Parameter;
+    public AutoSwitchedParameter<int> intParameter;
+    public AutoSwitchedParameter<string> stringParameter;
 }
 
 
