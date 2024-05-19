@@ -36,6 +36,7 @@ public class RopeEffect : MonoBehaviour
 
         if(useSplineMesh)
             UpdateNodes();
+
     }
 
     void UpdateNodes()

@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 using SplineMesh;
 using UnityEngine.Events;
+using Xiaobo.Parameter;
 
 public class PerformerGroup : NetworkBehaviour
 {
@@ -37,6 +38,8 @@ public class PerformerGroup : NetworkBehaviour
 
     private List<Performer> performerList = new List<Performer>();
 
+
+
     void Awake()
     {
         for(int i=0; i<transform.childCount; i++)
@@ -61,6 +64,7 @@ public class PerformerGroup : NetworkBehaviour
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshy", new UnityAction<float>(OnReceive_MeshY));
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshnoise", new UnityAction<float>(OnReceive_MeshNoise));
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshsize", new UnityAction<float>(OnReceive_MeshSize));
+
     }
 
     void OnReceive_MeshY(float v)

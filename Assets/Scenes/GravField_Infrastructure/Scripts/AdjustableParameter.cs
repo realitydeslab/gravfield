@@ -31,6 +31,30 @@ namespace Xiaobo.Parameter
     #region BaseClass
     public class AdjustableParameter<T> : IAdjustableParameter, IXmlSettings
     {
+        private const float delayDuration = 10;
+        private float lastTimeFromCoda;
+        private bool useCodaValue = false;
+        private T codaValue;
+        public T CodaValue
+        {
+            set
+            {
+                if (!codaValue.Equals(value))
+                {
+                    lastTimeFromCoda = Time.time;
+                    codaValue = value;
+                    if (useCodaValue == false)
+                    {
+                        useCodaValue = true;
+                        DefaultValue = dstValue;
+                    }
+                    Value = codaValue;
+                }
+                
+            }
+
+        }
+
         // Original elements
         protected T curValue;
         protected T lastValue;
@@ -301,6 +325,12 @@ namespace Xiaobo.Parameter
 
         public virtual void Update(float delta_time)
         {
+            if (Time.time - lastTimeFromCoda > delayDuration)
+            {
+                Value = DefaultValue;
+                useCodaValue = false;
+            }
+
             if (AnimationType == EnumAnimationType.None) return;
 
             lastValue = curValue;
@@ -490,6 +520,12 @@ namespace Xiaobo.Parameter
         {
             MinValue = 0f;
             MaxValue = 1f;
+        }
+        public FloatParameter(float v) : base()
+        {
+            curValue = v;
+            dstValue = v;
+            DefaultValue = v;
         }
         protected override float ClampFunc(float v)
         {
