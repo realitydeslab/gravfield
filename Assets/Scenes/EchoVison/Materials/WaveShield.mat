@@ -112,7 +112,7 @@ Material:
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DisplaceSpeed: 0.27
-    - _DisplaceStrength: 0.56
+    - _DisplaceStrength: 1.2319498
     - _DisplacementNoiseScale: 8
     - _DstBlend: 0
     - _DstBlendAlpha: 0

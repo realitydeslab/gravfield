@@ -67,7 +67,24 @@ public class Performer : NetworkBehaviour
         performerIndex = transform.GetSiblingIndex();
         performerName = performerIndex == 1 ? "B" : performerIndex == 2 ? "C" : "A";
     }
-
+    void Start()
+    {
+        floatValue1.OnValueChanged += OnChanged_FloatValue1;
+        floatValue2.OnValueChanged += OnChanged_FloatValue2;
+        floatValue3.OnValueChanged += OnChanged_FloatValue3;
+    }
+    void OnChanged_FloatValue1(float prev, float cur)
+    {
+        mass.CodaValue = floatValue1.Value;
+    }
+    void OnChanged_FloatValue2(float prev, float cur)
+    {
+        drag.CodaValue = floatValue2.Value;
+    }
+    void OnChanged_FloatValue3(float prev, float cur)
+    {
+        thickness.CodaValue = floatValue3.Value;
+    }
     public override void OnNetworkSpawn()
     {
         ResetLocalData();
@@ -121,6 +138,8 @@ public class Performer : NetworkBehaviour
 
     void RegisterOscReceiverFunction()
     {
+
+
         if (!IsServer)
             return;
 
@@ -128,6 +147,8 @@ public class Performer : NetworkBehaviour
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("mass"), new UnityAction<float>(OnReceive_Mass));
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("drag"), new UnityAction<float>(OnReceive_Drag));
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("thickness"), new UnityAction<float>(OnReceive_Thickness));
+
+
     }
 
     string FormatedOscAddress(string param)
@@ -137,33 +158,39 @@ public class Performer : NetworkBehaviour
 
     void OnReceive_Mass(float v)
     {
-        if (!IsServer)
-            return;
-                
-        floatValue1.Value = SmoothValue(floatValue1.Value, v);
-        mass.CodaValue = floatValue1.Value;
+        //if (!IsServer)
+            //return;
+        if (IsServer)
+            floatValue1.Value = SmoothValue(floatValue1.Value, v);
+
+        
     }
 
     void OnReceive_Drag(float v)
     {
-        if (!IsServer)
-            return;
+        //if (!IsServer)
+        //    return;
+        if (IsServer)
+            floatValue2.Value = SmoothValue(floatValue2.Value, v);
 
-        floatValue2.Value = SmoothValue(floatValue2.Value, v);
-        drag.CodaValue = floatValue2.Value;
+        
     }
 
     void OnReceive_Thickness(float v)
     {
-        if (!IsServer)
-            return;
+        //if (!IsServer)
+        //    return;
 
-        floatValue3.Value = SmoothValue(floatValue3.Value, v);
-        thickness.CodaValue = floatValue3.Value;
+        if(IsServer)
+            floatValue3.Value = SmoothValue(floatValue3.Value, v);
+
+        
     }
 
     float SmoothValue(float cur, float dst, float t = 0)
     {
+        if (t == 0)
+            return dst;
         float cur_vel = 0;
         return Mathf.SmoothDamp(cur, dst, ref cur_vel, t);
     }

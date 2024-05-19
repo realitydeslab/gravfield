@@ -114,6 +114,14 @@ public class DataProcessor : MonoBehaviour
         SenderForLive.Instance.RegisterOscPropertyToSend("/disab", disab);
         SenderForLive.Instance.RegisterOscPropertyToSend("/disac", disac);
         SenderForLive.Instance.RegisterOscPropertyToSend("/disbc", disbc);
+
+        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef1", valuef1);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef2", valuef2);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef3", valuef3);
+
+        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef4", valuef4);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef5", valuef5);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef6", valuef6);
     }
 
     void RegisterPropertiesFromCoda()

@@ -49378,6 +49378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a39e928d059a4258b22f1e8849f3a81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldOriginPosition: {x: 0, y: 1.2, z: 0}
   m_WorldOriginResetter: {fileID: 1549586813}
 --- !u!1 &1551015936
 GameObject:
@@ -67046,7 +67047,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3794151624200966787 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7155028559691676582, guid: d13e4ab01af634bd6b054d947f5beb72, type: 3}

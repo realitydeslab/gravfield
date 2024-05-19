@@ -10,6 +10,7 @@ namespace HoloKit.ColocatedMultiplayerBoilerplate
 {
     public class TrackedImagePoseTransformer : MonoBehaviour
     {
+        public Vector3 worldOriginPosition;
         [SerializeField] private WorldOriginResetter m_WorldOriginResetter;
 
         public void OnTrackedImageStablized(Vector3 position, Quaternion rotation)
@@ -21,7 +22,7 @@ namespace HoloKit.ColocatedMultiplayerBoilerplate
             var b = -r.m20 + r.m02;
             float thetaInDeg = Mathf.Atan2(b, a) / Mathf.Deg2Rad;
 
-            m_WorldOriginResetter.ResetWorldOrigin(position + new Vector3(0, 1.2f,0), Quaternion.AngleAxis(thetaInDeg, Vector3.up));
+            m_WorldOriginResetter.ResetWorldOrigin(position - worldOriginPosition, Quaternion.AngleAxis(thetaInDeg, Vector3.up));
         }
     }
 }
