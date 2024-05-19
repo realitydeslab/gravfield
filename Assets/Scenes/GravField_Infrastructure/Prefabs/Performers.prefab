@@ -32,8 +32,8 @@ Transform:
   m_GameObject: {fileID: 736473998118647235}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 1.7, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalPosition: {x: -1, y: 1.7, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2127805821621010886}
@@ -183,6 +183,12 @@ MonoBehaviour:
     m_InternalValue: {x: 0, y: 0, z: 0}
   vectorValue3:
     m_InternalValue: {x: 0, y: 0, z: 0}
+  OnStartPerforming:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStopPerforming:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1947458010434256164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,8 +247,8 @@ Transform:
   m_GameObject: {fileID: 1898256842492866041}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 1.98, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalPosition: {x: 1, y: 1.98, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4203541709390473140}
@@ -392,6 +398,12 @@ MonoBehaviour:
     m_InternalValue: {x: 0, y: 0, z: 0}
   vectorValue3:
     m_InternalValue: {x: 0, y: 0, z: 0}
+  OnStartPerforming:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStopPerforming:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2838806199080828088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -793,7 +805,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.64, z: 2.99}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4307171369474383132}
@@ -943,6 +955,12 @@ MonoBehaviour:
     m_InternalValue: {x: 0, y: 0, z: 0}
   vectorValue3:
     m_InternalValue: {x: 0, y: 0, z: 0}
+  OnStartPerforming:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStopPerforming:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5002416973441032133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077,6 +1095,7 @@ MonoBehaviour:
     m_InternalValue: {x: 0, y: 0, z: 0}
   vectorValue3:
     m_InternalValue: {x: 0, y: 0, z: 0}
+  ropeTransformRoot: {fileID: 0}
 --- !u!1 &7409420175562854156
 GameObject:
   m_ObjectHideFlags: 0
