@@ -8,8 +8,8 @@ public class TestScenarioManager : MonoBehaviour
     [SerializeField]
     Transform[] synchronizedTransform;
 
-    [SerializeField]
-    Vector3 offset;
+    //[SerializeField]
+    //Vector3 offset;
 
     Transform testEnvionmentTransformRoot;
     Transform testPerformerTransformRoot;
@@ -46,7 +46,7 @@ public class TestScenarioManager : MonoBehaviour
 
         for (int i = 0; i < roleManager.PerformerTransformRoot.childCount; i++)
         {
-            roleManager.PerformerTransformRoot.GetChild(i).localPosition = synchronizedTransform[i].TransformPoint(synchronizedTransform[i].localPosition + offset);
+            roleManager.PerformerTransformRoot.GetChild(i).localPosition = synchronizedTransform[i].position;//synchronizedTransform[i].TransformPoint(synchronizedTransform[i].localPosition/* + offset*/);
             roleManager.PerformerTransformRoot.GetChild(i).localRotation = synchronizedTransform[i].rotation;
         }
     }

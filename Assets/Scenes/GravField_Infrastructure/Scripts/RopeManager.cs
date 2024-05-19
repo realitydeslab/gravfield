@@ -55,7 +55,7 @@ public class RopeManager : MonoBehaviour
     }
 
 
-    // Problem!!!
+
     void OnStartPerforming(int index, ulong client_index)
     {
         UpdateAllRopeState();
@@ -151,9 +151,9 @@ public class RopeManager : MonoBehaviour
                 //
                 GameObject rope_root = new GameObject("Rope" + i.ToString()+k.ToString());
                 rope_root.transform.parent = transform;
-                RopeEffect performer_rope = rope_root.AddComponent<RopeEffect>();
-                performer_rope.performer1 = performerTransformRoot.GetChild(i);
-                performer_rope.performer2 = performerTransformRoot.GetChild(k);
+                RopePath rope_path = rope_root.AddComponent<RopePath>();
+                rope_path.performerStart = performerTransformRoot.GetChild(i);
+                rope_path.performerEnd = performerTransformRoot.GetChild(k);
                 AddSplineMeshComponent(rope_root);
 
 
@@ -162,30 +162,46 @@ public class RopeManager : MonoBehaviour
                 anchor_root.transform.parent = rope_root.transform;
                 GameObject anchor0 = GenerateAnchor(anchor_root, 0, CalculateGameObjectPosition("anchor", 0));
                 GameObject anchor1 = GenerateAnchor(anchor_root, 1, CalculateGameObjectPosition("anchor", 1));
-                performer_rope.ropeCorner1 = anchor0.transform;
-                performer_rope.ropeCorner2 = anchor1.transform;
+                rope_path.ropeStart = anchor0.transform;
+                rope_path.ropeEnd = anchor1.transform;
 
 
-                // 
+                //
+                //generatorSegmentCount = CalculateDesiredSegmentCount(rope_path.ropeStart.position, rope_path.ropeEnd.position);
+                generatorSegmentCount = 5;
+
                 GameObject joint_root = new GameObject("Joints");
                 joint_root.transform.parent = rope_root.transform;
                 GameObject segment_root = new GameObject("Segments");
                 segment_root.transform.parent = rope_root.transform;
                 GameObject last_segment = anchor0;
+                
                 for (int m = 0; m < generatorSegmentCount; m++)
                 {
-                    GameObject segment = GenerateSegment(segment_root, m, CalculateGameObjectPosition("segment", m));
-                    GameObject joint = GenerateJoint(joint_root, m, CalculateGameObjectPosition("joint", m), last_segment, segment);
+                    GameObject segment = GenerateSegment(segment_root, m, Vector3.Lerp(rope_path.ropeStart.position, rope_path.ropeEnd.position, (float)(m + 0.5f) / (float)generatorSegmentCount));
+                    GameObject joint = GenerateJoint(joint_root, m, Vector3.Lerp(rope_path.ropeStart.position, rope_path.ropeEnd.position, (float)(m) / (float)generatorSegmentCount), last_segment, segment);
                     last_segment = segment;
 
                     if(m == generatorSegmentCount - 1)
                     {
-                        GameObject last_joint = GenerateJoint(joint_root, m+1, CalculateGameObjectPosition("joint", m+1), segment, anchor1);
+                        GameObject last_joint = GenerateJoint(joint_root, m+1, Vector3.Lerp(rope_path.ropeStart.position, rope_path.ropeEnd.position, (float)(m + 1) / (float)generatorSegmentCount), segment, anchor1);
                     }
                 }
             }
         }
-        
+    }
+
+    int CalculateDesiredSegmentCount(Vector3 start, Vector3 end)
+    {
+        float distance = Vector3.Distance(start, end);
+        float src_min = 1;
+        float src_max = 5;
+        float dst_min = 3;
+        float dst_max = 10;
+
+        distance = Mathf.Clamp(distance, src_min, src_max);
+
+        return Mathf.FloorToInt((distance - src_min) / (src_max - src_min) * (dst_max - dst_min) + dst_min);
     }
 
     Vector3 CalculateGameObjectPosition(string type, int index)
@@ -280,17 +296,59 @@ public class RopeManager : MonoBehaviour
     {
         Spline spline = go.AddComponent<Spline>();
 
-        SplineMeshTiling meshTilling = go.AddComponent<SplineMeshTiling>();
-
         SplineSmoother smoother = go.AddComponent<SplineSmoother>();
+        smoother.curvature = 0.4f;
 
+        SplineMeshTiling meshTilling = go.AddComponent<SplineMeshTiling>();
         meshTilling.rotation = new Vector3(0, 0, 90);
         meshTilling.scale = Vector3.one * 0.01f;
 
         meshTilling.generateCollider = false;
         meshTilling.updateInPlayMode = true;
         meshTilling.curveSpace = true;
-        smoother.curvature = 0.4f;
+        
+    }
+
+    [ContextMenu("GenerateExtrusionShape")]
+    void GenerateExtrusionShape()
+    {
+        for(int k=0; k<transform.childCount; k++)
+        {
+            SplineExtrusion splineExtrusion = transform.GetChild(k).GetComponent<SplineExtrusion>();
+            if (splineExtrusion != null)
+            {
+                int desired_count = 20;
+                float desired_radius = 0.01f;
+                List<ExtrusionSegment.Vertex> vertex_list = new List<ExtrusionSegment.Vertex>();
+                for (int i = 0; i < desired_count; i++)
+                {
+                    float angle = (float)i / (float)desired_count * 360f;
+                    Vector2 pos = new Vector2(desired_radius * Mathf.Sin(angle), desired_radius * Mathf.Cos(angle));
+                    Vector2 nor = pos;
+
+                    vertex_list.Add(new ExtrusionSegment.Vertex(pos, nor, 0));
+                }
+                splineExtrusion.shapeVertices.Clear();
+                splineExtrusion.shapeVertices.AddRange(vertex_list);
+            }
+        }
+    }
+
+    void Update()
+    {
+        for (int k = 0; k < transform.childCount; k++)
+        {
+            SplineExtrusion splineExtrusion = transform.GetChild(k).GetComponent<SplineExtrusion>();
+            if (splineExtrusion != null)
+            {
+                Transform extrusion_root = transform.GetChild(k).Find("generated by SplineExtrusion");
+                MeshCollider[] mesh_colliders = extrusion_root.GetComponentsInChildren<MeshCollider>();
+                foreach (MeshCollider collider in mesh_colliders)
+                {
+                    collider.enabled = false;
+                }
+            }
+        }
     }
     #endregion    
 }
