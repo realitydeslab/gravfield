@@ -34,8 +34,14 @@ public class RopePath : MonoBehaviour
     void Update()
     {
         Vector3 nor = (performerEnd.position - performerStart.position).normalized;
-        ropeStart.transform.localPosition = performerStart.TransformPoint(ropeOffset) + nor* 0.3f;
-        ropeEnd.transform.localPosition = performerEnd.TransformPoint(ropeOffset) -nor*0.3f;
+
+        
+
+        ropeStart.localPosition = performerStart.TransformPoint(ropeOffset);// + nor* 0.3f;
+        ropeEnd.localPosition = performerEnd.TransformPoint(ropeOffset);// -nor*0.3f;
+
+        //ropeStart.localRotation = performerStart.localRotation;
+        //ropeEnd.localRotation = performerEnd.localRotation;
 
         if (useSplineMesh)
             UpdateNodes();
@@ -62,8 +68,8 @@ public class RopePath : MonoBehaviour
     void AssignWayPoints()
     {
         wayPoints.Clear();
-        Transform anchor_root = transform.Find("Anchors");
-        wayPoints.Add(anchor_root.GetChild(0).gameObject);
+        //Transform anchor_root = transform.Find("Anchors");
+        //wayPoints.Add(anchor_root.GetChild(0).gameObject);
 
         Transform joint_root = transform.Find("Joints");
         for (int i = 0; i < joint_root.childCount; i++)
@@ -71,7 +77,7 @@ public class RopePath : MonoBehaviour
             wayPoints.Add(joint_root.GetChild(i).gameObject);
         }
 
-        wayPoints.Add(anchor_root.GetChild(1).gameObject);
+        //wayPoints.Add(anchor_root.GetChild(1).gameObject);
     }
 
     void AssignSplineNodes()

@@ -146,7 +146,10 @@ public class RoleManager : NetworkBehaviour
         {
             performerList[i].isPerforming.Value = true;
             performerList[i].clientID.Value = (ulong)i;
+
+            OnStartPerformingEvent?.Invoke(i, (ulong)i);
         }
+
 
         RefreshPlayerCount();
     }

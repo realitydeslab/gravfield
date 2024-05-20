@@ -67,23 +67,26 @@ public class GameManager : MonoBehaviour
         if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer
             || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
         {
-            if (isSoloMode)
-            {
-                EnterSoloMode();
-            }
+            
         }
         else
         {
             isSoloMode = false;
         }
 
-        //StartCoroutine(CheckIfNeedJoinAsServer());
+        StartCoroutine(CheckIfNeedJoinAsServer());
     }
 
     IEnumerator CheckIfNeedJoinAsServer()
     {
         yield return new WaitForSeconds(5f);
-        
+
+        if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer
+            || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
+        {
+            if(RoleManager.Role == RoleManager.PlayerRole.Undefined)
+                JoinAsServer();            
+        }
     }
 
 
@@ -172,6 +175,11 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Join As Server.");
 
+        if (isSoloMode)
+        {
+            EnterSoloMode();
+        }
+
         connectionManager.StartServer(callback: OnReceiveResult_JoinAsServer);
     }
 
@@ -198,8 +206,7 @@ public class GameManager : MonoBehaviour
 
     void EnterSoloMode()
     {
-        JoinAsServer();
-
+        Debug.Log("Enter Solo Mode");
         RoleManager.EnterSoloMode();
     }
     #endregion

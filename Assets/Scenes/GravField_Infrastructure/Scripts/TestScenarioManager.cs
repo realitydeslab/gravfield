@@ -47,7 +47,7 @@ public class TestScenarioManager : MonoBehaviour
         for (int i = 0; i < roleManager.PerformerTransformRoot.childCount; i++)
         {
             roleManager.PerformerTransformRoot.GetChild(i).localPosition = synchronizedTransform[i].position;//synchronizedTransform[i].TransformPoint(synchronizedTransform[i].localPosition/* + offset*/);
-            roleManager.PerformerTransformRoot.GetChild(i).localRotation = synchronizedTransform[i].rotation;
+            roleManager.PerformerTransformRoot.GetChild(i).rotation = synchronizedTransform[i].rotation;
         }
     }
 
