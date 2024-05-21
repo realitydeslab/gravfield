@@ -402,14 +402,13 @@
       }
     },
     "io.holokit.unity-sdk": {
-      "version": "https://github.com/holokit/holokit-unity-sdk.git",
+      "version": "file:io.holokit.unity-sdk",
       "depth": 0,
-      "source": "git",
+      "source": "embedded",
       "dependencies": {
         "com.unity.xr.arfoundation": "5.1.2",
         "com.unity.xr.arkit": "5.1.2"
-      },
-      "hash": "c6348437926339d9e098e056c319dedd850b6511"
+      }
     },
     "jp.keijiro.midi-jack": {
       "version": "0.0.1",
