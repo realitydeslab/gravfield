@@ -7,23 +7,29 @@ using SplineMesh;
 
 public class RopePath : MonoBehaviour
 {
-    public Transform performerStart;
-    public Transform performerEnd;
-
+    // Basic
+    public Performer performerStart;
+    public Performer performerEnd;
     public Transform ropeStart;
-    public Transform ropeEnd;    
-    
+    public Transform ropeEnd; 
     public Vector3 ropeOffset;
 
+    // Path
+    Spline spline;
+    List<GameObject> wayPoints = new List<GameObject>();
+
+    // Output to LIVE
     Transform centroidTransform;
     private Vector3 centroidPos;
     public Vector3 CentroidPos { get => centroidPos; }
     private Vector3 centroidVel;
     public Vector3 CentroidVel { get => centroidVel; }
 
-    Spline spline;
-
-    List<GameObject> wayPoints = new List<GameObject>();
+    // Parameters
+    float startThickness;
+    float endThickness;
+    float startMass;
+    float endMass;
 
     void Start()
     {
@@ -32,48 +38,35 @@ public class RopePath : MonoBehaviour
         AssignWayPoints();
 
         AssignSplineNodes();
+
+        RegisterNetworkVariableCallback();
     }
-
-    public void BindPerformer(Transform performer_start, Transform performer_end)
-    {
-        performerStart = performer_start;
-        performerEnd = performer_end;
-    }
-
-    public void SetPerformerOffset(Vector3 offset)
-    {
-        ropeOffset = offset;
-    }
-
-    public void BindRopeAnchors(Transform performer_start, Transform performer_end)
-    {
-        ropeStart = performer_start;
-
-    }
-
 
     void Update()
+    {
+
+        UpdateRopeAnchors();
+
+        UpdateNodes();
+
+        UpdateParamtersForLive();
+    }
+
+    void UpdateRopeAnchors()
     {
         //Vector3 nor = (performerEnd.position - performerStart.position).normalized;
         //ropeStart.localPosition = performerStart.position + nor* 0.3f;
         //ropeEnd.localPosition = performerEnd.position -nor*0.3f;
 
-        ropeStart.localPosition = performerStart.TransformPoint(ropeOffset);
-        ropeEnd.localPosition = performerEnd.TransformPoint(ropeOffset);
+        ropeStart.localPosition = performerStart.transform.TransformPoint(ropeOffset);
+        ropeEnd.localPosition = performerEnd.transform.TransformPoint(ropeOffset);
 
-        ropeStart.localRotation = performerStart.localRotation;
-        ropeEnd.localRotation = performerEnd.localRotation;
-
-        Vector3 last_pos = centroidPos;
-        centroidPos = centroidTransform.localPosition;
-        centroidVel = (centroidPos - last_pos) / Time.deltaTime;
-
-        UpdateNodes();
+        ropeStart.localRotation = performerStart.transform.localRotation;
+        ropeEnd.localRotation = performerEnd.transform.localRotation;
     }
 
     void UpdateNodes()
     {
-        
         int i = 0;
         foreach (GameObject wayPoint in wayPoints)
         {
@@ -83,11 +76,84 @@ public class RopePath : MonoBehaviour
             //    node.Position = transform.InverseTransformPoint(wayPoint.transform.position);
             //    //node.Up = wayPoint.transform.up;
             //}
-
-            node.Position =wayPoint.transform.position;
+            node.Position = wayPoint.transform.position;
             //node.Up = wayPoint.transform.up;
         }
     }
+
+    void UpdateParamtersForLive()
+    {
+        Vector3 last_pos = centroidPos;
+        centroidPos = centroidTransform.localPosition;
+        centroidVel = (centroidPos - last_pos) / Time.deltaTime;
+    }
+
+
+
+    #region NetworkVariable
+    void RegisterNetworkVariableCallback()
+    {
+        performerStart.remoteThickness.OnValueChanged += (float prev, float cur) => { startThickness = cur; UpdateRopeThickness(); };
+        performerEnd.remoteThickness.OnValueChanged += (float prev, float cur) => { endThickness = cur; UpdateRopeThickness(); };
+
+        performerStart.remoteMass.OnValueChanged += (float prev, float cur) => { startMass = cur; UpdateRopeMass(); };
+        performerEnd.remoteMass.OnValueChanged += (float prev, float cur) => { endMass = cur; UpdateRopeMass(); };
+
+    }
+    void UpdateRopeThickness()
+    {
+        float currentLength = 0;
+        foreach (CubicBezierCurve curve in spline.GetCurves())
+        {
+            float startRate = currentLength / spline.Length;
+            currentLength += curve.Length;
+            float endRate = currentLength / spline.Length;
+
+            curve.n1.Scale = Vector3.one * (startThickness + (endThickness - startThickness) * startRate);
+            curve.n2.Scale = Vector3.one * (startThickness + (endThickness - startThickness) * endRate);
+        }
+    }
+
+    void UpdateRopeMass()
+    {
+        Transform segment_root = transform.Find("Segments");
+        for (int m = 0; m < segment_root.childCount; m++)
+        {
+            Rigidbody rigid = segment_root.GetChild(m).GetComponent<Rigidbody>();
+            rigid.mass = Mathf.Lerp(startMass, endMass, m / segment_root.childCount - 1);
+        }
+    }
+    #endregion
+
+
+
+
+    //public void BindPerformer(Transform performer_start, Transform performer_end)
+    //{
+    //    performerStart = performer_start.GetComponent<Performer>();
+    //    performerEnd = performer_end.GetComponent<Performer>();
+    //}
+
+    //public void SetPerformerOffset(Vector3 offset)
+    //{
+    //    ropeOffset = offset;
+    //}
+
+    //public void BindRopeAnchors(Transform performer_start, Transform performer_end)
+    //{
+    //    ropeStart = performer_start;
+    //}
+
+    //public void SetThickness(float start_thickness, float end_thickness)
+    //{
+    //    startThickness = start_thickness;
+    //    endThickness = end_thickness;
+    //}
+
+
+
+
+
 
     void AssignWayPoints()
     {
@@ -142,7 +208,6 @@ public class RopePath : MonoBehaviour
             }
         }
         //Debug.Log($"Rope{transform.GetSiblingIndex()} Length:{dis_total}");
-
         return dis_total;
     }
 }

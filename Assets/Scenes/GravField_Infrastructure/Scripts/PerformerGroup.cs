@@ -8,11 +8,11 @@ using Xiaobo.Parameter;
 
 public class PerformerGroup : NetworkBehaviour
 {
-    public NetworkVariable<float> floatValue1;
+    public NetworkVariable<float> meshy;
 
-    public NetworkVariable<float> floatValue2;
+    public NetworkVariable<float> meshnoise;
 
-    public NetworkVariable<float> floatValue3;
+    public NetworkVariable<float> meshsize;
 
     public NetworkVariable<float> floatValue4;
 
@@ -38,7 +38,7 @@ public class PerformerGroup : NetworkBehaviour
 
     private List<Performer> performerList = new List<Performer>();
 
-
+    public NetworkVariable<int> remoteMode;
 
     void Awake()
     {
@@ -56,15 +56,27 @@ public class PerformerGroup : NetworkBehaviour
         }
     }
 
+
+    void Update()
+    {
+        if (IsSpawned == false)
+            return;
+
+        if(IsServer)
+        {
+            meshsize.Value = SmoothValue(meshsize.Value, 0, 0.2f);
+        }
+    }
+
+
+    #region Parameters From Coda
     void RegisterOscReceiverFunction()
     {
-        if (!IsServer)
-            return;
+        if (!IsServer) return;
 
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshy", new UnityAction<float>(OnReceive_MeshY));
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshnoise", new UnityAction<float>(OnReceive_MeshNoise));
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshsize", new UnityAction<float>(OnReceive_MeshSize));
-
     }
 
     void OnReceive_MeshY(float v)
@@ -72,7 +84,7 @@ public class PerformerGroup : NetworkBehaviour
         if (!IsServer)
             return;
 
-        floatValue1.Value = SmoothValue(floatValue1.Value, v);
+        meshy.Value = SmoothValue(meshy.Value, v);
     }
 
     void OnReceive_MeshNoise(float v)
@@ -80,7 +92,7 @@ public class PerformerGroup : NetworkBehaviour
         if (!IsServer)
             return;
 
-        floatValue2.Value = SmoothValue(floatValue2.Value, v);
+        meshnoise.Value = SmoothValue(meshnoise.Value, v);
     }
 
     void OnReceive_MeshSize(float v)
@@ -88,7 +100,7 @@ public class PerformerGroup : NetworkBehaviour
         if (!IsServer)
             return;
 
-        floatValue3.Value = v;
+        meshsize.Value = v;
     }
 
     float SmoothValue(float cur, float dst, float t = 0.2f)
@@ -99,72 +111,7 @@ public class PerformerGroup : NetworkBehaviour
         float cur_vel = 0;
         return Mathf.SmoothDamp(cur, dst, ref cur_vel, t);
     }
-
-    void Update()
-    {
-        if (IsSpawned == false)
-            return;
-
-        if(IsServer)
-        {
-            floatValue3.Value = SmoothValue(floatValue3.Value, 0, 0.2f);
-        }
-
-        // Update effects
-        //UpdateRopeEffect();
-
-        
-    }
-
-    void UpdateRopeEffect()
-    {
-        for(int i=0; i<performerList.Count; i++)
-        {
-            if (performerList[i].isPerforming.Value == false)
-                continue;
-            for(int k=i+1; k<performerList.Count; k++)
-            {
-                if (performerList[k].isPerforming.Value == false)
-                    continue;
-
-                Performer start = performerList[i];
-                Performer end = performerList[k];
-
-                float mass_start = Mathf.Max(0.1f, start.mass.Value);
-                float mass_end = Mathf.Max(0.1f, end.mass.Value);
-
-                float drag_start = Mathf.Max(0.1f, start.drag.Value);
-                float drag_end = Mathf.Max(0.1f, end.drag.Value);
-
-                float thickness_start = Mathf.Max(0.1f, start.thickness.Value);
-                float thickness_end = Mathf.Max(0.1f, end.thickness.Value);
-
-                Transform rope_transform = ropeTransformRoot.GetChild(i + k - 1);
-                Transform segment_root = rope_transform.Find("Segments");
-                for(int m=0; m< segment_root.childCount; m++)
-                {
-                    Rigidbody rigid = segment_root.GetChild(m).GetComponent<Rigidbody>();
-                    rigid.mass = Mathf.Lerp(mass_start, mass_end, m / segment_root.childCount-1);
-                    rigid.drag = Mathf.Lerp(drag_start, drag_end, m / segment_root.childCount - 1);
-                }
-
-
-                Spline spline = rope_transform.GetComponent<Spline>();
-                float currentLength = 0;
-                foreach (CubicBezierCurve curve in spline.GetCurves())
-                {
-                    float startRate = currentLength / spline.Length;
-                    currentLength += curve.Length;
-                    float endRate = currentLength / spline.Length;
-
-                    curve.n1.Scale = Vector3.one * (thickness_start + (thickness_end - thickness_start) * startRate);
-                    curve.n2.Scale = Vector3.one * (thickness_start + (thickness_end - thickness_start) * endRate);
-                }
-            }
-        }
-    }
-
-    
+    #endregion
 
 
 }

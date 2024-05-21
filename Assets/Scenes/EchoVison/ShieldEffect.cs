@@ -8,24 +8,23 @@ public class ShieldEffect : MonoBehaviour
     public PerformerGroup performerGroup;
     public Material shieldMat;
 
-    AutoSwitchedParameter<float> meshy = new AutoSwitchedParameter<float>();
-    AutoSwitchedParameter<float> meshnoise = new AutoSwitchedParameter<float>();
-    AutoSwitchedParameter<float> meshsize = new AutoSwitchedParameter<float>();
+    float meshy;
+    float meshnoise;
+    float meshsize;
 
 
     void Start()
     {
-        meshy.OrginalValue = 4;
-        meshnoise.OrginalValue = 4;
-        meshsize.OrginalValue = 0.28f;
+        RegisterNetworkVariableCallback();
     }
-    void Update()
+
+
+    #region NetworkVariable
+    void RegisterNetworkVariableCallback()
     {
-        if ((NetworkManager.Singleton.IsClient && NetworkManager.Singleton.IsConnectedClient)
-            || (NetworkManager.Singleton.IsServer && NetworkManager.Singleton.IsListening))
-        {
-            UpdateShieldEffect();
-        }
+        performerGroup.meshy.OnValueChanged += (float prev, float cur) => { meshy = cur; UpdateShieldEffect(); };
+        performerGroup.meshnoise.OnValueChanged += (float prev, float cur) => { meshnoise = cur; UpdateShieldEffect(); };
+        performerGroup.meshsize.OnValueChanged += (float prev, float cur) => { meshsize = cur; UpdateShieldEffect(); };
     }
 
     void UpdateShieldEffect()
@@ -33,17 +32,11 @@ public class ShieldEffect : MonoBehaviour
         if (performerGroup == null || performerGroup.IsSpawned == false)
             return;
 
-        meshy.CodaValue = performerGroup.floatValue1.Value;
-        meshnoise.CodaValue = performerGroup.floatValue2.Value;
-        meshsize.CodaValue = performerGroup.floatValue3.Value;
+        transform.localPosition = new Vector3(0, meshy, 0);
 
+        shieldMat.SetFloat("_DisplacementNoiseScale", Mathf.Min(4, meshnoise));
 
-        transform.localPosition = new Vector3(0, meshy.Value, 0);
-
-        shieldMat.SetFloat("_DisplacementNoiseScale", 4 + meshnoise.Value);
-
-        shieldMat.SetFloat("_DisplaceStrength", 0.28f + meshsize.Value);
-
-        
+        shieldMat.SetFloat("_DisplaceStrength", Mathf.Min(0.28f, meshsize));
     }
+    #endregion
 }

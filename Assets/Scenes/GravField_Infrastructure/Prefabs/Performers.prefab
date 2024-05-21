@@ -157,32 +157,10 @@ MonoBehaviour:
     m_InternalValue: 0
   isPerforming:
     m_InternalValue: 0
-  floatValue1:
-    m_InternalValue: 0
-  floatValue2:
-    m_InternalValue: 0
-  floatValue3:
-    m_InternalValue: 0
-  floatValue4:
-    m_InternalValue: 0
-  floatValue5:
-    m_InternalValue: 0
-  intValue1:
-    m_InternalValue: 0
-  intValue2:
-    m_InternalValue: 0
-  intValue3:
-    m_InternalValue: 0
-  intValue4:
-    m_InternalValue: 0
-  intValue5:
-    m_InternalValue: 0
-  vectorValue1:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  vectorValue2:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  vectorValue3:
-    m_InternalValue: {x: 0, y: 0, z: 0}
+  remoteThickness:
+    m_InternalValue: 1
+  remoteMass:
+    m_InternalValue: 42.8
   OnStartPerforming:
     m_PersistentCalls:
       m_Calls: []
@@ -394,32 +372,10 @@ MonoBehaviour:
     m_InternalValue: 1
   isPerforming:
     m_InternalValue: 0
-  floatValue1:
-    m_InternalValue: 0
-  floatValue2:
-    m_InternalValue: 0
-  floatValue3:
-    m_InternalValue: 0
-  floatValue4:
-    m_InternalValue: 0
-  floatValue5:
-    m_InternalValue: 0
-  intValue1:
-    m_InternalValue: 0
-  intValue2:
-    m_InternalValue: 0
-  intValue3:
-    m_InternalValue: 0
-  intValue4:
-    m_InternalValue: 0
-  intValue5:
-    m_InternalValue: 0
-  vectorValue1:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  vectorValue2:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  vectorValue3:
-    m_InternalValue: {x: 0, y: 0, z: 0}
+  remoteThickness:
+    m_InternalValue: 1
+  remoteMass:
+    m_InternalValue: 42.8
   OnStartPerforming:
     m_PersistentCalls:
       m_Calls: []
@@ -641,32 +597,10 @@ MonoBehaviour:
     m_InternalValue: 2
   isPerforming:
     m_InternalValue: 0
-  floatValue1:
-    m_InternalValue: 0
-  floatValue2:
-    m_InternalValue: 0
-  floatValue3:
-    m_InternalValue: 0
-  floatValue4:
-    m_InternalValue: 0
-  floatValue5:
-    m_InternalValue: 0
-  intValue1:
-    m_InternalValue: 0
-  intValue2:
-    m_InternalValue: 0
-  intValue3:
-    m_InternalValue: 0
-  intValue4:
-    m_InternalValue: 0
-  intValue5:
-    m_InternalValue: 0
-  vectorValue1:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  vectorValue2:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  vectorValue3:
-    m_InternalValue: {x: 0, y: 0, z: 0}
+  remoteThickness:
+    m_InternalValue: 1
+  remoteMass:
+    m_InternalValue: 42.8
   OnStartPerforming:
     m_PersistentCalls:
       m_Calls: []
@@ -781,11 +715,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81ee627b228d04506864cbb49ca00ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatValue1:
+  meshy:
     m_InternalValue: 0
-  floatValue2:
+  meshnoise:
     m_InternalValue: 0
-  floatValue3:
+  meshsize:
     m_InternalValue: 0
   floatValue4:
     m_InternalValue: 0
@@ -808,3 +742,5 @@ MonoBehaviour:
   vectorValue3:
     m_InternalValue: {x: 0, y: 0, z: 0}
   ropeTransformRoot: {fileID: 0}
+  remoteMode:
+    m_InternalValue: 0

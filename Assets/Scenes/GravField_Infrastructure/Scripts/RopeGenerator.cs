@@ -83,9 +83,9 @@ public class RopeGenerator : MonoBehaviour
         GameObject rope_root = new GameObject("Rope" + start_index.ToString() + end_index.ToString());
         rope_root.transform.parent = transform;
         RopePath rope_path = rope_root.AddComponent<RopePath>();
-        //rope_path.performerStart = performerTransformRoot.GetChild(performer_index.x);
-        //rope_path.performerEnd = performerTransformRoot.GetChild(performer_index.y);
-        //rope_path.ropeOffset = ropeCornerOffset;
+        rope_path.performerStart = performerTransformRoot.GetChild(start_index).GetComponent<Performer>();
+        rope_path.performerEnd = performerTransformRoot.GetChild(end_index).GetComponent<Performer>();
+        rope_path.ropeOffset = ropeCornerOffset;
         Vector3 start_pos = Vector3.zero;
         Vector3 end_pos = new Vector3(generatorRopeLength, 0, 0);
         //Vector3 start_pos = rope_path.performerStart.position;

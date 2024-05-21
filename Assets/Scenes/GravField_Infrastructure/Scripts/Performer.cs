@@ -20,36 +20,38 @@ public class Performer : NetworkBehaviour
 
 
 
-    public NetworkVariable<float> floatValue1;
+    //public NetworkVariable<float> floatValue1;
 
-    public NetworkVariable<float> floatValue2;
+    //public NetworkVariable<float> floatValue2;
 
-    public NetworkVariable<float> floatValue3;
+    //public NetworkVariable<float> floatValue3;
 
-    public NetworkVariable<float> floatValue4;
+    //public NetworkVariable<float> floatValue4;
 
-    public NetworkVariable<float> floatValue5;
+    //public NetworkVariable<float> floatValue5;
 
-    public NetworkVariable<int> intValue1;
+    //public NetworkVariable<int> intValue1;
 
-    public NetworkVariable<int> intValue2;
+    //public NetworkVariable<int> intValue2;
 
-    public NetworkVariable<int> intValue3;
+    //public NetworkVariable<int> intValue3;
 
-    public NetworkVariable<int> intValue4;
+    //public NetworkVariable<int> intValue4;
 
-    public NetworkVariable<int> intValue5;
+    //public NetworkVariable<int> intValue5;
 
-    public NetworkVariable<Vector3> vectorValue1;
+    //public NetworkVariable<Vector3> vectorValue1;
 
-    public NetworkVariable<Vector3> vectorValue2;
+    //public NetworkVariable<Vector3> vectorValue2;
 
-    public NetworkVariable<Vector3> vectorValue3;
+    //public NetworkVariable<Vector3> vectorValue3;
 
+    public NetworkVariable<float> remoteThickness;
+    AutoSwitchedParameter<float> localThickness = new AutoSwitchedParameter<float>(10);
 
-    public AutoSwitchedParameter<float> mass = new AutoSwitchedParameter<float>(1);
-    public AutoSwitchedParameter<float> drag = new AutoSwitchedParameter<float>(10);
-    public AutoSwitchedParameter<float> thickness = new AutoSwitchedParameter<float>(10);
+    public NetworkVariable<float> remoteMass;
+    public AutoSwitchedParameter<float> localMass = new AutoSwitchedParameter<float>(1);
+    
 
 
     int performerIndex = 0;
@@ -67,30 +69,15 @@ public class Performer : NetworkBehaviour
         performerIndex = transform.GetSiblingIndex();
         performerName = performerIndex == 1 ? "B" : performerIndex == 2 ? "C" : "A";
     }
-    void Start()
-    {
-        floatValue1.OnValueChanged += OnChanged_FloatValue1;
-        floatValue2.OnValueChanged += OnChanged_FloatValue2;
-        floatValue3.OnValueChanged += OnChanged_FloatValue3;
-    }
-    void OnChanged_FloatValue1(float prev, float cur)
-    {
-        mass.CodaValue = floatValue1.Value;
-    }
-    void OnChanged_FloatValue2(float prev, float cur)
-    {
-        drag.CodaValue = floatValue2.Value;
-    }
-    void OnChanged_FloatValue3(float prev, float cur)
-    {
-        thickness.CodaValue = floatValue3.Value;
-    }
+    
     public override void OnNetworkSpawn()
     {
         ResetLocalData();
 
         if(IsServer)
         {
+            InitialLocalParameter();
+
             RegisterOscReceiverFunction();
         }
     }
@@ -134,21 +121,39 @@ public class Performer : NetworkBehaviour
         localData.acceleration = (new_vel - localData.velocity) / Time.deltaTime;
         localData.velocity = new_vel;
         localData.position = new_pos;
+
+
+        // 
+        UpdateRemoteParameterWithLocal();
+    }
+
+
+    #region Parameters From Coda
+    void InitialLocalParameter()
+    {
+        if (!IsServer) return;
+
+        localThickness.OrginalValue = remoteThickness.Value;
+        localMass.OrginalValue = remoteMass.Value;
+    }
+
+    void UpdateRemoteParameterWithLocal()
+    {
+        if (!IsServer) return;
+
+        remoteMass.Value = localMass.Value;
+        remoteThickness.Value = localThickness.Value;
     }
 
     void RegisterOscReceiverFunction()
     {
+        if (!IsServer) return;
 
+        //thickness.OrginalValue = 
+        //AudoSwitchedParameterManager.Instance.RegisterParameterPair(FormatedOscAddress("mass"), localMass, remoteMass);
 
-        if (!IsServer)
-            return;
-
-        
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("mass"), new UnityAction<float>(OnReceive_Mass));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("drag"), new UnityAction<float>(OnReceive_Drag));
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("thickness"), new UnityAction<float>(OnReceive_Thickness));
-
-
     }
 
     string FormatedOscAddress(string param)
@@ -158,33 +163,14 @@ public class Performer : NetworkBehaviour
 
     void OnReceive_Mass(float v)
     {
-        //if (!IsServer)
-            //return;
-        if (IsServer)
-            floatValue1.Value = SmoothValue(floatValue1.Value, v);
-
-        
-    }
-
-    void OnReceive_Drag(float v)
-    {
-        //if (!IsServer)
-        //    return;
-        if (IsServer)
-            floatValue2.Value = SmoothValue(floatValue2.Value, v);
-
-        
+        v = Mathf.Clamp(v, 0.1f, 100);
+        localMass.CodaValue = SmoothValue(localMass.Value, v);
     }
 
     void OnReceive_Thickness(float v)
     {
-        //if (!IsServer)
-        //    return;
-
-        if(IsServer)
-            floatValue3.Value = SmoothValue(floatValue3.Value, v);
-
-        
+        v = Mathf.Clamp(v, 1f, 50);
+        localThickness.CodaValue = SmoothValue(localThickness.Value, v);
     }
 
     float SmoothValue(float cur, float dst, float t = 0)
@@ -194,4 +180,7 @@ public class Performer : NetworkBehaviour
         float cur_vel = 0;
         return Mathf.SmoothDamp(cur, dst, ref cur_vel, t);
     }
+    #endregion
+
+    
 }

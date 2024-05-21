@@ -37,17 +37,6 @@ public class RopeManager : MonoBehaviour
         UpdateAllRopeState();
     }
 
-    
-
-    //void RegisterOscReceiverFunction()
-    //{
-    //    ParameterReceiver.Instance.RegisterOscReceiverFunction("/jointmass", new UnityAction<float>(OnReceive_JointMass));
-    //    ParameterReceiver.Instance.RegisterOscReceiverFunction("/jointdrag", new UnityAction<float>(OnReceive_JointDrag));
-    //    ParameterReceiver.Instance.RegisterOscReceiverFunction("/segmentmass", new UnityAction<float>(OnReceive_SegmentMass));
-    //    ParameterReceiver.Instance.RegisterOscReceiverFunction("/segmentdrag", new UnityAction<float>(OnReceive_SegmentDrag));
-    //    ParameterReceiver.Instance.RegisterOscReceiverFunction("/ropethickness", new UnityAction<float>(OnReceive_RopeThickness));
-    //}    
-
     void OnEnable()
     {
         roleManager.OnStartPerformingEvent.AddListener(OnStartPerforming);
