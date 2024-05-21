@@ -85,7 +85,7 @@ namespace HoloKit.iOS
     public sealed class RealtimeClock : IClock
     {
 
-        #region --Client API--
+#region --Client API--
         /// <summary>
         /// Current timestamp in seconds.
         /// The very first value reported by this property will always be zero.
@@ -117,18 +117,18 @@ namespace HoloKit.iOS
         /// Create a realtime clock.
         /// </summary>
         public RealtimeClock() => this.stopwatch = new System.Diagnostics.Stopwatch();
-        #endregion
+#endregion
 
 
-        #region --Operations--
+#region --Operations--
         private readonly System.Diagnostics.Stopwatch stopwatch;
-        #endregion
+#endregion
     }
 
     internal sealed class SharedSignal
     {
 
-        #region --Client API--
+#region --Client API--
         /// <summary>
         /// Whether the shared signal has been triggered.
         /// </summary>
@@ -170,13 +170,13 @@ namespace HoloKit.iOS
                 signaled = true;
             }
         }
-        #endregion
+#endregion
 
 
-        #region --Operations--
+#region --Operations--
         private readonly int count;
         private readonly HashSet<object> record;
-        #endregion
+#endregion
     }
 
     [DisallowMultipleComponent]
@@ -185,10 +185,13 @@ namespace HoloKit.iOS
         private Camera _recordingCamera = null;
         private AudioListener _audioListener = null;
 
-        private AudioSource _microphoneAudioSource = null;
+        public AudioSource _microphoneAudioSource = null;
 
         [SerializeField]
         private bool _recordMicrophone = false;
+
+        //public MicInput _micInput;
+        //public TMPro.TextMeshProUGUI _buttonText;
 
         private RealtimeClock _clock = null;
         private RenderTexture _cameraRt;
@@ -232,28 +235,35 @@ namespace HoloKit.iOS
                     Debug.Log("Microphone access denied");
                 }
 
-                if (_microphoneAudioSource == null)
-                {
-                    _microphoneAudioSource = gameObject.AddComponent<AudioSource>();
-                }
-                _microphoneAudioSource = GetComponent<AudioSource>();
-                _microphoneAudioSource.clip = Microphone.Start(null, true, 1, 44100);
-                _microphoneAudioSource.loop = true;
-                while (!(Microphone.GetPosition(null) > 0))
-                {
-                }
-                _microphoneAudioSource.Play();
+                //if (_microphoneAudioSource == null)
+                //{
+                //    _microphoneAudioSource = gameObject.AddComponent<AudioSource>();
+                //}
+                //_microphoneAudioSource = GetComponent<AudioSource>();
+
+                //_microphoneAudioSource.clip = Microphone.Start(null, true, 1, 44100);
+                //_microphoneAudioSource.loop = true;
+                
+                //while (!(Microphone.GetPosition(null) > 0))
+                //{
+                //}
+                //_microphoneAudioSource.Play();
             }
         }
 
         public void StartRecording()
         {
+            //_microphoneAudioSource.loop = true;
+            //while (!(Microphone.GetPosition(null) > 0))
+            //{
+            //}
+            _microphoneAudioSource.Play();
+
             _clock = new RealtimeClock();
             // var sampleRate = _audioDevice != null ? _audioDevice.sampleRate : 24000;
             // var channelCount = _audioDevice != null ? _audioDevice.channelCount : 2;
 
             var path = PathUtil.GetTemporaryFilePath();
-
             var sampleRate = AudioSettings.outputSampleRate;
             var channelCount = 2;
             var width = Screen.width;
@@ -264,7 +274,6 @@ namespace HoloKit.iOS
             _cameraRt = new RenderTexture(_descriptor);
             _frameRt = new RenderTexture(width, height, 0);
             int status = HoloKitVideoRecorder_StartRecording(path, width, height, sampleRate, channelCount);
-
             _timeQueue.Clear();
             if (status != 0)
             {
@@ -278,6 +287,7 @@ namespace HoloKit.iOS
             OnHoloKitRenderModeChanged(_holokitCameraManager.ScreenRenderMode);
 
             StartCoroutine(CommitFrames());
+
         }
 
         public void EndRecording()
@@ -285,7 +295,7 @@ namespace HoloKit.iOS
             if (_recordMicrophone && _microphoneAudioSource != null)
             {
                 _microphoneAudioSource.Stop();
-                Microphone.End(null);
+                //Microphone.End(null);
             }
 
             AsyncGPUReadback.WaitAllRequests();
