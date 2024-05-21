@@ -11,11 +11,9 @@ public class RopePath : MonoBehaviour
     public Transform performerEnd;
 
     public Transform ropeStart;
-    public Transform ropeEnd;
-
+    public Transform ropeEnd;    
+    
     public Vector3 ropeOffset;
-
-    bool useSplineMesh = true;
 
     Transform centroidTransform;
     private Vector3 centroidPos;
@@ -36,16 +34,32 @@ public class RopePath : MonoBehaviour
         AssignSplineNodes();
     }
 
-    // Update is called once per frame
+    public void BindPerformer(Transform performer_start, Transform performer_end)
+    {
+        performerStart = performer_start;
+        performerEnd = performer_end;
+    }
+
+    public void SetPerformerOffset(Vector3 offset)
+    {
+        ropeOffset = offset;
+    }
+
+    public void BindRopeAnchors(Transform performer_start, Transform performer_end)
+    {
+        ropeStart = performer_start;
+
+    }
+
+
     void Update()
     {
-        Vector3 nor = (performerEnd.position - performerStart.position).normalized;
-
-        ropeStart.localPosition = performerStart.TransformPoint(ropeOffset);// + nor* 0.3f;
-        ropeEnd.localPosition = performerEnd.TransformPoint(ropeOffset);// -nor*0.3f;
-
+        //Vector3 nor = (performerEnd.position - performerStart.position).normalized;
         //ropeStart.localPosition = performerStart.position + nor* 0.3f;
         //ropeEnd.localPosition = performerEnd.position -nor*0.3f;
+
+        ropeStart.localPosition = performerStart.TransformPoint(ropeOffset);
+        ropeEnd.localPosition = performerEnd.TransformPoint(ropeOffset);
 
         ropeStart.localRotation = performerStart.localRotation;
         ropeEnd.localRotation = performerEnd.localRotation;
@@ -54,15 +68,12 @@ public class RopePath : MonoBehaviour
         centroidPos = centroidTransform.localPosition;
         centroidVel = (centroidPos - last_pos) / Time.deltaTime;
 
-        if (useSplineMesh)
-            UpdateNodes();
-
+        UpdateNodes();
     }
 
     void UpdateNodes()
     {
-        Vector3 last_pos = Vector3.zero;
-        float dis_total = 0;
+        
         int i = 0;
         foreach (GameObject wayPoint in wayPoints)
         {
@@ -73,21 +84,9 @@ public class RopePath : MonoBehaviour
             //    //node.Up = wayPoint.transform.up;
             //}
 
-                node.Position =wayPoint.transform.position;
-                //node.Up = wayPoint.transform.up;
-
-            if(last_pos == Vector3.zero)
-            {
-                last_pos = wayPoint.transform.position;
-            }
-            else
-            {
-                dis_total += Vector3.Distance(wayPoint.transform.position, last_pos);
-                last_pos = wayPoint.transform.position;
-            }
+            node.Position =wayPoint.transform.position;
+            //node.Up = wayPoint.transform.up;
         }
-
-        Debug.Log($"Rope{transform.GetSiblingIndex()} Length:{dis_total}");
     }
 
     void AssignWayPoints()
@@ -123,5 +122,27 @@ public class RopePath : MonoBehaviour
         {
             spline.RemoveNode(spline.nodes.Last());
         }
+    }
+
+    float CalculateRopeLength()
+    {
+        Vector3 last_pos = Vector3.zero;
+        float dis_total = 0;
+
+        foreach (GameObject wayPoint in wayPoints)
+        {
+            if (last_pos == Vector3.zero)
+            {
+                last_pos = wayPoint.transform.position;
+            }
+            else
+            {
+                dis_total += Vector3.Distance(wayPoint.transform.position, last_pos);
+                last_pos = wayPoint.transform.position;
+            }
+        }
+        //Debug.Log($"Rope{transform.GetSiblingIndex()} Length:{dis_total}");
+
+        return dis_total;
     }
 }
