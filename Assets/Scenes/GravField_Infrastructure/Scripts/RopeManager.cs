@@ -17,15 +17,19 @@ public class RopeManager : MonoBehaviour
     public float generatorInterval = 0.04f;
     public int generatorSegmentCount = 5;
 
-    public float jointMass = 1;
+    public float jointMass = 2;
     public float jointDrag = 0;
+    public float jointAngularDrag = 1;
     public float jointSprint = 80;
     public float jointDamper = 50;
 
-    public float segmentMass = 1;
+    public float segmentMass = 2;
     public float segmentDrag = 0;
+    public float segmentAngularDrag = 1;
 
     public Vector3 ropeCornerOffset;
+
+    
 
 
     RoleManager roleManager;
@@ -44,6 +48,8 @@ public class RopeManager : MonoBehaviour
             ropeStateList.Add(false);
             ropeTransformList.Add(null);
         }
+
+        Debug.Log("Distance between A and B:" + Vector3.Distance(performerList[0].transform.position, performerList[1].transform.position));
     }
 
     void Start()
@@ -297,9 +303,10 @@ public class RopeManager : MonoBehaviour
 
     GameObject GenerateRope(int rope_index)
     {
-        // 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Anchor <- Joint -> Segment <- Joint -> Segment <- Joint -> Segment <- Joint -> Anchor
-        //
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         // Generate Root
         Vector2Int performer_index = GetPerformerIndexOfRope(rope_index);
         GameObject rope_root = new GameObject("Rope" + performer_index.x.ToString() + performer_index.y.ToString());
@@ -340,7 +347,7 @@ public class RopeManager : MonoBehaviour
         {
             left_segment = m == 0 ? anchor0 : segment_root.transform.GetChild(m-1).gameObject;
             right_segment = m == generatorSegmentCount ? anchor1 : segment_root.transform.GetChild(m).gameObject;
-            // take anchors as joints too
+            
             GenerateJoint(joint_root, m, Vector3.Lerp(start_pos, end_pos, (float)(m) / (float)generatorSegmentCount), left_segment, right_segment);
         }
 
@@ -362,8 +369,15 @@ public class RopeManager : MonoBehaviour
         anchor.transform.localScale = Vector3.one * generatorRopeThickness;
         Rigidbody rigid_body = anchor.AddComponent<Rigidbody>();
         rigid_body.useGravity = false;
-        rigid_body.isKinematic = true; // Have to be true
+
+        ////////////////////////////////////////////////////////////
+        // Caution!!!
+        // RigidBody of anchros have to be Kinematic to avoid repelling connected joint while correctly influencing it        // 
+        ////////////////////////////////////////////////////////////
+        rigid_body.isKinematic = true; 
+
         rigid_body.constraints = RigidbodyConstraints.FreezePosition;
+        rigid_body.mass = 100;
 
 
         //HingeJoint hinge = anchor.AddComponent<HingeJoint>();
@@ -386,14 +400,19 @@ public class RopeManager : MonoBehaviour
         Rigidbody rigid_body = joint.AddComponent<Rigidbody>();
         rigid_body.mass = jointMass;
         rigid_body.drag = jointDrag;
+        rigid_body.angularDrag = jointAngularDrag;
 
         HingeJoint hinge_left = joint.AddComponent<HingeJoint>();
         HingeJoint hinge_right = joint.AddComponent<HingeJoint>();
         SetHingeProperties(hinge_left, left.GetComponent<Rigidbody>());
         SetHingeProperties(hinge_right, right.GetComponent<Rigidbody>());
 
+        ////////////////////////////////////////////////////////////
+        // Caution!!!
+        // Collider of Joint can not be disabled otherwist it will lose elastcity
+        ////////////////////////////////////////////////////////////
+        joint.GetComponent<Collider>().enabled = true;
 
-        //joint.GetComponent<Collider>().enabled = false; // Collider of Joint can not be disabled otherwist it will lose elastcity
         //joint.GetComponent<MeshRenderer>().enabled = false;
 
         return joint;
@@ -403,16 +422,16 @@ public class RopeManager : MonoBehaviour
     {
         hinge.anchor = Vector3.zero;
         hinge.connectedBody = rigid;
+        // When connected to anchor, there is no need to set calculate anchor position. just connect to (0,0,0)
         if (rigid.gameObject.name.Contains("Anchor"))
         {
             hinge.autoConfigureConnectedAnchor = false;
         }
+        // When connected to another joint, the result highly depends on the initial position. so better generate rope on the groud
         else
         {
             hinge.autoConfigureConnectedAnchor = true;
         }
-        //hinge.autoConfigureConnectedAnchor = false;
-        //hinge.connectedAnchor = new Vector3(0, rigid.position.x - hinge.gameObject.transform.position.x > 0 ? 1 : -1, 0);
 
         hinge.useSpring = true;
         JointSpring spring_settings = new JointSpring();
@@ -439,7 +458,7 @@ public class RopeManager : MonoBehaviour
         Rigidbody rigid_body = segment.AddComponent<Rigidbody>();
         rigid_body.mass = segmentMass;
         rigid_body.drag = segmentDrag;
-        //rigid_body.constraints = RigidbodyConstraints.FreezeRotation;
+        rigid_body.angularDrag = segmentAngularDrag;
 
         segment.GetComponent<Collider>().enabled = false;
         //segment.GetComponent<MeshRenderer>().enabled = false;
@@ -459,7 +478,7 @@ public class RopeManager : MonoBehaviour
         meshTilling.mesh = ropeMesh;
         meshTilling.material = ropeMat;
         meshTilling.rotation = new Vector3(0, 0, 0);
-        meshTilling.scale = Vector3.one * 0.01f;
+        meshTilling.scale = Vector3.one * 0.1f;
 
         meshTilling.generateCollider = false;
         meshTilling.updateInPlayMode = true;
@@ -467,57 +486,38 @@ public class RopeManager : MonoBehaviour
         
     }
 
-    void SetJointMass(float v)
-    {        
-        for(int i=0; i<transform.childCount; i++)
+    void SetRigidBody(string type, string param, float v)
+    {
+
+        for (int i = 0; i < transform.childCount; i++)
         {
-            Transform joint_root = transform.GetChild(i).Find("Joints");
-            Rigidbody[] rigid_list = joint_root.GetComponentsInChildren<Rigidbody>();
-            foreach(Rigidbody rigid in rigid_list)
+            Transform root = transform.GetChild(i).Find(type);
+            Rigidbody[] rigid_list = root.GetComponentsInChildren<Rigidbody>();
+            foreach (Rigidbody rigid in rigid_list)
             {
-                rigid.mass = v;
+                if (param == "mass") rigid.mass = v;
+                else if (param == "drag") rigid.drag = v;
+                else if (param == "angular") rigid.angularDrag = v;
             }
         }
     }
 
-    void SetJointDrag(float v)
+    void SetJoint(string param, float v)
     {
         for (int i = 0; i < transform.childCount; i++)
         {
             Transform joint_root = transform.GetChild(i).Find("Joints");
-            Rigidbody[] rigid_list = joint_root.GetComponentsInChildren<Rigidbody>();
-            foreach (Rigidbody rigid in rigid_list)
+            HingeJoint[] hinge_list = joint_root.GetComponentsInChildren<HingeJoint>();
+            foreach (HingeJoint hinge in hinge_list)
             {
-                rigid.drag = v;
+                JointSpring spring_settings = new JointSpring();
+                spring_settings.spring = param == "spring" ? v : hinge.spring.spring;
+                spring_settings.damper = param == "damper" ? v : hinge.spring.damper;
+                hinge.spring = spring_settings;
             }
         }
     }
-
-    void SetSegmentMass(float v)
-    {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Transform segment_root = transform.GetChild(i).Find("Joints");
-            Rigidbody[] rigid_list = segment_root.GetComponentsInChildren<Rigidbody>();
-            foreach (Rigidbody rigid in rigid_list)
-            {
-                rigid.mass = v;
-            }
-        }
-    }
-
-    void SetSegmentDrag(float v)
-    {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Transform segment_root = transform.GetChild(i).Find("Segments");
-            Rigidbody[] rigid_list = segment_root.GetComponentsInChildren<Rigidbody>();
-            foreach (Rigidbody rigid in rigid_list)
-            {
-                rigid.drag = v;
-            }
-        }
-    }
+    
 
     void SetRopePathThickness(float v)
     {
@@ -537,21 +537,23 @@ public class RopeManager : MonoBehaviour
         }
     }
 
+    
+
     void OnReceive_JointMass(float v)
     {
-        SetJointMass(v);
+        SetRigidBody("Joints", "mass", v);
     }
     void OnReceive_JointDrag(float v)
     {
-        SetJointDrag(v);
+        SetRigidBody("Joints", "drag", v);
     }
     void OnReceive_SegmentMass(float v)
     {
-        SetSegmentMass(v);
+        SetRigidBody("Segments", "mass", v);
     }
     void OnReceive_SegmentDrag(float v)
     {
-        SetSegmentDrag(v);
+        SetRigidBody("Segments", "drag", v);
     }
     void OnReceive_RopeThickness(float v)
     {
@@ -585,5 +587,57 @@ public class RopeManager : MonoBehaviour
     }
 
     
-    #endregion    
+    #endregion
+
+
+    public void SetAllDrag_UI(float v)
+    {
+        SetRigidBody("Joints", "drag", v);
+        SetRigidBody("Segments", "drag", v);
+    }
+
+    public void SetAllMass_UI(float v)
+    {
+        SetRigidBody("Joints", "mass", v);
+        SetRigidBody("Segments", "mass", v);
+    }
+
+    public void SetAllSpring_UI(float v)
+    {
+        SetJoint("spring", v);
+    }
+
+    public void SetAllDamper_UI(float v)
+    {
+        SetJoint("damper", v);
+    }
+    public void SetAllAngularDrag_UI(float v)
+    {
+        SetRigidBody("Joints", "angular", v);
+        SetRigidBody("Segments", "angular", v);
+    }
+
+    public void SetAllThickness_UI(float v)
+    {
+
+    }
+    public void SetJointDrag_UI(float v)
+    {
+        SetRigidBody("Joints", "drag", v);
+    }
+
+    public void SetSegmentDrag_UI(float v)
+    {
+        SetRigidBody("Segments", "drag", v);
+    }
+
+    public void SetJointMass_UI(float v)
+    {
+        SetRigidBody("Joints", "mass", v);
+    }
+
+    public void SetSegmentMass_UI(float v)
+    {
+        SetRigidBody("Segments", "mass", v);
+    }
 }

@@ -5,9 +5,12 @@ using UnityEngine;
 using Unity.Netcode;
 using HoloKit.ColocatedMultiplayerBoilerplate;
 using OscJack;
+using UnityEngine.UI;
+using System;
 
 public class Helper : MonoBehaviour
 {
+    [Header("Info")]
     [SerializeField] PingManager pingManager;
 
     [SerializeField] bool infoPanelEnabled = false;
@@ -16,11 +19,40 @@ public class Helper : MonoBehaviour
 
     Dictionary<string, TextMeshProUGUI> infoItemList = new Dictionary<string, TextMeshProUGUI>();
 
+    [Header("Parameters")]
+    public RectTransform controlPanelRoot;
+    public bool controlPanelEnabled = false;
+    Dictionary<string, Action<float>> sliderActionList;
+
     int pingSpeed = 0;
 
     void Start()
     {
+        if (controlPanelEnabled)
+        {
+            controlPanelRoot.gameObject.SetActive(true);
 
+            sliderActionList = new Dictionary<string, Action<float>>();
+            for (int i = 0; i < controlPanelRoot.childCount; i++)
+            {
+                Transform item = controlPanelRoot.GetChild(i);
+                if (item.gameObject.activeSelf == false)
+                    continue;
+
+                string param_name = item.Find("Label").GetComponent<TextMeshProUGUI>().text;
+                Slider slider = item.Find("Slider").GetComponent<Slider>();
+                TextMeshProUGUI display_value = item.Find("Value").GetComponent<TextMeshProUGUI>();                
+
+
+                // register slider
+                slider.onValueChanged.AddListener((float v) =>
+                {
+                    display_value.text = v.ToString("0.00");
+
+                    //SliderCallbackFunction(item.name, param_name, v);
+                });
+            }
+        }
     }
 
     void OnEnable()
@@ -100,7 +132,17 @@ public class Helper : MonoBehaviour
         infoPanelEnabled = false;
     }
 
+    void SliderCallbackFunction(string item_name, string param_name, float v)
+    {
+           if(sliderActionList.ContainsKey(param_name))
+                sliderActionList[param_name]?.Invoke(v);
+    }
 
+
+    public void AddSliderAction(string name, Action<float> action)
+    {
+        sliderActionList.Add(name, action);
+    }
 
 
     #region Instance

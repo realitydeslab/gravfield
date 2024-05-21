@@ -15,7 +15,13 @@ public class RopePath : MonoBehaviour
 
     public Vector3 ropeOffset;
 
-    public bool useSplineMesh = true;
+    bool useSplineMesh = true;
+
+    Transform centroidTransform;
+    private Vector3 centroidPos;
+    public Vector3 CentroidPos { get => centroidPos; }
+    private Vector3 centroidVel;
+    public Vector3 CentroidVel { get => centroidVel; }
 
     Spline spline;
 
@@ -35,13 +41,18 @@ public class RopePath : MonoBehaviour
     {
         Vector3 nor = (performerEnd.position - performerStart.position).normalized;
 
-        
-
         ropeStart.localPosition = performerStart.TransformPoint(ropeOffset);// + nor* 0.3f;
         ropeEnd.localPosition = performerEnd.TransformPoint(ropeOffset);// -nor*0.3f;
 
-        //ropeStart.localRotation = performerStart.localRotation;
-        //ropeEnd.localRotation = performerEnd.localRotation;
+        //ropeStart.localPosition = performerStart.position + nor* 0.3f;
+        //ropeEnd.localPosition = performerEnd.position -nor*0.3f;
+
+        ropeStart.localRotation = performerStart.localRotation;
+        ropeEnd.localRotation = performerEnd.localRotation;
+
+        Vector3 last_pos = centroidPos;
+        centroidPos = centroidTransform.localPosition;
+        centroidVel = (centroidPos - last_pos) / Time.deltaTime;
 
         if (useSplineMesh)
             UpdateNodes();
@@ -50,6 +61,8 @@ public class RopePath : MonoBehaviour
 
     void UpdateNodes()
     {
+        Vector3 last_pos = Vector3.zero;
+        float dis_total = 0;
         int i = 0;
         foreach (GameObject wayPoint in wayPoints)
         {
@@ -62,7 +75,19 @@ public class RopePath : MonoBehaviour
 
                 node.Position =wayPoint.transform.position;
                 //node.Up = wayPoint.transform.up;
+
+            if(last_pos == Vector3.zero)
+            {
+                last_pos = wayPoint.transform.position;
+            }
+            else
+            {
+                dis_total += Vector3.Distance(wayPoint.transform.position, last_pos);
+                last_pos = wayPoint.transform.position;
+            }
         }
+
+        Debug.Log($"Rope{transform.GetSiblingIndex()} Length:{dis_total}");
     }
 
     void AssignWayPoints()
@@ -78,6 +103,8 @@ public class RopePath : MonoBehaviour
         }
 
         //wayPoints.Add(anchor_root.GetChild(1).gameObject);
+
+        centroidTransform = joint_root.GetChild(Mathf.FloorToInt(joint_root.childCount / 2f));
     }
 
     void AssignSplineNodes()

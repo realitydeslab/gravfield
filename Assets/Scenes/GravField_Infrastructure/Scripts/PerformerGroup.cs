@@ -111,7 +111,7 @@ public class PerformerGroup : NetworkBehaviour
         }
 
         // Update effects
-        UpdateRopeEffect();
+        //UpdateRopeEffect();
 
         
     }
