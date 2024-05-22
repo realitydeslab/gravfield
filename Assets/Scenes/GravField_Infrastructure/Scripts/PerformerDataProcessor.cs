@@ -5,7 +5,7 @@ using Unity.Netcode;
 using UnityEngine.Events;
 using System;
 
-public class DataProcessor : MonoBehaviour
+public class PerfomerDataProcessor : MonoBehaviour
 {
     public float PerformerCount { get; set; }
 

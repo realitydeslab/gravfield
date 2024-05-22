@@ -40,6 +40,8 @@ public class PerformerGroup : NetworkBehaviour
 
     public NetworkVariable<float> effectMode;
 
+    public NetworkVariable<float> ropeMeshScale;
+
     void Awake()
     {
         for(int i=0; i<transform.childCount; i++)

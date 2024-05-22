@@ -1650,7 +1650,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &85128919
 Transform:
   m_ObjectHideFlags: 0
@@ -1687,7 +1687,7 @@ MonoBehaviour:
   physicMaterial: {fileID: 0}
   translation: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0}
-  scale: {x: 0.1, y: 0.1, z: 0.1}
+  scale: {x: 0.2, y: 0.2, z: 0.2}
   generateCollider: 0
   updateInPlayMode: 1
   curveSpace: 0
@@ -1763,8 +1763,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeStart: {fileID: 599522418}
-  ropeEnd: {fileID: 984548087}
   ropeOffset: {x: 0, y: -0.1, z: 0.4}
 --- !u!1 &86498463
 GameObject:
@@ -2284,7 +2282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &123694814
 Transform:
   m_ObjectHideFlags: 0
@@ -2321,7 +2319,7 @@ MonoBehaviour:
   physicMaterial: {fileID: 0}
   translation: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0}
-  scale: {x: 0.1, y: 0.1, z: 0.1}
+  scale: {x: 0.2, y: 0.2, z: 0.2}
   generateCollider: 0
   updateInPlayMode: 1
   curveSpace: 0
@@ -2397,8 +2395,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeStart: {fileID: 28792027}
-  ropeEnd: {fileID: 1713350595}
   ropeOffset: {x: 0, y: -0.1, z: 0.4}
 --- !u!1 &130364748
 GameObject:
@@ -6228,7 +6224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 316569097}
   - component: {fileID: 316569099}
-  - component: {fileID: 316569098}
+  - component: {fileID: 316569100}
   m_Layer: 0
   m_Name: Spring
   m_TagString: Untagged
@@ -6251,34 +6247,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 86498464}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &316569098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316569096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ed844ba03d3044eeaacfd0839cfa96d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  performerTransformRoot: {fileID: 4810033708984300306}
-  generatorRopeLength: 1.1
-  generatorRopeThickness: 0.01
-  generatorSegmentLength: 0.03
-  generatorSegmentCount: 6
-  jointMass: 1
-  jointDrag: 0
-  jointAngularDrag: 1
-  jointSprint: 80
-  jointDamper: 50
-  segmentMass: 42.8
-  segmentDrag: 0
-  segmentAngularDrag: 1
-  ropeMesh: {fileID: 8691780276856062721, guid: b1744672bcda4451494d682eb7511d88, type: 3}
-  ropeMat: {fileID: 2100000, guid: 37b5b32febfbd430bb738e4583ebae03, type: 2}
-  ropeCornerOffset: {x: 0, y: -0.1, z: 0.4}
 --- !u!114 &316569099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6291,6 +6259,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e897eb69a5a5a4accaae91cb91fd7dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &316569100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316569096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45fb9fc63b9c04045acf592bc936b6b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  performerTransformRoot: {fileID: 4810033708984300306}
+  generatorRopeLength: 0.5
+  generatorRopeThickness: 0.01
+  generatorSegmentLength: 0.03
+  generatorSegmentCount: 4
+  jointMass: 1
+  jointDrag: 0
+  jointAngularDrag: 1
+  jointSprint: 80
+  jointDamper: 50
+  segmentMass: 1
+  segmentDrag: 0
+  segmentAngularDrag: 1
+  ropeMesh: {fileID: 8691780276856062721, guid: b1744672bcda4451494d682eb7511d88, type: 3}
+  ropeMat: {fileID: 2100000, guid: ae61dff27905f4faea3bd8d733e53b49, type: 2}
+  ropeCornerOffset: {x: 0, y: -0.1, z: 0.4}
 --- !u!1 &318703274
 GameObject:
   m_ObjectHideFlags: 0
@@ -6947,7 +6943,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &388752553
 Transform:
   m_ObjectHideFlags: 0
@@ -6984,7 +6980,7 @@ MonoBehaviour:
   physicMaterial: {fileID: 0}
   translation: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0}
-  scale: {x: 0.1, y: 0.1, z: 0.1}
+  scale: {x: 0.2, y: 0.2, z: 0.2}
   generateCollider: 0
   updateInPlayMode: 1
   curveSpace: 0
@@ -7060,8 +7056,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeStart: {fileID: 1382062754}
-  ropeEnd: {fileID: 11561919}
   ropeOffset: {x: 0, y: -0.1, z: 0.4}
 --- !u!1 &389304596
 GameObject:
@@ -19007,7 +19001,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInDevelopment: 1
-  isSoloMode: 1
+  isSoloMode: 0
   showPerformerAxis: 0
 --- !u!4 &1215605116
 Transform:

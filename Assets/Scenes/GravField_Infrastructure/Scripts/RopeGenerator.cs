@@ -81,11 +81,8 @@ public class RopeGenerator : MonoBehaviour
 
         // Generate Root
         GameObject rope_root = new GameObject("Rope" + start_index.ToString() + end_index.ToString());
-        rope_root.transform.parent = transform;
-        RopePath rope_path = rope_root.AddComponent<RopePath>();
-        rope_path.performerStart = performerTransformRoot.GetChild(start_index).GetComponent<Performer>();
-        rope_path.performerEnd = performerTransformRoot.GetChild(end_index).GetComponent<Performer>();
-        rope_path.ropeOffset = ropeCornerOffset;
+        rope_root.transform.parent = transform;       
+        
         Vector3 start_pos = Vector3.zero;
         Vector3 end_pos = new Vector3(generatorRopeLength, 0, 0);
         //Vector3 start_pos = rope_path.performerStart.position;
@@ -105,8 +102,8 @@ public class RopeGenerator : MonoBehaviour
         anchor_root.transform.parent = rope_root.transform;
         GameObject anchor0 = GenerateAnchor(anchor_root, 0, start_pos, segment_root.transform.GetChild(0));
         GameObject anchor1 = GenerateAnchor(anchor_root, 1, end_pos, segment_root.transform.GetChild(segment_root.transform.childCount - 1));
-        rope_path.ropeStart = anchor0.transform;
-        rope_path.ropeEnd = anchor1.transform;
+        //rope_path.ropeStart = anchor0.transform;
+        //rope_path.ropeEnd = anchor1.transform;
 
 
         // Generate Joints
@@ -123,7 +120,10 @@ public class RopeGenerator : MonoBehaviour
         }
 
 
-        // Add MeshSpline Components
+
+        // Add Components
+        AddBasicComponent(rope_root, start_index, end_index);
+
         AddSplineMeshComponent(rope_root);
 
         return rope_root;
@@ -233,6 +233,13 @@ public class RopeGenerator : MonoBehaviour
         return segment;
     }
 
+    protected virtual void AddBasicComponent(GameObject go, int start_index, int end_index)
+    {
+        EffectRope rope_path = go.AddComponent<EffectRope>();
+        rope_path.performerStart = performerTransformRoot.GetChild(start_index).GetComponent<Performer>();
+        rope_path.performerEnd = performerTransformRoot.GetChild(end_index).GetComponent<Performer>();
+        rope_path.ropeOffset = ropeCornerOffset;
+    }
 
     void AddSplineMeshComponent(GameObject go)
     {

@@ -28,7 +28,7 @@ public class MiddlewareManager : MonoBehaviour
 
     ParameterReceiver parameterReceiver;
 
-    DataProcessor dataProcessor;
+    PerfomerDataProcessor dataProcessor;
 
     SenderForCoda senderForCoda;
 
@@ -40,7 +40,7 @@ public class MiddlewareManager : MonoBehaviour
 
         parameterReceiver = FindObjectOfType<ParameterReceiver>();
 
-        dataProcessor = FindObjectOfType<DataProcessor>();
+        dataProcessor = FindObjectOfType<PerfomerDataProcessor>();
 
         senderForCoda = FindObjectOfType<SenderForCoda>();
 

@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class EffectManager : MonoBehaviour
 {
-    public EffectRope effectRope;
+    public EffectRopeController effectRope;
 
-    public EffectSpring effectSpring;
+    public EffectSpringController effectSpring;
 
     public EffectMagneticField effectMagneticField;
 

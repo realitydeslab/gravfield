@@ -1,322 +1,254 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+
 using System.Linq;
+using UnityEngine;
 using SplineMesh;
-using UnityEngine.Events;
+using Unity.Netcode;
 
 public class EffectRope : MonoBehaviour
 {
-    public Transform performerTransformRoot;
+    // Basic
+    public Performer performerStart;
+    public Performer performerEnd;
+    Transform ropeStart;
+    Transform ropeEnd; 
+    public Vector3 ropeOffset;
+    int ropeIndex;
 
-    RoleManager roleManager;
+    // Path
+    Spline spline;
+    List<GameObject> wayPoints = new List<GameObject>();
 
-    List<Performer> performerList = new List<Performer>();
-    List<bool> ropeStateList = new List<bool>();
+    // Output to LIVE
+    Transform centroidTransform;
+    private Vector3 centroidPos;
+    public Vector3 CentroidPos { get => centroidPos; }
+    private Vector3 centroidVel;
+    public Vector3 CentroidVel { get => centroidVel; }
+    AutoSwitchedParameter<float> ropevel = new AutoSwitchedParameter<float>();
 
-    bool effectEnabled = false;
+    // Parameters    
+    float ropeMeshScale;
+    float startThickness;
+    float endThickness;
+    float startMass;
+    float endMass;
 
     void Awake()
     {
-        roleManager = FindObjectOfType<RoleManager>();
+        ropeIndex = transform.GetSiblingIndex();
 
-
-        for (int i=0; i<performerTransformRoot.childCount; i++)
-        {
-            performerList.Add(performerTransformRoot.GetChild(i).GetComponent<Performer>());
-        }
-
-        for(int i=0; i< transform.childCount; i++)
-        {
-            ropeStateList.Add(false);
-        }
+        ropeStart = transform.Find("Anchors").GetChild(0);
+        ropeEnd = transform.Find("Anchors").GetChild(1);
     }
 
     void Start()
     {
-        
+        spline = GetComponent<Spline>();
+
+        AssignWayPoints();
+
+        AssignSplineNodes();
+
+        RegisterNetworkVariableCallback_Client();
+
+        RegisterPropertiesToLive_Server();
     }
 
-    void OnEnable()
+    string FormatedOscAddress(string param)
     {
-        roleManager.OnStartPerformingEvent.AddListener(OnStartPerforming);
-        roleManager.OnStopPerformingEvent.AddListener(OnStopPerforming);
-    }
-    void OnDisable()
-    {
-        roleManager.OnStartPerformingEvent.RemoveListener(OnStartPerforming);
-        roleManager.OnStopPerformingEvent.RemoveListener(OnStopPerforming);
+        return "/rope" + ropeIndex.ToString() + param;
     }
 
-    void OnStartPerforming(int index, ulong client_index)
+    void Update()
     {
-        UpdateAllRopeState();
+        UpdateRopeAnchors();
+
+        UpdateNodes();
+
+        UpdateParamtersForLive();
     }
 
-    void OnStopPerforming(int index, ulong client_index)
+    void UpdateRopeAnchors()
     {
-        UpdateAllRopeState();
+        //Vector3 nor = (performerEnd.position - performerStart.position).normalized;
+        //ropeStart.localPosition = performerStart.position + nor* 0.3f;
+        //ropeEnd.localPosition = performerEnd.position -nor*0.3f;
+
+        ropeStart.localPosition = performerStart.transform.TransformPoint(ropeOffset);
+        ropeEnd.localPosition = performerEnd.transform.TransformPoint(ropeOffset);
+
+        ropeStart.localRotation = performerStart.transform.localRotation;
+        ropeEnd.localRotation = performerEnd.transform.localRotation;
     }
 
-    void UpdateAllRopeState()
+    void UpdateNodes()
     {
-        for (int i = 0; i < ropeStateList.Count; i++)
+        int i = 0;
+        foreach (GameObject wayPoint in wayPoints)
         {
-            bool cur_rope_state = GetRopeState(i);
-            // Just active rope, generate a new one
-            if (cur_rope_state == true && ropeStateList[i] == false)
-            {
-
-            }
-            // Just deactive rope
-            if (cur_rope_state == false && ropeStateList[i] == true)
-            {
-
-            }
-            ropeStateList[i] = cur_rope_state;
-
-            SetRopeState(i, cur_rope_state);
+            var node = spline.nodes[i++];
+            //if (Vector3.Distance(node.Position, transform.InverseTransformPoint(wayPoint.transform.position)) > 0.001f)
+            //{
+            //    node.Position = transform.InverseTransformPoint(wayPoint.transform.position);
+            //    //node.Up = wayPoint.transform.up;
+            //}
+            node.Position = wayPoint.transform.position;
+            //node.Up = wayPoint.transform.up;
         }
     }
 
-    bool GetRopeState(int rope_index)
+    void UpdateParamtersForLive()
     {
-        if (effectEnabled == false)
-            return false;
+        Vector3 last_pos = centroidPos;
+        centroidPos = centroidTransform.localPosition;
+        centroidVel = (centroidPos - last_pos) / Time.deltaTime;
 
-        Vector2Int performer_index = GetPerformerIndexOfRope(rope_index);
-        return performerList[performer_index.x].isPerforming.Value == true && performerList[performer_index.y].isPerforming.Value == true;
+        ropevel.OrginalValue = centroidVel.magnitude;
     }
 
-    Vector2Int GetPerformerIndexOfRope(int rope_index)
+
+
+    #region NetworkVariable
+    void RegisterNetworkVariableCallback_Client()
     {
-        // Rope 0: Performer 0 , 1
-        // Rope 1: Performer 0 , 2
-        // Rope 2: Performer 1 , 2
-        int start_index = rope_index == 2 ? 1 : 0;
-        int end_index = rope_index == 0 ? 1 : 2;
-        return new Vector2Int(start_index, end_index);
+        performerStart.remoteThickness.OnValueChanged += (float prev, float cur) => { startThickness = cur; UpdateRopeThickness(); };
+        performerEnd.remoteThickness.OnValueChanged += (float prev, float cur) => { endThickness = cur; UpdateRopeThickness(); };
+
+        performerStart.remoteMass.OnValueChanged += (float prev, float cur) => { startMass = cur; UpdateRopeMass(); };
+        performerEnd.remoteMass.OnValueChanged += (float prev, float cur) => { endMass = cur; UpdateRopeMass(); };
+
+        GameManager.Instance.PerformerGroup.ropeMeshScale.OnValueChanged += (float prev, float cur) => { ropeMeshScale = cur; UpdateRopeMeshScale(); };
+
     }
-
-    void SetRopeState(int index, bool state)
+    void UpdateRopeThickness()
     {
-        transform.GetChild(index).gameObject.SetActive(state);
-        //SetSplineMeshVisible(index, state);
-    }
-
-    void SetSplineMeshVisible(int index, bool visible)
-    {
-        Transform root_transform = transform.GetChild(index).Find("generated by SplineMeshTiling");
-        root_transform?.gameObject.SetActive(visible);
-    }
-
-    public void SetEffectState(bool state)
-    {
-        effectEnabled = state;
-        UpdateAllRopeState();
-    }
-
-    #region OscReceiverFunction
-    //void OnReceive_JointMass(float v)
-    //{
-    //    SetRigidBody("Joints", "mass", v);
-    //}
-    //void OnReceive_JointDrag(float v)
-    //{
-    //    SetRigidBody("Joints", "drag", v);
-    //}
-    //void OnReceive_SegmentMass(float v)
-    //{
-    //    SetRigidBody("Segments", "mass", v);
-    //}
-    //void OnReceive_SegmentDrag(float v)
-    //{
-    //    SetRigidBody("Segments", "drag", v);
-    //}
-    //void OnReceive_RopeThickness(float v)
-    //{
-    //    SetRopePathThickness(v);
-    //}
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="type">Achors / Joints / Segments</param>
-    /// <param name="param">Mass / Drag / Angular Drag</param>
-    /// <param name="v"></param>
-    void SetRigidBody(string type, string param, float v)
-    {
-        for (int i = 0; i < transform.childCount; i++)
+        float currentLength = 0;
+        foreach (CubicBezierCurve curve in spline.GetCurves())
         {
-            Transform root = transform.GetChild(i).Find(type);
-            Rigidbody[] rigid_list = root.GetComponentsInChildren<Rigidbody>();
-            foreach (Rigidbody rigid in rigid_list)
-            {
-                if (param == "mass") rigid.mass = v;
-                else if (param == "drag") rigid.drag = v;
-                else if (param == "angular") rigid.angularDrag = v;
-            }
+            float startRate = currentLength / spline.Length;
+            currentLength += curve.Length;
+            float endRate = currentLength / spline.Length;
+
+            curve.n1.Scale = Vector3.one * (startThickness + (endThickness - startThickness) * startRate);
+            curve.n2.Scale = Vector3.one * (startThickness + (endThickness - startThickness) * endRate);
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="param">spring / damper</param>
-    /// <param name="v"></param>
-    void SetJoint(string param, float v)
+    void UpdateRopeMass()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        Transform segment_root = transform.Find("Segments");
+        for (int m = 0; m < segment_root.childCount; m++)
         {
-            Transform joint_root = transform.GetChild(i).Find("Joints");
-            HingeJoint[] hinge_list = joint_root.GetComponentsInChildren<HingeJoint>();
-            foreach (HingeJoint hinge in hinge_list)
-            {
-                JointSpring spring_settings = new JointSpring();
-                spring_settings.spring = param == "spring" ? v : hinge.spring.spring;
-                spring_settings.damper = param == "damper" ? v : hinge.spring.damper;
-                hinge.spring = spring_settings;
-            }
+            Rigidbody rigid = segment_root.GetChild(m).GetComponent<Rigidbody>();
+            rigid.mass = Mathf.Lerp(startMass, endMass, m / segment_root.childCount - 1);
         }
     }
-    
 
-    void SetRopePathThickness(float v)
+    void UpdateRopeMeshScale()
     {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Transform segment_root = transform.GetChild(i).Find("Segments");
-            for(int k= 0; k < segment_root.childCount; k++)
-            {
-                segment_root.GetChild(k).localScale = new Vector3(v, v * 2f, v);
-            }
-
-            Transform joint_root = transform.GetChild(i).Find("Joints");
-            for (int k = 0; k < joint_root.childCount; k++)
-            {
-                joint_root.GetChild(k).localScale = new Vector3(v, v, v);
-            }
-        }
+        SplineMeshTiling meshTiling = GetComponent<SplineMeshTiling>();
+        meshTiling.scale = Mathf.Max(0.05f, ropeMeshScale) * Vector3.one;
     }
     #endregion
 
-
-    int CombinationFormula(int total, int choose)
+    #region Parameter sent to Live
+    void RegisterPropertiesToLive_Server()
     {
-        if (choose < 1 || total < choose)
-            return 0;
+        if (NetworkManager.Singleton.IsServer == false) return;
 
-        float result = 1;
-        for (int i = 0; i < choose; i++)
-        {
-            result *= (float)(total - i);
-        }
-        for (int i = 0; i < choose; i++)
-        {
-            result /= (float)(choose - i);
-        }
-        return (int)(result);
-    }
-
-    #region UI Slider Callback
-    public void SetAllDrag_UI(float v)
-    {
-        SetRigidBody("Joints", "drag", v);
-        SetRigidBody("Segments", "drag", v);
-    }
-
-    public void SetAllMass_UI(float v)
-    {
-        SetRigidBody("Joints", "mass", v);
-        SetRigidBody("Segments", "mass", v);
-    }
-
-    public void SetAllSpring_UI(float v)
-    {
-        SetJoint("spring", v);
-    }
-
-    public void SetAllDamper_UI(float v)
-    {
-        SetJoint("damper", v);
-    }
-    public void SetAllAngularDrag_UI(float v)
-    {
-        SetRigidBody("Joints", "angular", v);
-        SetRigidBody("Segments", "angular", v);
-    }
-
-    public void SetAllThickness_UI(float v)
-    {
-
-    }
-    public void SetJointDrag_UI(float v)
-    {
-        SetRigidBody("Joints", "drag", v);
-    }
-
-    public void SetSegmentDrag_UI(float v)
-    {
-        SetRigidBody("Segments", "drag", v);
-    }
-
-    public void SetJointMass_UI(float v)
-    {
-        SetRigidBody("Joints", "mass", v);
-    }
-
-    public void SetSegmentMass_UI(float v)
-    {
-        SetRigidBody("Segments", "mass", v);
+        SenderForLive.Instance.RegisterOscPropertyToSend(FormatedOscAddress("vel"), ropevel);
     }
     #endregion
 
-    ////////////////////////////////////////////////////////////
-    // Attempt to set connected anchor position automatically to make the rope movement more reasonable.
-    // But it failed.
-    ////////////////////////////////////////////////////////////
-    //void AutoResetConnectedAnchor()
+    #region Paramters received from Coda
+
+    #endregion
+
+
+
+
+    public void BindPerformer(Performer performer_start, Performer performer_end)
+    {
+        performerStart = performer_start;
+        performerEnd = performer_end;
+    }
+
+    //public void SetPerformerOffset(Vector3 offset)
     //{
-    //    for (int k = 0; k < ropeStateList.Count; k++)
-    //    {
-    //        if (ropeStateList[k] == false)
-    //            continue;
-
-    //        Transform joint_root = transform.GetChild(k).Find("Joints");
-    //        int joint_count = joint_root.childCount + 2;
-    //        int segment_count = joint_count - 1;
-
-    //        Transform anchor_root = transform.GetChild(k).Find("Anchors");
-    //        Transform start_anchor = anchor_root.GetChild(0);
-    //        Transform end_anchor = anchor_root.GetChild(1);
-
-    //        Vector3 start_pos = start_anchor.position;
-    //        Vector3 end_pos = end_anchor.position;
-    //        Vector3 dis_vec = end_pos - start_pos;
-    //        Vector3 dis_unit = dis_vec / segment_count;
-    //        Debug.Log("Dis / joint count = " + dis_vec / joint_count);
-    //        Debug.Log("Dis / segment count = " + dis_vec / segment_count);
-
-
-    //        start_anchor.GetComponent<HingeJoint>().connectedAnchor = Vector3.Scale(dis_unit * 0.5f, new Vector3(1.0f / start_anchor.localScale.x, 1.0f / start_anchor.localScale.y, 1.0f / start_anchor.localScale.z));
-    //        end_anchor.GetComponent<HingeJoint>().connectedAnchor = -Vector3.Scale(dis_unit * 0.5f, new Vector3(1.0f / end_anchor.localScale.x, 1.0f / end_anchor.localScale.y, 1.0f / end_anchor.localScale.z));
-    //        for (int i = 0; i < joint_root.childCount; i++)
-    //        {
-    //            Transform joint = joint_root.GetChild(i);
-    //            HingeJoint[] hinges = joint.GetComponents<HingeJoint>();
-
-    //            HingeJoint hinge = hinges[0];
-    //            hinge.autoConfigureConnectedAnchor = false;
-    //            hinge.autoConfigureConnectedAnchor = true;
-    //            //hinge.connectedAnchor = Vector3.Scale(dis_unit * 0.5f, new Vector3(1.0f/joint.localScale.x, 1.0f / joint.localScale.y, 1.0f / joint.localScale.z));
-
-    //            hinge = hinges[1];
-    //            hinge.autoConfigureConnectedAnchor = false;
-    //            hinge.autoConfigureConnectedAnchor = true;
-    //            //hinge.connectedAnchor = -Vector3.Scale(dis_unit * 0.5f, new Vector3(1.0f / joint.localScale.x, 1.0f / joint.localScale.y, 1.0f / joint.localScale.z));
-    //        }
-    //    }
+    //    ropeOffset = offset;
     //}
+
+    //public void BindRopeAnchors(Transform performer_start, Transform performer_end)
+    //{
+    //    ropeStart = performer_start;
+    //}
+
+    //public void SetThickness(float start_thickness, float end_thickness)
+    //{
+    //    startThickness = start_thickness;
+    //    endThickness = end_thickness;
+    //}
+
+
+
+
+
+
+    void AssignWayPoints()
+    {
+        wayPoints.Clear();
+        //Transform anchor_root = transform.Find("Anchors");
+        //wayPoints.Add(anchor_root.GetChild(0).gameObject);
+
+        Transform joint_root = transform.Find("Joints");
+        for (int i = 0; i < joint_root.childCount; i++)
+        {
+            wayPoints.Add(joint_root.GetChild(i).gameObject);
+        }
+
+        //wayPoints.Add(anchor_root.GetChild(1).gameObject);
+
+        centroidTransform = joint_root.GetChild(Mathf.FloorToInt(joint_root.childCount / 2f));
+    }
+
+    void AssignSplineNodes()
+    {
+        foreach (var penisNode in wayPoints.ToList())
+        {
+            if (penisNode == null) wayPoints.Remove(penisNode);
+        }
+        int nodeCount = wayPoints.Count;
+        // adjust the number of nodes in the spline.
+        while (spline.nodes.Count < nodeCount)
+        {
+            spline.AddNode(new SplineNode(Vector3.zero, Vector3.zero));
+        }
+        while (spline.nodes.Count > nodeCount && spline.nodes.Count > 2)
+        {
+            spline.RemoveNode(spline.nodes.Last());
+        }
+    }
+
+    float CalculateRopeLength()
+    {
+        Vector3 last_pos = Vector3.zero;
+        float dis_total = 0;
+
+        foreach (GameObject wayPoint in wayPoints)
+        {
+            if (last_pos == Vector3.zero)
+            {
+                last_pos = wayPoint.transform.position;
+            }
+            else
+            {
+                dis_total += Vector3.Distance(wayPoint.transform.position, last_pos);
+                last_pos = wayPoint.transform.position;
+            }
+        }
+        //Debug.Log($"Rope{transform.GetSiblingIndex()} Length:{dis_total}");
+        return dis_total;
+    }
 }
