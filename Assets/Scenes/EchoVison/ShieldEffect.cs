@@ -15,12 +15,12 @@ public class ShieldEffect : MonoBehaviour
 
     void Start()
     {
-        RegisterNetworkVariableCallback();
+        RegisterNetworkVariableCallback_Client();
     }
 
 
     #region NetworkVariable
-    void RegisterNetworkVariableCallback()
+    void RegisterNetworkVariableCallback_Client()
     {
         performerGroup.meshy.OnValueChanged += (float prev, float cur) => { meshy = cur; UpdateShieldEffect(); };
         performerGroup.meshnoise.OnValueChanged += (float prev, float cur) => { meshnoise = cur; UpdateShieldEffect(); };

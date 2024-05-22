@@ -38,7 +38,7 @@ public class PerformerGroup : NetworkBehaviour
 
     private List<Performer> performerList = new List<Performer>();
 
-    public NetworkVariable<int> remoteMode;
+    public NetworkVariable<float> effectMode;
 
     void Awake()
     {

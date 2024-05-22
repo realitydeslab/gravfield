@@ -6,7 +6,7 @@ using System.Linq;
 using SplineMesh;
 using UnityEngine.Events;
 
-public class RopeManager : MonoBehaviour
+public class EffectRope : MonoBehaviour
 {
     public Transform performerTransformRoot;
 
@@ -15,6 +15,7 @@ public class RopeManager : MonoBehaviour
     List<Performer> performerList = new List<Performer>();
     List<bool> ropeStateList = new List<bool>();
 
+    bool effectEnabled = false;
 
     void Awake()
     {
@@ -34,7 +35,7 @@ public class RopeManager : MonoBehaviour
 
     void Start()
     {
-        UpdateAllRopeState();
+        
     }
 
     void OnEnable()
@@ -81,6 +82,9 @@ public class RopeManager : MonoBehaviour
 
     bool GetRopeState(int rope_index)
     {
+        if (effectEnabled == false)
+            return false;
+
         Vector2Int performer_index = GetPerformerIndexOfRope(rope_index);
         return performerList[performer_index.x].isPerforming.Value == true && performerList[performer_index.y].isPerforming.Value == true;
     }
@@ -97,7 +101,8 @@ public class RopeManager : MonoBehaviour
 
     void SetRopeState(int index, bool state)
     {
-        SetSplineMeshVisible(index, state);
+        transform.GetChild(index).gameObject.SetActive(state);
+        //SetSplineMeshVisible(index, state);
     }
 
     void SetSplineMeshVisible(int index, bool visible)
@@ -106,6 +111,11 @@ public class RopeManager : MonoBehaviour
         root_transform?.gameObject.SetActive(visible);
     }
 
+    public void SetEffectState(bool state)
+    {
+        effectEnabled = state;
+        UpdateAllRopeState();
+    }
 
     #region OscReceiverFunction
     //void OnReceive_JointMass(float v)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using SplineMesh;
+using Unity.Netcode;
 
 public class RopePath : MonoBehaviour
 {
@@ -24,12 +25,19 @@ public class RopePath : MonoBehaviour
     public Vector3 CentroidPos { get => centroidPos; }
     private Vector3 centroidVel;
     public Vector3 CentroidVel { get => centroidVel; }
+    AutoSwitchedParameter<float> ropevel;
 
     // Parameters
+    int ropeIndex;
     float startThickness;
     float endThickness;
     float startMass;
     float endMass;
+
+    void Awake()
+    {
+        ropeIndex = transform.GetSiblingIndex();
+    }
 
     void Start()
     {
@@ -39,12 +47,18 @@ public class RopePath : MonoBehaviour
 
         AssignSplineNodes();
 
-        RegisterNetworkVariableCallback();
+        RegisterNetworkVariableCallback_Client();
+
+        RegisterPropertiesToLive_Server();
+    }
+
+    string FormatedOscAddress(string param)
+    {
+        return "/rope" + ropeIndex.ToString() + param;
     }
 
     void Update()
     {
-
         UpdateRopeAnchors();
 
         UpdateNodes();
@@ -86,12 +100,14 @@ public class RopePath : MonoBehaviour
         Vector3 last_pos = centroidPos;
         centroidPos = centroidTransform.localPosition;
         centroidVel = (centroidPos - last_pos) / Time.deltaTime;
+
+        ropevel.OrginalValue = centroidVel.magnitude;
     }
 
 
 
     #region NetworkVariable
-    void RegisterNetworkVariableCallback()
+    void RegisterNetworkVariableCallback_Client()
     {
         performerStart.remoteThickness.OnValueChanged += (float prev, float cur) => { startThickness = cur; UpdateRopeThickness(); };
         performerEnd.remoteThickness.OnValueChanged += (float prev, float cur) => { endThickness = cur; UpdateRopeThickness(); };
@@ -123,6 +139,19 @@ public class RopePath : MonoBehaviour
             rigid.mass = Mathf.Lerp(startMass, endMass, m / segment_root.childCount - 1);
         }
     }
+    #endregion
+
+    #region Parameter sent to Live
+    void RegisterPropertiesToLive_Server()
+    {
+        if (NetworkManager.Singleton.IsServer == false) return;
+
+        SenderForLive.Instance.RegisterOscPropertyToSend(FormatedOscAddress("vel"), ropevel);
+    }
+    #endregion
+
+    #region Paramters received from Coda
+
     #endregion
 
 

@@ -128,7 +128,7 @@ public class Performer : NetworkBehaviour
     }
 
 
-    #region Parameters From Coda
+    #region Paramters received from Coda / Example to use local/remote parameter pair
     void InitialLocalParameter()
     {
         if (!IsServer) return;
@@ -148,9 +148,6 @@ public class Performer : NetworkBehaviour
     void RegisterOscReceiverFunction()
     {
         if (!IsServer) return;
-
-        //thickness.OrginalValue = 
-        //AudoSwitchedParameterManager.Instance.RegisterParameterPair(FormatedOscAddress("mass"), localMass, remoteMass);
 
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("mass"), new UnityAction<float>(OnReceive_Mass));
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("thickness"), new UnityAction<float>(OnReceive_Thickness));

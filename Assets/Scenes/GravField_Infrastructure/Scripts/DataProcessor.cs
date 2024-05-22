@@ -78,14 +78,14 @@ public class DataProcessor : MonoBehaviour
 
         Debug.Log("DataProcessor | RegisterProperties");
 
-        RegisterPropertiesFromCoda();
+        RegisterPropertiesFromCoda_Server();
 
-        RegisterPropertiesToLive();
+        RegisterPropertiesToLive_Server();
 
         propertiesRegistered = true;
     }
 
-    void RegisterPropertiesToLive()
+    void RegisterPropertiesToLive_Server()
     {
         //SenderForLive.Instance.RegisterOscPropertyToSend("/posXMin", PosXMin);
         //SenderForLive.Instance.RegisterOscPropertyToSend("/posXMax", PosXMax);
@@ -124,7 +124,7 @@ public class DataProcessor : MonoBehaviour
         SenderForLive.Instance.RegisterOscPropertyToSend("/valuef6", valuef6);
     }
 
-    void RegisterPropertiesFromCoda()
+    void RegisterPropertiesFromCoda_Server()
     {
         //ParameterReceiver.Instance.RegisterOscReceiverFunction("/posXMin", new UnityAction<float>(OnReceive_posXMin));
         //ParameterReceiver.Instance.RegisterOscReceiverFunction("/posXMax", new UnityAction<float>(OnReceive_posXMax));

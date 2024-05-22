@@ -37,6 +37,12 @@ public class GameManager : MonoBehaviour
     private UIController uiController;
     public UIController UIController { get => uiController; }
 
+    private PerformerGroup performerGroup;
+    public PerformerGroup PerformerGroup { get => performerGroup; }
+
+    private List<Performer> performerList;
+    public List<Performer> PerformerList { get => performerList; }
+
     public RoleManager.PlayerRole PlayerRole { get => roleManager.GetPlayerRole(); }
 
     private bool isPlaying = false;
@@ -340,6 +346,22 @@ public class GameManager : MonoBehaviour
         if (uiController == null)
         {
             Debug.LogError("No UIController Found.");
+        }
+
+        performerGroup = FindObjectOfType<PerformerGroup>();
+        if (uiController == null)
+        {
+            Debug.LogError("No PerformerGroup Found.");
+        }
+
+        if(performerGroup!= null)
+        {
+            Transform performer_root = performerGroup.transform;
+            performerList = new List<Performer>();
+            for(int i=0; i< performer_root.childCount; i++)
+            {
+                performerList.Add(performer_root.GetChild(i).GetComponent<Performer>());
+            }
         }
     }
 

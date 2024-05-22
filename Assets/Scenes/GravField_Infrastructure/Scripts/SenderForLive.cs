@@ -25,6 +25,8 @@ public class SenderForLive : MonoBehaviour
 
     public void RegisterOscPropertyToSend(string address, AutoSwitchedParameter<float> param)
     {
+        if (NetworkManager.Singleton.IsServer == false) return;
+
         OscPropertyForSending property = new OscPropertyForSending(address, param);
 
         propertiesForSending.Add(property);
@@ -33,6 +35,8 @@ public class SenderForLive : MonoBehaviour
     }
     public void RegisterOscPropertyToSend(string address, AutoSwitchedParameter<Vector3> param)
     {
+        if (NetworkManager.Singleton.IsServer == false) return;
+
         OscPropertyForSending property = new OscPropertyForSending(address, param);
 
         propertiesForSending.Add(property);
@@ -41,6 +45,8 @@ public class SenderForLive : MonoBehaviour
     }
     public void RegisterOscPropertyToSend(string address, AutoSwitchedParameter<int> param)
     {
+        if (NetworkManager.Singleton.IsServer == false) return;
+
         OscPropertyForSending property = new OscPropertyForSending(address, param);
 
         propertiesForSending.Add(property);
@@ -49,6 +55,8 @@ public class SenderForLive : MonoBehaviour
     }
     public void RegisterOscPropertyToSend(string address, AutoSwitchedParameter<string> param)
     {
+        if (NetworkManager.Singleton.IsServer == false) return;
+
         OscPropertyForSending property = new OscPropertyForSending(address, param);
 
         propertiesForSending.Add(property);
