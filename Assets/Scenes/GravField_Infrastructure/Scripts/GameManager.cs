@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     bool showPerformerAxis = false;
 
+    private AudioProcessor audioProcessor;
+    public AudioProcessor AudioProcessor { get => audioProcessor; }
+
     private NetcodeConnectionManager connectionManager;
     public NetcodeConnectionManager ConnectionManager { get => connectionManager; }
 
@@ -324,6 +327,12 @@ public class GameManager : MonoBehaviour
     void InitializeReferences()
     {
         // Initialize References
+        audioProcessor = FindObjectOfType<AudioProcessor>();
+        if (audioProcessor == null)
+        {
+            Debug.LogError("No AudioProcessor Found.");
+        }
+
         connectionManager = FindObjectOfType<NetcodeConnectionManager>();
         if (connectionManager == null)
         {

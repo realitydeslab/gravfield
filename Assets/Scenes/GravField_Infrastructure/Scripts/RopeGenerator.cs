@@ -338,7 +338,11 @@ public class RopeGenerator : MonoBehaviour
     #endregion
 
 
-
+    // Possible equation. Need to be testified.
+    Vector3 CalculateConnectedAnchor(Transform joint, Transform connected_object)
+    {
+        return connected_object.InverseTransformPoint(joint.position);
+    }
 
     #region SplineExtrusion Attempts
     ////////////////////////////////////////////////////////////

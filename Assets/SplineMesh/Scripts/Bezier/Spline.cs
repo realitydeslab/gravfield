@@ -147,8 +147,10 @@ namespace SplineMesh {
         /// <param name="d"></param>
         /// <returns></returns>
         public CurveSample GetSampleAtDistance(float d) {
-            if (d < 0 || d > Length)
-                throw new ArgumentException(string.Format("Distance must be between 0 and spline length ({0}). Given distance was {1}.", Length, d));
+            if (d < 0) d = 0;
+            if (d > Length) d = Length;
+            //if (d < 0 || d > Length)
+            //    throw new ArgumentException(string.Format("Distance must be between 0 and spline length ({0}). Given distance was {1}.", Length, d));
             foreach (CubicBezierCurve curve in curves) {
                 // test if distance is approximatly equals to curve length, because spline
                 // length may be greater than cumulated curve length due to float precision

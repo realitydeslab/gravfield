@@ -3657,25 +3657,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -3701,7 +3701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &95866869
 GameObject:
   m_ObjectHideFlags: 0
@@ -8227,25 +8227,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -8271,7 +8271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &182925632
 GameObject:
   m_ObjectHideFlags: 0
@@ -12169,7 +12169,7 @@ MonoBehaviour:
   ropeMat: {fileID: 2100000, guid: ae61dff27905f4faea3bd8d733e53b49, type: 2}
   ropeMeshRotation: {x: 0, y: 0, z: 0}
   ropeMeshScale: 0.01
-  ropeCornerOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeCornerOffset: {x: 0, y: -0.1, z: 0}
 --- !u!1 &318703274
 GameObject:
   m_ObjectHideFlags: 0
@@ -19270,25 +19270,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -19314,7 +19314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &507720301
 GameObject:
   m_ObjectHideFlags: 0
@@ -21865,25 +21865,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -21909,7 +21909,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &599089069
 GameObject:
   m_ObjectHideFlags: 0
@@ -22186,25 +22186,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -22230,7 +22230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &599522413
 GameObject:
   m_ObjectHideFlags: 0
@@ -23891,25 +23891,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -23935,7 +23935,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &680876126
 GameObject:
   m_ObjectHideFlags: 0
@@ -25038,25 +25038,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -25082,7 +25082,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &727108856
 GameObject:
   m_ObjectHideFlags: 0
@@ -28022,25 +28022,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -28066,7 +28066,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &875117459
 GameObject:
   m_ObjectHideFlags: 0
@@ -34964,25 +34964,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -35008,7 +35008,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &1060505445
 GameObject:
   m_ObjectHideFlags: 0
@@ -35782,25 +35782,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -35826,7 +35826,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &1065980036
 GameObject:
   m_ObjectHideFlags: 0
@@ -38215,25 +38215,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -38259,7 +38259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &1143285019
 GameObject:
   m_ObjectHideFlags: 3
@@ -38809,25 +38809,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -38853,7 +38853,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &1177279618
 GameObject:
   m_ObjectHideFlags: 0
@@ -40015,7 +40015,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInDevelopment: 1
-  isSoloMode: 1
+  isSoloMode: 0
   showPerformerAxis: 0
 --- !u!4 &1215605116
 Transform:
@@ -40308,25 +40308,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -40352,7 +40352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1001 &1221097270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46080,25 +46080,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -46124,7 +46124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &1466757553
 GameObject:
   m_ObjectHideFlags: 0
@@ -46401,25 +46401,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -46445,7 +46445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.1, z: 0.4}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
 --- !u!1 &1469759851
 GameObject:
   m_ObjectHideFlags: 0

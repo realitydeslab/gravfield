@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using HoloKit.iOS;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.VFX;
 
 public class AudioProcessor : MonoBehaviour
 {
@@ -31,6 +33,21 @@ public class AudioProcessor : MonoBehaviour
     [Header("Holokit Recorder")]
     public HoloKitVideoRecorder videoRecorder;
     public UnityEngine.UI.Text recordingText;
+
+
+    private const int BUFFER_STRIDE = 4; // 4 Bytes for a float
+    private const int bufferInitialCapacity = 512;
+    private bool dynamicallyResizeBuffer = false;
+    private static readonly int VertexBufferPropertyID = Shader.PropertyToID("MeshPointCache");
+    private List<float> listFFT = new List<float>();
+    public List<float> ListFFT { get => listFFT; }
+    private GraphicsBuffer bufferFFT;
+
+    void Awake()
+    {
+        listFFT = new List<float>(bufferInitialCapacity);
+        EnsureBufferCapacity(ref bufferFFT, bufferInitialCapacity, BUFFER_STRIDE);
+    }
 
     void Start()
     {
@@ -151,11 +168,25 @@ public class AudioProcessor : MonoBehaviour
             freqN += 0.5f * (dR * dR - dL * dL);
         }
         PitchValue = freqN * (_fSample / 2) / QSamples; // convert index to frequency
+
+
+        // Set Buffer data, but before that ensure there is enough capacity
+        // We use Audio Raw Data instead of FFT
+        listFFT.Clear();
+        int index_step = Mathf.FloorToInt(_samples.Length / bufferInitialCapacity);
+        int sample_index = 0;
+        for (int k=0; k<bufferInitialCapacity; k++)
+        {
+            listFFT.Add(_samples[sample_index]);
+            sample_index += index_step;
+        }
+        EnsureBufferCapacity(ref bufferFFT, listFFT.Count, BUFFER_STRIDE);
+        bufferFFT.SetData(listFFT);
     }
     #endregion
 
 
-
+    #region Micorphone 
     void StartMicrophone()
     {
         if (isInitialized)
@@ -238,6 +269,8 @@ public class AudioProcessor : MonoBehaviour
     {
         //Debug.Log("OnDestroy:End");
         StopMicrophone();
+
+        ReleaseBuffer(ref bufferFFT);
     }
     /// <summary>
     /// Caution!
@@ -296,4 +329,32 @@ public class AudioProcessor : MonoBehaviour
         videoRecorder.ToggleRecording();
         recordingText.text = videoRecorder.IsRecording ? "Stop Recording" : "Start Recording";
     }
+    #endregion
+
+    #region Buffer
+    private void EnsureBufferCapacity(ref GraphicsBuffer buffer, int capacity, int stride)
+    {
+        // Reallocate new buffer only when null or capacity is not sufficient
+        if (buffer == null || (dynamicallyResizeBuffer && buffer.count < capacity)) // remove dynamic allocating function
+        {
+            Debug.Log("Graphic Buffer reallocated!");
+            // Buffer memory must be released
+            buffer?.Release();
+            // Vfx Graph uses structured buffer
+            buffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, capacity, stride);
+        }
+    }
+    public void BindFFTBufferForVFX(VisualEffect _vfx, int vfxProperty)
+    {
+        // Update buffer referenece
+        _vfx.SetGraphicsBuffer(vfxProperty, bufferFFT);
+    }
+
+    private void ReleaseBuffer(ref GraphicsBuffer buffer)
+    {
+        // Buffer memory must be released
+        buffer?.Release();
+        buffer = null;
+    }
+    #endregion
 }

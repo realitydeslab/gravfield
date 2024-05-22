@@ -21,6 +21,7 @@ public class EffectSpring : MonoBehaviour
     Spline spline;
     List<GameObject> wayPoints = new List<GameObject>();
     LineRenderer lineRenderer;
+    Material lineMat;
 
     // Output to LIVE
     Transform centroidTransform;
@@ -51,6 +52,7 @@ public class EffectSpring : MonoBehaviour
     {
         spline = GetComponent<Spline>();
         lineRenderer = GetComponent<LineRenderer>();
+        lineMat = lineRenderer.material;
 
         AssignWayPoints();
 
@@ -108,11 +110,57 @@ public class EffectSpring : MonoBehaviour
     void UpdateLineRenderer()
     {
         int sampleCount = lineRenderer.positionCount;
-        for(int i=0; i< sampleCount; i++)
+
+        List<float> audio_data = GameManager.Instance.AudioProcessor.ListFFT;
+        if (audio_data == null) audio_data = new List<float>();
+
+        int index_step = Mathf.FloorToInt(audio_data.Count / sampleCount);
+        float min = float.MaxValue;
+        float max = float.MinValue;
+
+        Vector3 axis_y = Vector3.up;
+        Vector3 axis_z = (ropeEnd.position - ropeStart.position).normalized;
+        Vector3 axis_x = Vector3.Cross(axis_y, axis_z);
+        axis_y = Vector3.Cross(axis_x, axis_z);
+        float random_angle = Random.Range(0, 2 * Mathf.PI);
+        Vector3 random_dir = Mathf.Cos(random_angle) * axis_x + Mathf.Sin(random_angle) * axis_y;
+
+        for (int i=0; i< sampleCount; i++)
         {
-            CurveSample point = spline.GetSampleAtDistance(spline.Length * (float)i / (float)(sampleCount - 1));
-            lineRenderer.SetPosition(i, point.location);
+            // Normally, audio value ranges from -0.25 to 0.25
+            float audio_value = audio_data[i * index_step];
+            audio_value = Utilities.Remap(audio_value, -0.25f, 0.25f, -0.05f, 0.05f);
+            min = Mathf.Min(min, audio_value);
+            max = Mathf.Max(max, audio_value);
+
+            //try
+            //{
+                CurveSample point = spline.GetSampleAtDistance(spline.Length * (float)i / (float)(sampleCount - 1));
+
+                //Vector3 axis_y = point.up;
+                //Vector3 axis_z = point.tangent;
+                //Vector3 axis_x = Vector3.Cross(axis_y, axis_z);
+                //float random_angle = Random.Range(0, 2 * Mathf.PI);
+                //Vector3 random_dir = Mathf.Cos(random_angle) * axis_x + Mathf.Sin(random_angle) * axis_y;
+
+                Vector3 random_pos = audio_value * random_dir;
+
+                lineRenderer.SetPosition(i, point.location + random_pos);// point.up * audio_value); 
+            //}
+            //catch
+            //{
+
+            //}
         }
+
+        float distance_param = Utilities.Remap(spline.Length, 0, 10, 0, 1);
+        lineMat.SetFloat("_Distance", distance_param);
+
+        distance_param = Utilities.Remap(spline.Length, 0, 10, 0.05f, 0.001f);
+        lineRenderer.startWidth = distance_param;
+        lineRenderer.endWidth = distance_param;
+
+        //Debug.Log($"Min:{min}, Max{max}");
     }
 
     void UpdateParamtersForLive()
