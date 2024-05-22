@@ -396,7 +396,7 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        _Instance = null;
+        //_Instance = null;
     }
     #endregion
 

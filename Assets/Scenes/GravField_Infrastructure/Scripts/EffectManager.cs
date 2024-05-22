@@ -20,7 +20,7 @@ public class EffectManager : MonoBehaviour
 
     void OnDisable()
     {
-        GameManager.Instance.RoleManager.OnSpecifyPlayerRoleEvent.RemoveListener(OnSpecifyPlayerRole);
+        //GameManager.Instance.RoleManager.OnSpecifyPlayerRoleEvent.RemoveListener(OnSpecifyPlayerRole);
     }
 
     void OnSpecifyPlayerRole(RoleManager.PlayerRole role)

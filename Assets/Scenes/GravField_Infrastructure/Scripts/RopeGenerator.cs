@@ -46,6 +46,8 @@ public class RopeGenerator : MonoBehaviour
     [Header("Spline Mesh")]
     public Mesh ropeMesh;
     public Material ropeMat;
+    public Vector3 ropeMeshRotation = Vector3.zero;
+    public float ropeMeshScale = 0.1f;
 
     [Tooltip("Caution! The scale values of Performer GameObjects matters a lot. Make sure they are set to (1, 1, 1)")]
     public Vector3 ropeCornerOffset = new Vector3(0, -0.1f, 0.4f);
@@ -53,7 +55,7 @@ public class RopeGenerator : MonoBehaviour
 
     #region Generate Rope
     [ContextMenu("GenerateRopes")]
-    void GenerateRopes()
+    protected virtual void GenerateRopes()
     {
         //// Remove all ropes
         var childList = transform.Cast<Transform>().ToList();
@@ -67,21 +69,22 @@ public class RopeGenerator : MonoBehaviour
         {
             for(int k=i+1; k< performerTransformRoot.childCount; k++)
             {
-                GenerateRope(i,k);
+                // Generate Root
+                GameObject rope_root = new GameObject("Rope" + i.ToString() + k.ToString());
+                rope_root.transform.parent = transform;
+
+                GenerateRope(rope_root, i,k);
             }
             
         }
     }
 
-    GameObject GenerateRope(int start_index, int end_index)
+    protected GameObject GenerateRope(GameObject rope_root, int start_index, int end_index)
     {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Anchor <- Joint -> Segment <- Joint -> Segment <- Joint -> Segment <- Joint -> Anchor
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        // Generate Root
-        GameObject rope_root = new GameObject("Rope" + start_index.ToString() + end_index.ToString());
-        rope_root.transform.parent = transform;       
         
         Vector3 start_pos = Vector3.zero;
         Vector3 end_pos = new Vector3(generatorRopeLength, 0, 0);
@@ -124,7 +127,11 @@ public class RopeGenerator : MonoBehaviour
         // Add Components
         AddBasicComponent(rope_root, start_index, end_index);
 
-        AddSplineMeshComponent(rope_root);
+        AddExtraComponent(rope_root, start_index, end_index);
+
+
+        // ExtraSettings
+        DoExtraSettings(rope_root, start_index, end_index);
 
         return rope_root;
 
@@ -151,7 +158,7 @@ public class RopeGenerator : MonoBehaviour
         rigid_body.mass = 100;
 
         anchor.GetComponent<Collider>().enabled = false;
-        //anchor.GetComponent<MeshRenderer>().enabled = false;
+        anchor.GetComponent<MeshRenderer>().enabled = false;
 
         return anchor;
     }
@@ -179,7 +186,7 @@ public class RopeGenerator : MonoBehaviour
         ////////////////////////////////////////////////////////////
         joint.GetComponent<Collider>().enabled = true;
 
-        //joint.GetComponent<MeshRenderer>().enabled = false;
+        joint.GetComponent<MeshRenderer>().enabled = false;
 
         return joint;
     }
@@ -188,6 +195,17 @@ public class RopeGenerator : MonoBehaviour
     {
         hinge.anchor = Vector3.zero;
         hinge.connectedBody = rigid;
+
+        ////////////////////////////////////////////////////////////
+        // Caution!!!
+        // 
+        // autoConfigureConnectedAnchor is a great pain here.
+        // 1. Joints connected to anchors do not need auto configuration cause it should stick with the anchor
+        // 2. Joints connected to segments need to assign resonable anchors' position to behavior as we want which is why
+        //    we choose auto configuration. However, if  Joints' position got modified before HingeJoint's Start()
+        //    execute, it will use the new position to configure anchors.
+        //    So, The entire rope MUST remain still for several frames when game starts for Joints to initialize its HingeJoints 
+        ////////////////////////////////////////////////////////////
         // When connected to anchor, there is no need to set calculate anchor position. just connect to (0,0,0)
         if (rigid.gameObject.name.Contains("Anchor"))
         {
@@ -228,7 +246,7 @@ public class RopeGenerator : MonoBehaviour
         rigid_body.angularDrag = segmentAngularDrag;
 
         segment.GetComponent<Collider>().enabled = false;
-        //segment.GetComponent<MeshRenderer>().enabled = false;
+        segment.GetComponent<MeshRenderer>().enabled = false;
 
         return segment;
     }
@@ -241,6 +259,11 @@ public class RopeGenerator : MonoBehaviour
         rope_path.ropeOffset = ropeCornerOffset;
     }
 
+    protected virtual void AddExtraComponent(GameObject go, int start_index, int end_index)
+    {
+        AddSplineMeshComponent(go);
+    }
+
     void AddSplineMeshComponent(GameObject go)
     {
         Spline spline = go.AddComponent<Spline>();
@@ -251,8 +274,8 @@ public class RopeGenerator : MonoBehaviour
         SplineMeshTiling meshTilling = go.AddComponent<SplineMeshTiling>();
         meshTilling.mesh = ropeMesh;
         meshTilling.material = ropeMat;
-        meshTilling.rotation = new Vector3(0, 0, 0);
-        meshTilling.scale = Vector3.one * 0.1f;
+        meshTilling.rotation = ropeMeshRotation;
+        meshTilling.scale = Vector3.one * ropeMeshScale;
 
         meshTilling.generateCollider = false;
         meshTilling.updateInPlayMode = true;
@@ -260,12 +283,17 @@ public class RopeGenerator : MonoBehaviour
 
     }
 
+    protected virtual void DoExtraSettings(GameObject go, int start_index, int end_index)
+    {
+        
+    }
+
     #endregion
 
 
     #region Control Rope
     [ContextMenu("HideAllPath")]
-    void HideAllPath()
+    protected virtual void HideAllPath()
     {
         SetPathVisible(0, false);
         SetPathVisible(1, false);
@@ -273,14 +301,14 @@ public class RopeGenerator : MonoBehaviour
     }
 
     [ContextMenu("ShowAllPath")]
-    void ShowAllPath()
+    protected virtual void ShowAllPath()
     {
         SetPathVisible(0, true);
         SetPathVisible(1, true);
         SetPathVisible(2, true);
     }
 
-    void SetPathVisible(int index, bool visiable)
+    protected virtual void SetPathVisible(int index, bool visiable)
     {
         if (index < 0 || index >= transform.childCount) return;
 

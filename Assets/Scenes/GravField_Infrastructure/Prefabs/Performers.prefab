@@ -743,6 +743,6 @@ MonoBehaviour:
     m_InternalValue: {x: 0, y: 0, z: 0}
   ropeTransformRoot: {fileID: 0}
   effectMode:
-    m_InternalValue: 0
+    m_InternalValue: 1
   ropeMeshScale:
     m_InternalValue: 0.2

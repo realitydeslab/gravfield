@@ -14,11 +14,13 @@ public class EffectSpring : MonoBehaviour
     Transform ropeEnd;
     public Vector3 ropeOffset;
     int springIndex;
+    bool springEnabled = false;
 
 
     // Path
     Spline spline;
     List<GameObject> wayPoints = new List<GameObject>();
+    LineRenderer lineRenderer;
 
     // Output to LIVE
     Transform centroidTransform;
@@ -26,7 +28,7 @@ public class EffectSpring : MonoBehaviour
     public Vector3 CentroidPos { get => centroidPos; }
     private Vector3 centroidVel;
     public Vector3 CentroidVel { get => centroidVel; }
-    AutoSwitchedParameter<float> ropevel;
+    AutoSwitchedParameter<float> ropevel = new AutoSwitchedParameter<float>();
 
     // Parameters    
     float ropeMeshScale;
@@ -34,6 +36,8 @@ public class EffectSpring : MonoBehaviour
     float endThickness;
     float startMass;
     float endMass;
+
+    bool jointAnchorInitialzed = false;
 
     void Awake()
     {
@@ -46,6 +50,7 @@ public class EffectSpring : MonoBehaviour
     void Start()
     {
         spline = GetComponent<Spline>();
+        lineRenderer = GetComponent<LineRenderer>();
 
         AssignWayPoints();
 
@@ -60,9 +65,13 @@ public class EffectSpring : MonoBehaviour
 
     void Update()
     {
+        if (springEnabled == false) return;
+
         UpdateRopeAnchors();
 
         UpdateNodes();
+
+        UpdateLineRenderer();
 
         UpdateParamtersForLive();
     }
@@ -96,6 +105,16 @@ public class EffectSpring : MonoBehaviour
         }
     }
 
+    void UpdateLineRenderer()
+    {
+        int sampleCount = lineRenderer.positionCount;
+        for(int i=0; i< sampleCount; i++)
+        {
+            CurveSample point = spline.GetSampleAtDistance(spline.Length * (float)i / (float)(sampleCount - 1));
+            lineRenderer.SetPosition(i, point.location);
+        }
+    }
+
     void UpdateParamtersForLive()
     {
         Vector3 last_pos = centroidPos;
@@ -105,7 +124,12 @@ public class EffectSpring : MonoBehaviour
         ropevel.OrginalValue = centroidVel.magnitude;
     }
 
+    public void SetSpringState(bool state)
+    {
+        springEnabled = state;
 
+
+    }
 
     #region NetworkVariable
     void RegisterNetworkVariableCallback_Client()

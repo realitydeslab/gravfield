@@ -105,7 +105,10 @@ public class EffectRopeController : MonoBehaviour
 
     void SetRopeState(int index, bool state)
     {
-        transform.GetChild(index).gameObject.SetActive(state);
+        ropeList[index].SetRopeState(state);
+
+        //transform.GetChild(index).gameObject.SetActive(state);
+        
         //SetSplineMeshVisible(index, state);
     }
 
