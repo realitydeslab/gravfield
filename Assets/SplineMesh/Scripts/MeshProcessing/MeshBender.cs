@@ -111,7 +111,15 @@ namespace SplineMesh {
         }
 
         private void LateUpdate() {
-            ComputeIfNeeded();
+            try
+            {
+                ComputeIfNeeded();
+            }
+            catch(Exception e)
+            {
+                Debug.Log(e);
+            }
+            
         }
 
         public void ComputeIfNeeded() {

@@ -28,6 +28,9 @@ namespace SplineMesh {
             get {
                 if (rotation == Quaternion.identity) {
                     var upVector = Vector3.Cross(tangent, Vector3.Cross(Quaternion.AngleAxis(roll, Vector3.forward) * up, tangent).normalized);
+                    if (upVector == Vector3.zero || tangent == Vector3.zero)
+                        return rotation;
+
                     rotation = Quaternion.LookRotation(tangent, upVector);
                 }
                 return rotation;
