@@ -16,6 +16,8 @@ public class EffectManager : MonoBehaviour
     void OnEnable()
     {
         GameManager.Instance.RoleManager.OnSpecifyPlayerRoleEvent.AddListener(OnSpecifyPlayerRole);
+
+        GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
     }
 
     void OnDisable()
@@ -28,8 +30,19 @@ public class EffectManager : MonoBehaviour
         ChangeEffectModeTo(GameManager.Instance.PerformerGroup.effectMode.Value);
     }
 
+    void OnPerformerFinishSpawn()
+    {
+        AssignLocalVariable();
+
+        RegisterNetworkVariableCallback_Client();
+    }
 
     #region NetworkVariable / Clients also should execute
+    void AssignLocalVariable()
+    {
+        effectMode = GameManager.Instance.PerformerGroup.effectMode.Value;
+    }
+
     void RegisterNetworkVariableCallback_Client()
     {
         GameManager.Instance.PerformerGroup.effectMode.OnValueChanged += (float prev, float cur) => { ChangeEffectModeTo(cur); };
@@ -37,6 +50,7 @@ public class EffectManager : MonoBehaviour
 
     void ChangeEffectModeTo(float effect_index)
     {
+        Debug.Log("ChangeEffectModeTo: " + effect_index);
         effectMode = Mathf.RoundToInt(effect_index);
 
         effectRope.SetEffectState(effectMode == 0);

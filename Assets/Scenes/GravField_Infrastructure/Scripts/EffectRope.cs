@@ -43,6 +43,19 @@ public class EffectRope : MonoBehaviour
         ropeStart = transform.Find("Anchors").GetChild(0);
         ropeEnd = transform.Find("Anchors").GetChild(1);
     }
+    void OnEnable()
+    {
+        GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
+    }
+
+    void OnPerformerFinishSpawn()
+    {
+        AssignLocalVariable();
+
+        RegisterNetworkVariableCallback_Client();
+
+        RegisterPropertiesToLive_Server();
+    }
 
     void Start()
     {
@@ -51,10 +64,6 @@ public class EffectRope : MonoBehaviour
         AssignWayPoints();
 
         AssignSplineNodes();
-
-        RegisterNetworkVariableCallback_Client();
-
-        RegisterPropertiesToLive_Server();
     }
 
     string FormatedOscAddress(string param)
@@ -68,9 +77,12 @@ public class EffectRope : MonoBehaviour
 
         UpdateRopeAnchors();
 
+        UpdateParamtersForLive();
+
         UpdateNodes();
 
-        UpdateParamtersForLive();
+        UpdateRopeEffect();
+        
     }
 
     void UpdateRopeAnchors()
@@ -108,7 +120,24 @@ public class EffectRope : MonoBehaviour
         centroidPos = centroidTransform.localPosition;
         centroidVel = (centroidPos - last_pos) / Time.deltaTime;
 
-        ropevel.OrginalValue = centroidVel.magnitude;
+        float vel =0;
+        ropevel.OrginalValue = Mathf.SmoothDamp(ropevel.Value, centroidVel.magnitude, ref vel, 0.2f);
+    }
+    void UpdateRopeEffect()
+    {
+        float min_thickness = Utilities.Remap(spline.Length, 0, 10, 2, 1, true);
+        float max_thickness = Utilities.Remap(ropevel.Value, 0, 20, min_thickness, 20);
+
+        float currentLength = 0;
+        foreach (CubicBezierCurve curve in spline.GetCurves())
+        {
+            float start_percentage = 1 - Mathf.Abs((currentLength / spline.Length - 0.5f) * 2);
+            currentLength += curve.Length;
+            float end_percentage = 1 - Mathf.Abs((currentLength / spline.Length - 0.5f) * 2);
+
+            curve.n1.Scale = Vector3.one * (min_thickness + (max_thickness - min_thickness) * start_percentage);
+            curve.n2.Scale = Vector3.one * (min_thickness + (max_thickness - min_thickness) * end_percentage);
+        }
     }
 
     public void SetRopeState(bool state)
@@ -121,10 +150,19 @@ public class EffectRope : MonoBehaviour
 
 
     #region NetworkVariable
+    void AssignLocalVariable()
+    {
+        ropeMeshScale = GameManager.Instance.PerformerGroup.ropeMeshScale.Value;
+        startThickness = performerStart.remoteThickness.Value;
+        endThickness = performerEnd.remoteThickness.Value;
+        startMass = performerStart.remoteMass.Value;
+        endMass = performerEnd.remoteMass.Value;
+    }
+
     void RegisterNetworkVariableCallback_Client()
     {
-        performerStart.remoteThickness.OnValueChanged += (float prev, float cur) => { startThickness = cur; UpdateRopeThickness(); };
-        performerEnd.remoteThickness.OnValueChanged += (float prev, float cur) => { endThickness = cur; UpdateRopeThickness(); };
+        //performerStart.remoteThickness.OnValueChanged += (float prev, float cur) => { startThickness = cur; UpdateRopeThickness(); };
+        //performerEnd.remoteThickness.OnValueChanged += (float prev, float cur) => { endThickness = cur; UpdateRopeThickness(); };
 
         performerStart.remoteMass.OnValueChanged += (float prev, float cur) => { startMass = cur; UpdateRopeMass(); };
         performerEnd.remoteMass.OnValueChanged += (float prev, float cur) => { endMass = cur; UpdateRopeMass(); };

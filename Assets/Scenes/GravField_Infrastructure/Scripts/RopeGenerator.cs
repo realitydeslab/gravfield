@@ -210,11 +210,14 @@ public class RopeGenerator : MonoBehaviour
         if (rigid.gameObject.name.Contains("Anchor"))
         {
             hinge.autoConfigureConnectedAnchor = false;
+            hinge.connectedAnchor = Vector3.zero;
         }
         // When connected to another joint, the result highly depends on the initial position. so better generate rope on the groud
         else
         {
-            hinge.autoConfigureConnectedAnchor = true;
+            //hinge.autoConfigureConnectedAnchor = true;
+            hinge.autoConfigureConnectedAnchor = false;
+            hinge.connectedAnchor = CalculateConnectedAnchor(hinge.transform, rigid.transform);
         }
 
         hinge.useSpring = true;

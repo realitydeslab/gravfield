@@ -51,8 +51,6 @@ public class Performer : NetworkBehaviour
 
     public NetworkVariable<float> remoteMass;
     public AutoSwitchedParameter<float> localMass = new AutoSwitchedParameter<float>(1);
-    
-
 
     int performerIndex = 0;
 
@@ -133,16 +131,16 @@ public class Performer : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        localThickness.OrginalValue = remoteThickness.Value;
-        localMass.OrginalValue = remoteMass.Value;
+        //localThickness.OrginalValue = remoteThickness.Value;
+        //localMass.OrginalValue = remoteMass.Value;
     }
 
     void UpdateRemoteParameterWithLocal()
     {
         if (!IsServer) return;
 
-        remoteMass.Value = localMass.Value;
-        remoteThickness.Value = localThickness.Value;
+        //remoteMass.Value = localMass.Value;
+        //remoteThickness.Value = localThickness.Value;
     }
 
     void RegisterOscReceiverFunction()
@@ -161,13 +159,15 @@ public class Performer : NetworkBehaviour
     void OnReceive_Mass(float v)
     {
         v = Mathf.Clamp(v, 0.1f, 100);
-        localMass.CodaValue = SmoothValue(localMass.Value, v);
+        //localMass.CodaValue = SmoothValue(localMass.Value, v);
+        remoteMass.Value = SmoothValue(remoteMass.Value, v);
     }
 
     void OnReceive_Thickness(float v)
     {
         v = Mathf.Clamp(v, 1f, 50);
-        localThickness.CodaValue = SmoothValue(localThickness.Value, v);
+        //localThickness.CodaValue = SmoothValue(localThickness.Value, v);
+        remoteThickness.Value = SmoothValue(remoteThickness.Value, v);
     }
 
     float SmoothValue(float cur, float dst, float t = 0)

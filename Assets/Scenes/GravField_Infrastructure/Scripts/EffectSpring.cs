@@ -14,7 +14,7 @@ public class EffectSpring : MonoBehaviour
     Transform ropeEnd;
     public Vector3 ropeOffset;
     int springIndex;
-    bool springEnabled = false;
+    public bool springEnabled = false;
 
 
     // Path
@@ -48,6 +48,20 @@ public class EffectSpring : MonoBehaviour
         ropeEnd = transform.Find("Anchors").GetChild(1);
     }
 
+    void OnEnable()
+    {
+        GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
+    }
+
+    void OnPerformerFinishSpawn()
+    {
+        AssignLocalVariable();
+
+        RegisterNetworkVariableCallback_Client();
+
+        RegisterPropertiesToLive_Server();
+    }
+
     void Start()
     {
         spline = GetComponent<Spline>();
@@ -56,11 +70,7 @@ public class EffectSpring : MonoBehaviour
 
         AssignWayPoints();
 
-        AssignSplineNodes();
-
-        RegisterNetworkVariableCallback_Client();
-
-        RegisterPropertiesToLive_Server();
+        AssignSplineNodes(); 
     }
 
     
@@ -80,15 +90,29 @@ public class EffectSpring : MonoBehaviour
 
     void UpdateRopeAnchors()
     {
-        //Vector3 nor = (performerEnd.position - performerStart.position).normalized;
-        //ropeStart.localPosition = performerStart.position + nor* 0.3f;
-        //ropeEnd.localPosition = performerEnd.position -nor*0.3f;
-
-        ropeStart.localPosition = performerStart.transform.TransformPoint(ropeOffset);
-        ropeEnd.localPosition = performerEnd.transform.TransformPoint(ropeOffset);
+        ropeStart.localPosition = performerStart.transform.TransformPoint(ropeOffset + RandomOffset(performerStart.transform.position));
+        ropeEnd.localPosition = performerEnd.transform.TransformPoint(ropeOffset + RandomOffset(performerEnd.transform.position));
 
         ropeStart.localRotation = performerStart.transform.localRotation;
         ropeEnd.localRotation = performerEnd.transform.localRotation;
+
+        float mass = GameManager.Instance.AudioProcessor.AudioVolume;
+        mass = Utilities.Remap(mass, 0, 1f, 20f, 60f) * Random.Range(0.9f, 1.1f);
+        SetSegmentMass(mass);
+    }
+
+    Vector3 RandomOffset(Vector3 pos)
+    {
+        List<float> audio_data = GameManager.Instance.AudioProcessor.ListFFT;
+        float random_angle = Mathf.PerlinNoise(Time.time + pos.x, pos.y);
+        random_angle = Utilities.Remap(random_angle, 0, 1, 0, 2 * Mathf.PI);
+        Vector3 random_offset = new Vector3(Mathf.Cos(random_angle), Mathf.Sin(random_angle), 0);
+        if (audio_data != null && audio_data.Count > springIndex)
+        {
+            float sound_factor = Utilities.Remap(Mathf.Abs(audio_data[springIndex]), 0, 0.25f, 0, 0.01f);
+            random_offset = random_offset * sound_factor;
+        }
+        return random_offset;
     }
 
     void UpdateNodes()
@@ -118,12 +142,12 @@ public class EffectSpring : MonoBehaviour
         float min = float.MaxValue;
         float max = float.MinValue;
 
-        Vector3 axis_y = Vector3.up;
-        Vector3 axis_z = (ropeEnd.position - ropeStart.position).normalized;
-        Vector3 axis_x = Vector3.Cross(axis_y, axis_z);
-        axis_y = Vector3.Cross(axis_x, axis_z);
-        float random_angle = Random.Range(0, 2 * Mathf.PI);
-        Vector3 random_dir = Mathf.Cos(random_angle) * axis_x + Mathf.Sin(random_angle) * axis_y;
+        //Vector3 axis_y = Vector3.up;
+        //Vector3 axis_z = (ropeEnd.position - ropeStart.position).normalized;
+        //Vector3 axis_x = Vector3.Cross(axis_y, axis_z);
+        //axis_y = Vector3.Cross(axis_x, axis_z);
+        //float random_angle = Random.Range(0, 2 * Mathf.PI);
+        //Vector3 random_dir = Mathf.Cos(random_angle) * axis_x + Mathf.Sin(random_angle) * axis_y;
 
         for (int i=0; i< sampleCount; i++)
         {
@@ -133,8 +157,8 @@ public class EffectSpring : MonoBehaviour
             min = Mathf.Min(min, audio_value);
             max = Mathf.Max(max, audio_value);
 
-            //try
-            //{
+            try
+            {
                 CurveSample point = spline.GetSampleAtDistance(spline.Length * (float)i / (float)(sampleCount - 1));
 
                 //Vector3 axis_y = point.up;
@@ -143,20 +167,21 @@ public class EffectSpring : MonoBehaviour
                 //float random_angle = Random.Range(0, 2 * Mathf.PI);
                 //Vector3 random_dir = Mathf.Cos(random_angle) * axis_x + Mathf.Sin(random_angle) * axis_y;
 
-                Vector3 random_pos = audio_value * random_dir;
+                //Vector3 random_pos = audio_value * random_dir;
+                //lineRenderer.SetPosition(i, point.location + random_pos);// point.up * audio_value);
 
-                lineRenderer.SetPosition(i, point.location + random_pos);// point.up * audio_value); 
-            //}
-            //catch
-            //{
+                lineRenderer.SetPosition(i, point.location);
+            }
+            catch
+            {
 
-            //}
+            }
         }
 
         float distance_param = Utilities.Remap(spline.Length, 0, 10, 0, 1);
         lineMat.SetFloat("_Distance", distance_param);
 
-        distance_param = Utilities.Remap(spline.Length, 0, 10, 0.05f, 0.001f);
+        distance_param = Utilities.Remap(spline.Length, 0, 10, 0.02f, 0.0001f);
         lineRenderer.startWidth = distance_param;
         lineRenderer.endWidth = distance_param;
 
@@ -176,10 +201,19 @@ public class EffectSpring : MonoBehaviour
     {
         springEnabled = state;
 
-
+        lineRenderer.enabled = state;
     }
 
     #region NetworkVariable
+    void AssignLocalVariable()
+    {
+        ropeMeshScale = GameManager.Instance.PerformerGroup.ropeMeshScale.Value;
+        startThickness = performerStart.remoteThickness.Value;
+        endThickness = performerEnd.remoteThickness.Value;
+        startMass = performerStart.remoteMass.Value;
+        endMass = performerEnd.remoteMass.Value;
+    }
+
     void RegisterNetworkVariableCallback_Client()
     {
         performerStart.remoteThickness.OnValueChanged += (float prev, float cur) => { startThickness = cur; UpdateRopeThickness(); };
@@ -213,6 +247,7 @@ public class EffectSpring : MonoBehaviour
             Rigidbody rigid = segment_root.GetChild(m).GetComponent<Rigidbody>();
             rigid.mass = Mathf.Lerp(startMass, endMass, m / segment_root.childCount - 1);
         }
+        Debug.Log($"UpdateRopeMass:{startMass}, {endMass}");
     }
 
     void UpdateRopeMeshScale()
@@ -247,6 +282,16 @@ public class EffectSpring : MonoBehaviour
     {
         performerStart = performer_start;
         performerEnd = performer_end;
+    }
+
+    void SetSegmentMass(float v)
+    {
+        Transform segment_root = transform.Find("Segments");
+        for(int i=0; i<segment_root.childCount; i++)
+        {
+            Rigidbody rigid = segment_root.GetChild(i).GetComponent<Rigidbody>();
+            rigid.mass = v;
+        }
     }
 
     //public void SetPerformerOffset(Vector3 offset)

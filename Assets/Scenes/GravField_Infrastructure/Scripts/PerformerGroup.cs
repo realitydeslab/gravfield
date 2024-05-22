@@ -39,8 +39,15 @@ public class PerformerGroup : NetworkBehaviour
     private List<Performer> performerList = new List<Performer>();
 
     public NetworkVariable<float> effectMode;
+    public AutoSwitchedParameter<float> mode0 = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> mode1 = new AutoSwitchedParameter<float>();
+    public AutoSwitchedParameter<float> mode2 = new AutoSwitchedParameter<float>();
+
 
     public NetworkVariable<float> ropeMeshScale;
+
+    public UnityEvent OnPerformerFinishSpawn;
+    bool performerFinishSpawn = false;
 
     void Awake()
     {
@@ -55,7 +62,10 @@ public class PerformerGroup : NetworkBehaviour
         if (IsServer)
         {
             RegisterOscReceiverFunction();
+
+            RegisterPropertiesToLive_Server();
         }
+
     }
 
 
@@ -64,9 +74,35 @@ public class PerformerGroup : NetworkBehaviour
         if (IsSpawned == false)
             return;
 
+
+        if(performerFinishSpawn == false)
+        {
+            bool cur_spawned_state = true;
+            for (int i = 0; i < performerList.Count; i++)
+            {
+                if (performerList[i].IsSpawned == false)
+                {
+                    cur_spawned_state = false;
+                    break;
+                }
+            }
+            if (cur_spawned_state == true)
+            {
+                OnPerformerFinishSpawn?.Invoke();
+
+                Debug.Log("OnPerformerFinishSpawn");
+            }
+            performerFinishSpawn = true;
+        }
+
+
         if(IsServer)
         {
             meshsize.Value = SmoothValue(meshsize.Value, 0, 0.2f);
+
+            mode0.OrginalValue = effectMode.Value == 0 ? 1 : 0;
+            mode1.OrginalValue = effectMode.Value == 0 ? 1 : 0;
+            mode2.OrginalValue = effectMode.Value == 0 ? 1 : 0;
         }
     }
 
@@ -76,9 +112,19 @@ public class PerformerGroup : NetworkBehaviour
     {
         if (!IsServer) return;
 
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/mode", new UnityAction<float>(OnReceive_Mode));
+
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshy", new UnityAction<float>(OnReceive_MeshY));
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshnoise", new UnityAction<float>(OnReceive_MeshNoise));
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshsize", new UnityAction<float>(OnReceive_MeshSize));
+    }
+
+    void OnReceive_Mode(float v)
+    {
+        if (!IsServer)
+            return;
+
+        effectMode.Value = v;
     }
 
     void OnReceive_MeshY(float v)
@@ -115,6 +161,14 @@ public class PerformerGroup : NetworkBehaviour
     }
     #endregion
 
+    #region
+    void RegisterPropertiesToLive_Server()
+    {
+        SenderForLive.Instance.RegisterOscPropertyToSend("/mode0", mode0);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/mode1", mode1);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/mode2", mode2);
+    }
+    #endregion
 
 }
 
