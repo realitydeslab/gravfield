@@ -105,7 +105,7 @@ public class UIController : MonoBehaviour
             longPressedTime += Time.deltaTime;
             if(longPressedTime >= LongPressedTimeThreshold)
             {
-                if(GameManager.Instance.IsPlaying)
+                if(GameManager.Instance.IsPlaying && GameManager.Instance.HolokitCameraManager.ScreenRenderMode == HoloKit.ScreenRenderMode.Mono)
                 {
                     ShowExtraMenu();
                     longPressedTime = 0;

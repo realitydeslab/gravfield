@@ -1,33 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.VFX;
 
 public class EffectMagneticField : MonoBehaviour
 {
-    //private bool isPerformingA = false;
-    //public bool IsPerformingA { get => isPerformingA; }
-
-    //private bool isPerformingB = false;
-    //public bool IsPerformingB { get => isPerformingB; }
-
-    //private bool isPerformingC = false;
-    //public bool IsPerformingC { get => isPerformingC; }
-
-    //private bool magneticA = true;
-    //public bool MagneticA { get => magneticA; }
-
-    //private bool magneticB = false;
-    //public bool MagneticB { get => magneticB; }
-
-    //private bool magneticC = true;
-    //public bool MagneticC { get => magneticC; }
-
     public Transform performerTransformRoot;
 
     List<Performer> performerList = new  List<Performer>();
     VisualEffect vfx;
     bool effectEnabled = false;
+
+    // Output to LIVE
+    AutoSwitchedParameter<float> magab = new AutoSwitchedParameter<float>();
+    AutoSwitchedParameter<float> magac = new AutoSwitchedParameter<float>();
+    AutoSwitchedParameter<float> magbc = new AutoSwitchedParameter<float>();
 
     void Awake()
     {
@@ -43,13 +31,24 @@ public class EffectMagneticField : MonoBehaviour
     {
         
     }
+    void OnEnable()
+    {
+        GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
+    }
 
-    
+    void OnPerformerFinishSpawn()
+    {
+        RegisterPropertiesToLive_Server();
+    }
+
+
     void Update()
     {
         if (effectEnabled == false) return;
 
         UpdateVFX();
+
+        UpdateParamtersForLive();
     }
 
     public void SetEffectState(bool state)
@@ -68,4 +67,31 @@ public class EffectMagneticField : MonoBehaviour
         vfx.SetBool("MagneticB", performerList[1].localData.positive);
         vfx.SetBool("MagneticC", performerList[2].localData.positive);
     }
+
+
+    #region Parameter sent to Live
+    void RegisterPropertiesToLive_Server()
+    {
+        if (NetworkManager.Singleton.IsServer == false) return;
+
+        SenderForLive.Instance.RegisterOscPropertyToSend("/magab", magab);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/magac", magac);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/magbc", magbc);
+    }
+    void UpdateParamtersForLive()
+    {
+        magab.OrginalValue = CalculateMag(performerList[0], performerList[1]);
+        magac.OrginalValue = CalculateMag(performerList[0], performerList[2]);
+        magbc.OrginalValue = CalculateMag(performerList[1], performerList[2]);
+
+    }
+    float CalculateMag(Performer start, Performer end)
+    {
+        float mag = Vector3.Distance(start.localData.position, end.localData.position);
+        mag *= (start.localData.positive != end.localData.positive) ? -1f : 1f;
+
+        return mag;
+        
+    }
+    #endregion
 }

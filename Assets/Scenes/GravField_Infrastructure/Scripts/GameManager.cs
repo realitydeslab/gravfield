@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 using System;
+using HoloKit;
 
 [DefaultExecutionOrder(-20)]
 public class GameManager : MonoBehaviour
@@ -24,6 +25,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     bool showPerformerAxis = false;
+
+    HoloKitCameraManager holoKitCameraManager;
+    public HoloKitCameraManager HolokitCameraManager { get => holoKitCameraManager; }
 
     private AudioProcessor audioProcessor;
     public AudioProcessor AudioProcessor { get => audioProcessor; }
@@ -327,6 +331,12 @@ public class GameManager : MonoBehaviour
     void InitializeReferences()
     {
         // Initialize References
+        holoKitCameraManager = FindObjectOfType<HoloKitCameraManager>();
+        if (holoKitCameraManager == null)
+        {
+            Debug.LogError("No HoloKitCameraManager Found.");
+        }
+        
         audioProcessor = FindObjectOfType<AudioProcessor>();
         if (audioProcessor == null)
         {
