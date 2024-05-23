@@ -13,9 +13,12 @@ public class EffectMagneticField : MonoBehaviour
     bool effectEnabled = false;
 
     // Output to LIVE
-    AutoSwitchedParameter<float> magab = new AutoSwitchedParameter<float>();
-    AutoSwitchedParameter<float> magac = new AutoSwitchedParameter<float>();
-    AutoSwitchedParameter<float> magbc = new AutoSwitchedParameter<float>();
+    AutoSwitchedParameter<float> magabpos = new AutoSwitchedParameter<float>();
+    AutoSwitchedParameter<float> magabneg = new AutoSwitchedParameter<float>();
+    AutoSwitchedParameter<float> magacpos = new AutoSwitchedParameter<float>();
+    AutoSwitchedParameter<float> magacneg = new AutoSwitchedParameter<float>();
+    AutoSwitchedParameter<float> magbcpos = new AutoSwitchedParameter<float>();
+    AutoSwitchedParameter<float> magbcneg = new AutoSwitchedParameter<float>();
 
     void Awake()
     {
@@ -74,21 +77,45 @@ public class EffectMagneticField : MonoBehaviour
     {
         if (NetworkManager.Singleton.IsServer == false) return;
 
-        SenderForLive.Instance.RegisterOscPropertyToSend("/magab", magab);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/magac", magac);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/magbc", magbc);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/magabpos", magabpos);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/magabneg", magabneg);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/magacpos", magacpos);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/magacneg", magacneg);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/magbcpos", magbcpos);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/magbcneg", magbcneg);
     }
     void UpdateParamtersForLive()
     {
-        magab.OrginalValue = CalculateMag(performerList[0], performerList[1]);
-        magac.OrginalValue = CalculateMag(performerList[0], performerList[2]);
-        magbc.OrginalValue = CalculateMag(performerList[1], performerList[2]);
+        bool is_positive = IsPositive(performerList[0], performerList[1]);
+        if (is_positive)
+            magabpos.OrginalValue = CalculateMag(performerList[0], performerList[1]);
+        else
+            magabneg.OrginalValue = CalculateMag(performerList[0], performerList[1]);
+
+        is_positive = IsPositive(performerList[0], performerList[2]);
+        if (is_positive)
+            magacpos.OrginalValue = CalculateMag(performerList[0], performerList[2]);
+        else
+            magacneg.OrginalValue = CalculateMag(performerList[0], performerList[2]);
+
+
+        is_positive = IsPositive(performerList[1], performerList[2]);
+        if (is_positive)
+            magbcpos.OrginalValue = CalculateMag(performerList[1], performerList[2]);
+        else
+            magbcneg.OrginalValue = CalculateMag(performerList[1], performerList[2]);
+
 
     }
+    bool IsPositive(Performer start, Performer end)
+    {
+        return (start.localData.positive != end.localData.positive);
+    }
+
     float CalculateMag(Performer start, Performer end)
     {
         float mag = Vector3.Distance(start.localData.position, end.localData.position);
-        mag *= (start.localData.positive != end.localData.positive) ? -1f : 1f;
+        //mag *= (start.localData.positive != end.localData.positive) ? -1f : 1f;
 
         return mag;
         
