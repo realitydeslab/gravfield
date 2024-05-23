@@ -12005,7 +12005,7 @@ VisualEffect:
       - m_Value: {x: -0, y: 0, z: 0}
         m_Name: PerformerC_angles
         m_Overridden: 1
-      - m_Value: {x: 0, y: 0, z: -8.908}
+      - m_Value: {x: -3.05, y: 0, z: -5.7}
         m_Name: PerformerC_position
         m_Overridden: 1
       - m_Value: {x: 1, y: 1, z: 1}
@@ -15064,7 +15064,7 @@ Transform:
   m_GameObject: {fileID: 396178251}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.2093363, y: -0.04006547, z: -3.1672978}
+  m_LocalPosition: {x: -3.1242683, y: -0.04637822, z: -1.6665974}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -76217,6 +76217,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1335072611827631672, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1335072611827631672, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2025799917615018390, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
       propertyPath: ropeTransformRoot
       value: 
