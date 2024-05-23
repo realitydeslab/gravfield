@@ -40,12 +40,16 @@ public class EffectSpring : MonoBehaviour
 
     bool jointAnchorInitialzed = false;
 
+    float sinBaseValue;
+
     void Awake()
     {
         springIndex = transform.GetSiblingIndex();
 
         ropeStart = transform.Find("Anchors").GetChild(0);
         ropeEnd = transform.Find("Anchors").GetChild(1);
+
+        sinBaseValue = Random.Range(0, 1000f);
     }
 
     void OnEnable()
@@ -103,15 +107,21 @@ public class EffectSpring : MonoBehaviour
 
     Vector3 RandomOffset(Vector3 pos)
     {
-        List<float> audio_data = GameManager.Instance.AudioProcessor.ListFFT;
-        float random_angle = Mathf.PerlinNoise(Time.time + pos.x, pos.y);
-        random_angle = Utilities.Remap(random_angle, 0, 1, 0, 2 * Mathf.PI);
-        Vector3 random_offset = new Vector3(Mathf.Cos(random_angle), Mathf.Sin(random_angle), 0);
-        if (audio_data != null && audio_data.Count > springIndex)
-        {
-            float sound_factor = Utilities.Remap(Mathf.Abs(audio_data[springIndex]), 0, 0.25f, 0, 0.01f);
-            random_offset = random_offset * sound_factor;
-        }
+        //List<float> audio_data = GameManager.Instance.AudioProcessor.ListFFT;
+        //float random_angle = Mathf.PerlinNoise(Time.time + pos.x, pos.y);
+        //random_angle = Utilities.Remap(random_angle, 0, 1, 0, 2 * Mathf.PI);
+        //Vector3 random_offset = new Vector3(Mathf.Cos(random_angle), Mathf.Sin(random_angle), 0);
+        //if (audio_data != null && audio_data.Count > springIndex)
+        //{
+        //    float sound_factor = Utilities.Remap(Mathf.Abs(audio_data[springIndex]), 0, 0.25f, 0, 0.01f);
+        //    random_offset = random_offset * sound_factor;
+        //}
+
+        float offset_y = Mathf.Sin(sinBaseValue) * GameManager.Instance.AudioProcessor.AudioVolume * 0.2f;
+        sinBaseValue += Time.deltaTime*4;
+        Vector3 random_offset = new Vector3(0, offset_y, 0);
+
+
         return random_offset;
     }
 

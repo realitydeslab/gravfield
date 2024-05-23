@@ -2439,7 +2439,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &51328438
 GameObject:
@@ -8107,7 +8107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &169745996
 GameObject:
@@ -10553,7 +10553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &262787140 stripped
 GameObject:
@@ -10880,7 +10880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &265907335
 GameObject:
@@ -15628,7 +15628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &405255692
 GameObject:
@@ -36832,7 +36832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &931118850
 GameObject:
@@ -44364,7 +44364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1151349924
 GameObject:
@@ -46019,7 +46019,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInDevelopment: 1
-  isSoloMode: 0
+  isSoloMode: 1
   showPerformerAxis: 0
 --- !u!4 &1215605116
 Transform:
@@ -52530,7 +52530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1436631328
 GameObject:
@@ -55406,7 +55406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1509922943
 GameObject:
@@ -57374,7 +57374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1579736224
 GameObject:
@@ -62342,7 +62342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1752908973
 GameObject:
@@ -68254,7 +68254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1929150104
 GameObject:
@@ -69687,7 +69687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1964516238
 GameObject:
@@ -71073,7 +71073,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &2035217649
 GameObject:
@@ -71715,7 +71715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &2063145561
 GameObject:
