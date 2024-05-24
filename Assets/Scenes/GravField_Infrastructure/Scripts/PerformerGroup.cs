@@ -101,8 +101,19 @@ public class PerformerGroup : NetworkBehaviour
             meshsize.Value = SmoothValue(meshsize.Value, 0, 0.2f);
 
             mode0.OrginalValue = effectMode.Value == 0 ? 1 : 0;
-            mode1.OrginalValue = effectMode.Value == 0 ? 1 : 0;
-            mode2.OrginalValue = effectMode.Value == 0 ? 1 : 0;
+            mode1.OrginalValue = effectMode.Value == 1 ? 1 : 0;
+            mode2.OrginalValue = effectMode.Value == 2 ? 1 : 0;
+        }
+
+        if(IsServer)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+                {
+                    OnReceive_Mode(i);
+                }
+            }
         }
     }
 

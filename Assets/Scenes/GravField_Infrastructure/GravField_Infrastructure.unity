@@ -14096,7 +14096,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -2206}
+  m_SizeDelta: {x: 0, y: -1096}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &380434690
 MonoBehaviour:
@@ -35865,8 +35865,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1337773246}
-        m_TargetAssemblyTypeName: HoloKit.UI.HoloKitDefaultUICanvas, HoloKit
+      - m_Target: {fileID: 8685343362816805768}
+        m_TargetAssemblyTypeName: AudioProcessor, Assembly-CSharp
         m_MethodName: ToggleRecording
         m_Mode: 1
         m_Arguments:
@@ -75916,7 +75916,7 @@ GameObject:
   - component: {fileID: 5627308330417888195}
   - component: {fileID: 8685343362816805768}
   m_Layer: 0
-  m_Name: MicrophoneAnalysis
+  m_Name: AudioProcessor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

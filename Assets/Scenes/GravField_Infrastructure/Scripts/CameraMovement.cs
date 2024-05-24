@@ -51,11 +51,18 @@ public class CameraMovement : MonoBehaviour
         if (!initialized || mixingCamera.ChildCameras.Length != dstWeight.Count)
             return;
 
-        for(int i=0; i<7; i++)
+        
+        // KeyCode.Alpha0 to use aerial view
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            if(Input.GetKeyDown(KeyCode.Alpha0 + i))
+            ChangeFocusTo(0);
+        }
+        // KeyCode.Alpha4 - 9 to change other views
+        for (int i=0; i<6; i++)
+        {
+            if(Input.GetKeyDown(KeyCode.Alpha4 + i))
             {
-                ChangeFocusTo(i);
+                ChangeFocusTo(i+1);
             }
         }
 

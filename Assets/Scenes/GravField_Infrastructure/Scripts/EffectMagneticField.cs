@@ -109,7 +109,7 @@ public class EffectMagneticField : MonoBehaviour
     }
     bool IsPositive(Performer start, Performer end)
     {
-        return (start.localData.positive != end.localData.positive);
+        return !(start.localData.positive != end.localData.positive);
     }
 
     float CalculateMag(Performer start, Performer end)
