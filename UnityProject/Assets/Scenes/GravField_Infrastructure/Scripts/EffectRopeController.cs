@@ -162,8 +162,8 @@ public class EffectRopeController : MonoBehaviour
             foreach (Rigidbody rigid in rigid_list)
             {
                 if (param == "mass") rigid.mass = v;
-                else if (param == "drag") rigid.drag = v;
-                else if (param == "angular") rigid.angularDrag = v;
+                else if (param == "drag") rigid.linearDamping = v;
+                else if (param == "angular") rigid.angularDamping = v;
             }
         }
     }

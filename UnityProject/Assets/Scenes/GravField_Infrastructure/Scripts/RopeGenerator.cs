@@ -172,8 +172,8 @@ public class RopeGenerator : MonoBehaviour
         joint.transform.localScale = Vector3.one * generatorRopeThickness;
         Rigidbody rigid_body = joint.AddComponent<Rigidbody>();
         rigid_body.mass = jointMass;
-        rigid_body.drag = jointDrag;
-        rigid_body.angularDrag = jointAngularDrag;
+        rigid_body.linearDamping = jointDrag;
+        rigid_body.angularDamping = jointAngularDrag;
 
         HingeJoint hinge_left = joint.AddComponent<HingeJoint>();
         HingeJoint hinge_right = joint.AddComponent<HingeJoint>();
@@ -245,8 +245,8 @@ public class RopeGenerator : MonoBehaviour
         segment.transform.localEulerAngles = new Vector3(0, 0, 90);
         Rigidbody rigid_body = segment.AddComponent<Rigidbody>();
         rigid_body.mass = segmentMass;
-        rigid_body.drag = segmentDrag;
-        rigid_body.angularDrag = segmentAngularDrag;
+        rigid_body.linearDamping = segmentDrag;
+        rigid_body.angularDamping = segmentAngularDrag;
 
         segment.GetComponent<Collider>().enabled = false;
         segment.GetComponent<MeshRenderer>().enabled = false;

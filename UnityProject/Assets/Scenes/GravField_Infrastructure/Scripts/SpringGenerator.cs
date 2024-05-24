@@ -98,8 +98,8 @@ public class SpringGenerator : RopeGenerator
 
             Rigidbody rigid_body = joint.GetComponent<Rigidbody>();
             rigid_body.mass = random_joint_mass;
-            rigid_body.drag = random_joint_drag;
-            rigid_body.angularDrag = random_joint_angular_drag;
+            rigid_body.linearDamping = random_joint_drag;
+            rigid_body.angularDamping = random_joint_angular_drag;
             rigid_body.useGravity = false;
 
             HingeJoint hinge = joint.GetComponent<HingeJoint>();
@@ -117,8 +117,8 @@ public class SpringGenerator : RopeGenerator
             Transform segment = segment_root.GetChild(i);
             Rigidbody rigid_body = segment.GetComponent<Rigidbody>();
             rigid_body.mass = random_segment_mass;
-            rigid_body.drag = random_segment_drag;
-            rigid_body.angularDrag = random_segment_angular_drag;
+            rigid_body.linearDamping = random_segment_drag;
+            rigid_body.angularDamping = random_segment_angular_drag;
             rigid_body.useGravity = false;
         }
 
