@@ -115,13 +115,13 @@ public class PerfomerDataProcessor : MonoBehaviour
         SenderForLive.Instance.RegisterOscPropertyToSend("/disac", disac);
         SenderForLive.Instance.RegisterOscPropertyToSend("/disbc", disbc);
 
-        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef1", valuef1);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef2", valuef2);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef3", valuef3);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/valuef1", valuef1);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/valuef2", valuef2);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/valuef3", valuef3);
 
-        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef4", valuef4);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef5", valuef5);
-        SenderForLive.Instance.RegisterOscPropertyToSend("/valuef6", valuef6);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/valuef4", valuef4);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/valuef5", valuef5);
+        //SenderForLive.Instance.RegisterOscPropertyToSend("/valuef6", valuef6);
     }
 
     void RegisterPropertiesFromCoda_Server()
@@ -146,12 +146,12 @@ public class PerfomerDataProcessor : MonoBehaviour
         //ParameterReceiver.Instance.RegisterOscReceiverFunction("/angleMax", new UnityAction<float>(OnReceive_angleMax));
         //ParameterReceiver.Instance.RegisterOscReceiverFunction("/area", new UnityAction<float>(OnReceive_area));
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef1", new UnityAction<float>(OnReceive_valuef1));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef2", new UnityAction<float>(OnReceive_valuef2));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef3", new UnityAction<float>(OnReceive_valuef3));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef4", new UnityAction<float>(OnReceive_valuef4));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef5", new UnityAction<float>(OnReceive_valuef5));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef6", new UnityAction<float>(OnReceive_valuef6));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef1", new UnityAction<float>(OnReceive_valuef1));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef2", new UnityAction<float>(OnReceive_valuef2));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef3", new UnityAction<float>(OnReceive_valuef3));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef4", new UnityAction<float>(OnReceive_valuef4));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef5", new UnityAction<float>(OnReceive_valuef5));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/valuef6", new UnityAction<float>(OnReceive_valuef6));
     }
 
 

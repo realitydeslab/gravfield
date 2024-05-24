@@ -2395,25 +2395,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -2439,7 +2439,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &51328438
 GameObject:
@@ -8063,25 +8063,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -8107,7 +8107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &169745996
 GameObject:
@@ -10509,25 +10509,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -10553,7 +10553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &262787140 stripped
 GameObject:
@@ -10836,25 +10836,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -10880,7 +10880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &265907335
 GameObject:
@@ -11896,13 +11896,17 @@ GameObject:
   - component: {fileID: 309391297}
   - component: {fileID: 309391299}
   - component: {fileID: 309391298}
+  - component: {fileID: 309391303}
+  - component: {fileID: 309391302}
+  - component: {fileID: 309391301}
+  - component: {fileID: 309391300}
   m_Layer: 0
   m_Name: MagneticField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &309391297
 Transform:
   m_ObjectHideFlags: 0
@@ -11965,8 +11969,8 @@ VisualEffect:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 309391296}
-  m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: e908f005324cb40febdfe47f7efdd635, type: 3}
+  m_Enabled: 0
+  m_Asset: {fileID: 8926484042661614526, guid: e7b77703505284ccebdd084f04daecfc, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -11979,7 +11983,34 @@ VisualEffect:
     m_Vector2f:
       m_Array: []
     m_Vector3f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: -0, y: 90.88999, z: -0}
+        m_Name: PerformerA_angles
+        m_Overridden: 1
+      - m_Value: {x: -4.61, y: 0, z: 0.04}
+        m_Name: PerformerA_position
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 1, z: 1}
+        m_Name: PerformerA_scale
+        m_Overridden: 1
+      - m_Value: {x: 2.0100048, y: 350.65, z: 0.2500033}
+        m_Name: PerformerB_angles
+        m_Overridden: 1
+      - m_Value: {x: -0.433, y: -0.162, z: -2.195}
+        m_Name: PerformerB_position
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 1, z: 1}
+        m_Name: PerformerB_scale
+        m_Overridden: 1
+      - m_Value: {x: -0, y: 0, z: 0}
+        m_Name: PerformerC_angles
+        m_Overridden: 1
+      - m_Value: {x: -3.05, y: 0, z: -5.7}
+        m_Name: PerformerC_position
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 1, z: 1}
+        m_Name: PerformerC_scale
+        m_Overridden: 1
     m_Vector4f:
       m_Array: []
     m_Uint:
@@ -11995,7 +12026,76 @@ VisualEffect:
     m_NamedObject:
       m_Array: []
     m_Bool:
-      m_Array: []
+      m_Array:
+      - m_Value: 1
+        m_Name: IsPerformingC
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: MagneticC
+        m_Overridden: 1
+--- !u!114 &309391300
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309391296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fdfea1f838247c40921a07afedde962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Property:
+    m_Name: PerformerC
+  Target: {fileID: 216093201}
+--- !u!114 &309391301
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309391296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fdfea1f838247c40921a07afedde962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Property:
+    m_Name: PerformerB
+  Target: {fileID: 557992899}
+--- !u!114 &309391302
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309391296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fdfea1f838247c40921a07afedde962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Property:
+    m_Name: PerformerA
+  Target: {fileID: 1917423072}
+--- !u!114 &309391303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309391296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdafc37f32b176349b1684c4455b98e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ExecuteInEditor: 1
+  m_Bindings:
+  - {fileID: 309391302}
+  - {fileID: 309391301}
+  - {fileID: 309391300}
+  m_VisualEffect: {fileID: 309391299}
 --- !u!1 &312699334
 GameObject:
   m_ObjectHideFlags: 0
@@ -13996,7 +14096,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -2206}
+  m_SizeDelta: {x: 0, y: -1096}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &380434690
 MonoBehaviour:
@@ -14964,7 +15064,7 @@ Transform:
   m_GameObject: {fileID: 396178251}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.03466524, y: 0.49131593, z: 0.7293738}
+  m_LocalPosition: {x: -3.1242683, y: -0.04637822, z: -1.6665974}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15484,25 +15584,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -15528,7 +15628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &405255692
 GameObject:
@@ -35765,8 +35865,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1337773246}
-        m_TargetAssemblyTypeName: HoloKit.UI.HoloKitDefaultUICanvas, HoloKit
+      - m_Target: {fileID: 8685343362816805768}
+        m_TargetAssemblyTypeName: AudioProcessor, Assembly-CSharp
         m_MethodName: ToggleRecording
         m_Mode: 1
         m_Arguments:
@@ -36688,25 +36788,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -36732,7 +36832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &931118850
 GameObject:
@@ -44220,25 +44320,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -44264,7 +44364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1151349924
 GameObject:
@@ -45919,7 +46019,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInDevelopment: 1
-  isSoloMode: 0
+  isSoloMode: 1
   showPerformerAxis: 0
 --- !u!4 &1215605116
 Transform:
@@ -52386,25 +52486,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -52430,7 +52530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1436631328
 GameObject:
@@ -55262,25 +55362,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -55306,7 +55406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1509922943
 GameObject:
@@ -57230,25 +57330,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -57274,7 +57374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1579736224
 GameObject:
@@ -62198,25 +62298,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -62242,7 +62342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1752908973
 GameObject:
@@ -68110,25 +68210,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -68154,7 +68254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1929150104
 GameObject:
@@ -69543,25 +69643,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -69587,7 +69687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 557992912}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &1964516238
 GameObject:
@@ -70929,25 +71029,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -70973,7 +71073,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 557992912}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &2035217649
 GameObject:
@@ -71571,25 +71671,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - position: {x: 5, y: 0, z: 0}
-    direction: {x: 5.75, y: 0, z: 0}
+    direction: {x: 6, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   - position: {x: 10, y: 0, z: 0}
-    direction: {x: 10.75, y: 0, z: 0}
+    direction: {x: 11, y: 0, z: 0}
     up: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1}
     roll: 0
   curves:
   - n1:
       position: {x: 5, y: 0, z: 0}
-      direction: {x: 5.75, y: 0, z: 0}
+      direction: {x: 6, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
     n2:
       position: {x: 10, y: 0, z: 0}
-      direction: {x: 10.75, y: 0, z: 0}
+      direction: {x: 11, y: 0, z: 0}
       up: {x: 0, y: 1, z: 0}
       scale: {x: 1, y: 1}
       roll: 0
@@ -71615,7 +71715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 1917423083}
   performerEnd: {fileID: 394656586}
-  ropeOffset: {x: 0, y: -0.2, z: 0.2}
+  ropeOffset: {x: 0, y: -0.2, z: 0}
   springEnabled: 0
 --- !u!1 &2063145561
 GameObject:
@@ -71960,6 +72060,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18af08b68187426ea0783c68440c28f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  performerTransformRoot: {fileID: 4810033708984300306}
 --- !u!1 &2073449110
 GameObject:
   m_ObjectHideFlags: 0
@@ -75815,7 +75916,7 @@ GameObject:
   - component: {fileID: 5627308330417888195}
   - component: {fileID: 8685343362816805768}
   m_Layer: 0
-  m_Name: MicrophoneAnalysis
+  m_Name: AudioProcessor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76116,9 +76217,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2025363518130737277, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
-      propertyPath: m_Enabled
-      value: 0
+    - target: {fileID: 1335072611827631672, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1335072611827631672, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.7
       objectReference: {fileID: 0}
     - target: {fileID: 2025799917615018390, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
       propertyPath: ropeTransformRoot
@@ -76172,17 +76277,9 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 3074982968
       objectReference: {fileID: 0}
-    - target: {fileID: 5605027164812212596, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5841723620387128820, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 16521271
-      objectReference: {fileID: 0}
-    - target: {fileID: 6589734191828244997, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7138303720940536106, guid: f971100c778954ff6abe204b8f0bf998, type: 3}
       propertyPath: GlobalObjectIdHash

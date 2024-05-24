@@ -6,10 +6,11 @@ using UnityEngine.Events;
 
 public class PerformerLocalData
 {
-    public bool isPerforming;
-    public Vector3 position;
-    public Vector3 velocity;
-    public Vector3 acceleration;
+    public bool isPerforming = false;
+    public Vector3 position = Vector3.zero;
+    public Vector3 velocity = Vector3.zero;
+    public Vector3 acceleration = Vector3.zero;
+    public bool positive = false;
 }
 
 public class Performer : NetworkBehaviour
@@ -52,6 +53,8 @@ public class Performer : NetworkBehaviour
     public NetworkVariable<float> remoteMass;
     public AutoSwitchedParameter<float> localMass = new AutoSwitchedParameter<float>(1);
 
+    public NetworkVariable<float> magnetic;
+
     int performerIndex = 0;
 
     string performerName = "A";
@@ -86,6 +89,7 @@ public class Performer : NetworkBehaviour
         localData.position = transform.localPosition;
         localData.velocity = Vector3.zero;
         localData.acceleration = Vector3.zero;
+        localData.positive = magnetic.Value > 0.5 ? true : false;
     }
 
     void Update()
@@ -119,7 +123,7 @@ public class Performer : NetworkBehaviour
         localData.acceleration = (new_vel - localData.velocity) / Time.deltaTime;
         localData.velocity = new_vel;
         localData.position = new_pos;
-
+        localData.positive = magnetic.Value > 0.5 ? true : false;
 
         // 
         UpdateRemoteParameterWithLocal();
