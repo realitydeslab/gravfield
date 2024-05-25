@@ -7,7 +7,7 @@ using UnityEngine;
 public class SpringGenerator : RopeGenerator
 {
 
-    int ropeCountEachSpring = 5;
+    int ropeCountEachSpring = 1;
 
     #region Generate Spring
     [ContextMenu("GenerateSprings")]
@@ -44,18 +44,15 @@ public class SpringGenerator : RopeGenerator
         SplineSmoother smoother = go.AddComponent<SplineSmoother>();
         smoother.curvature = 0.4f;
 
-        //SplineMeshTiling meshTilling = go.AddComponent<SplineMeshTiling>();
-        //meshTilling.mesh = ropeMesh;
-        //meshTilling.material = ropeMat;
-        //meshTilling.rotation = new Vector3(0, 0, 0);
-        //meshTilling.scale = Vector3.one * 0.1f;
+        SplineMeshTiling meshTilling = go.AddComponent<SplineMeshTiling>();
+        meshTilling.mesh = ropeMesh;
+        meshTilling.material = ropeMat;
+        meshTilling.rotation = new Vector3(0, 0, 0);
+        meshTilling.scale = Vector3.one * 0.1f;
 
-        //meshTilling.generateCollider = false;
-        //meshTilling.updateInPlayMode = true;
-        //meshTilling.curveSpace = false;
-
-        //meshTilling.rotation = new Vector3(0, 90, 0);
-        //meshTilling.scale = Vector3.one * RandomValue(0.02f);
+        meshTilling.generateCollider = false;
+        meshTilling.updateInPlayMode = true;
+        meshTilling.curveSpace = false;
 
 
         LineRenderer line_renderer = go.AddComponent<LineRenderer>();
@@ -63,6 +60,7 @@ public class SpringGenerator : RopeGenerator
         line_renderer.positionCount = 100;
         line_renderer.startWidth = 0.01f;
         line_renderer.endWidth = 0.01f;
+        line_renderer.enabled = false;
     }
 
     protected override void DoExtraSettings(GameObject go, int start_index, int end_index)

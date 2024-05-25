@@ -5,6 +5,19 @@ using SplineMesh;
 using Unity.Netcode;
 using UnityEngine;
 
+
+public class SoundWaveLine
+{
+    public float soundData;
+    public float shakeY;
+    public float sinShift;
+    public float sinSpeed;
+    public float sinFrequency;
+    public float chaos;
+    public float thickness;
+}
+
+
 public class EffectSpring : MonoBehaviour
 {
     // Basic
@@ -38,9 +51,23 @@ public class EffectSpring : MonoBehaviour
     float startMass;
     float endMass;
 
-    bool jointAnchorInitialzed = false;
 
     float sinBaseValue;
+
+    
+
+    [SerializeField]
+    Material meshMat;
+    const int LINE_COUNT = 5;
+    float soundwaveFrequency = 30;
+    float frequencyRange = 30;
+    float soundAmplifier = 3;
+    List<SoundWaveLine> soundWaveList = new List<SoundWaveLine>();
+
+    float maxDistance = 8;
+    float maxSpringThickness = 1;
+    float minSpringThickness = 0.2f;
+
 
     void Awake()
     {
@@ -50,6 +77,18 @@ public class EffectSpring : MonoBehaviour
         ropeEnd = transform.Find("Anchors").GetChild(1);
 
         sinBaseValue = Random.Range(0, 1000f);
+
+        for(int i=0; i< LINE_COUNT; i++)
+        {
+            SoundWaveLine soundwave = new SoundWaveLine();
+            soundWaveList.Add(soundwave);
+
+            soundwave.soundData = 0;
+            soundwave.chaos = 0;
+            soundwave.sinShift = Random.Range(0f, 1000f);
+            soundwave.sinSpeed = Random.Range(5f, 11f); 
+            soundwave.sinFrequency = soundwaveFrequency + Random.Range(-0.5f, 0.5f) * frequencyRange;
+        }
     }
 
     void OnEnable()
@@ -83,26 +122,30 @@ public class EffectSpring : MonoBehaviour
     {
         if (springEnabled == false) return;
 
-        UpdateRopeAnchors();
+        UpdateSpringAnchors();
 
         UpdateNodes();
 
-        UpdateLineRenderer();
+        UpdateSpringThickness();
+
+        UpdateSpringMaterial();
+
+        //UpdateLineRenderer();
 
         UpdateParamtersForLive();
     }
 
-    void UpdateRopeAnchors()
+    void UpdateSpringAnchors()
     {
-        ropeStart.localPosition = performerStart.transform.TransformPoint(ropeOffset + RandomOffset(performerStart.transform.position));
-        ropeEnd.localPosition = performerEnd.transform.TransformPoint(ropeOffset + RandomOffset(performerEnd.transform.position));
+        ropeStart.localPosition = performerStart.transform.TransformPoint(ropeOffset);// + RandomOffset(performerStart.transform.position));
+        ropeEnd.localPosition = performerEnd.transform.TransformPoint(ropeOffset);// + RandomOffset(performerEnd.transform.position));
 
         ropeStart.localRotation = performerStart.transform.localRotation;
         ropeEnd.localRotation = performerEnd.transform.localRotation;
 
-        float mass = GameManager.Instance.AudioProcessor.AudioVolume;
-        mass = Utilities.Remap(mass, 0, 1f, 20f, 60f) * Random.Range(0.9f, 1.1f);
-        SetSegmentMass(mass);
+        //float mass = GameManager.Instance.AudioProcessor.AudioVolume;
+        //mass = Utilities.Remap(mass, 0, 1f, 20f, 60f) * Random.Range(0.9f, 1.1f);
+        //SetSegmentMass(mass);
     }
 
     Vector3 RandomOffset(Vector3 pos)
@@ -123,6 +166,87 @@ public class EffectSpring : MonoBehaviour
 
 
         return random_offset;
+    }
+
+    void UpdateSpringThickness()
+    {
+        float length = spline.Length;
+        float new_thickness = Utilities.Remap(length, 1, maxDistance, maxSpringThickness, minSpringThickness, true);
+
+
+        SetSpringThickness(new_thickness, GetAngleX(performerStart.transform), GetAngleX(performerEnd.transform));
+    }
+
+    float GetAngleX(Transform trans)
+    {
+        float angle_x = Mathf.Abs(trans.localRotation.eulerAngles.x);
+        angle_x = angle_x > 180 ? 360 - angle_x : angle_x;
+
+        return angle_x;
+    }
+
+    void UpdateSpringMaterial()
+    {
+        List<float> audio_data = GameManager.Instance.AudioProcessor.ListFFT;
+        int step = Mathf.FloorToInt(audio_data.Count / LINE_COUNT);
+        for (int i = 0; i < LINE_COUNT; i++)
+        {
+            SoundWaveLine soundwave = soundWaveList[i];
+
+            // decay
+            soundwave.soundData -= Time.deltaTime * 2f;
+            if (soundwave.soundData < 0)
+                soundwave.soundData = 0;
+
+            // pick sound data every 2 frames
+            if (Time.frameCount % 2 == 0)
+            {
+                float new_sound_data = 0;
+                if (audio_data.Count > 0)
+                    new_sound_data = Utilities.Remap(Mathf.Abs(audio_data[i * step] * soundAmplifier), 0, 1, 0, 1, true);
+
+                soundwave.soundData = new_sound_data > soundwave.soundData ? new_sound_data : soundwave.soundData;
+            }                
+
+            float shake_y = Mathf.Sin(soundwave.sinShift);
+            shake_y = Mathf.Sign(shake_y) * EasingFunctions.InCubic(Mathf.Abs(shake_y));
+            soundwave.shakeY = soundwave.soundData * shake_y;
+
+
+            soundwave.sinShift += soundwave.sinSpeed * Time.deltaTime;
+
+            soundwave.thickness = Utilities.Remap(soundwave.soundData, 0f, 1, 0.02f, 0.2f, true);
+            soundwave.chaos = Utilities.Remap(soundwave.soundData, 0.5f, 1, 0, 0.2f, true);
+        }
+
+
+        PushChangeToMaterial();
+    }
+
+    void PushChangeToMaterial()
+    {
+        float[] shake_y = new float[LINE_COUNT];
+        float[] sin_shift = new float[LINE_COUNT];
+        float[] sin_freq = new float[LINE_COUNT];
+        float[] wave_thickness = new float[LINE_COUNT];
+        float[] chaos = new float[LINE_COUNT];
+        for (int i=0; i< LINE_COUNT; i++)
+        {
+            shake_y[i] = soundWaveList[i].shakeY;
+            sin_shift[i] = soundWaveList[i].sinShift;
+            sin_freq[i] = soundWaveList[i].sinFrequency;
+            wave_thickness[i] = soundWaveList[i].thickness;
+            chaos[i] = soundWaveList[i].chaos;
+        }
+        meshMat.SetFloatArray("waveShakeY", shake_y);
+        meshMat.SetFloatArray("waveSinShift", sin_shift);
+        meshMat.SetFloatArray("waveSinFrequncy", sin_freq);
+        meshMat.SetFloatArray("waveThickness", wave_thickness);
+        meshMat.SetFloatArray("waveChaos", chaos);
+
+
+        meshMat.SetFloat("_SpringLength", Utilities.Remap(spline.Length, 0, maxDistance, 0, 1, true));
+        
     }
 
     void UpdateNodes()
@@ -211,7 +335,7 @@ public class EffectSpring : MonoBehaviour
     {
         springEnabled = state;
 
-        lineRenderer.enabled = state;
+        //lineRenderer.enabled = state;
     }
 
     #region NetworkVariable
@@ -226,8 +350,8 @@ public class EffectSpring : MonoBehaviour
 
     void RegisterNetworkVariableCallback_Client()
     {
-        performerStart.remoteThickness.OnValueChanged += (float prev, float cur) => { startThickness = cur; UpdateRopeThickness(); };
-        performerEnd.remoteThickness.OnValueChanged += (float prev, float cur) => { endThickness = cur; UpdateRopeThickness(); };
+        performerStart.remoteThickness.OnValueChanged += (float prev, float cur) => { startThickness = cur; SetSpringThickness(cur); };
+        performerEnd.remoteThickness.OnValueChanged += (float prev, float cur) => { endThickness = cur; SetSpringThickness(cur); };
 
         performerStart.remoteMass.OnValueChanged += (float prev, float cur) => { startMass = cur; UpdateRopeMass(); };
         performerEnd.remoteMass.OnValueChanged += (float prev, float cur) => { endMass = cur; UpdateRopeMass(); };
@@ -235,17 +359,31 @@ public class EffectSpring : MonoBehaviour
         GameManager.Instance.PerformerGroup.ropeMeshScale.OnValueChanged += (float prev, float cur) => { ropeMeshScale = cur; UpdateRopeMeshScale(); };
 
     }
-    void UpdateRopeThickness()
+    void SetSpringThickness(float new_thickness, float start_angle_x = 0, float end_angle_x = 0)
     {
         float currentLength = 0;
+        int curve_index = 0;
         foreach (CubicBezierCurve curve in spline.GetCurves())
-        {
-            float startRate = currentLength / spline.Length;
-            currentLength += curve.Length;
-            float endRate = currentLength / spline.Length;
+        {            
+            if (curve_index == 0 || curve_index == spline.curves.Count - 1)
+            {
+                float startRate = currentLength / spline.Length;
+                currentLength += curve.Length;
+                float endRate = currentLength / spline.Length;
 
-            curve.n1.Scale = Vector3.one * (startThickness + (endThickness - startThickness) * startRate);
-            curve.n2.Scale = Vector3.one * (startThickness + (endThickness - startThickness) * endRate);
+                float start_thickness = curve_index == 0 ? Utilities.Remap(start_angle_x, 0, 90, new_thickness, new_thickness * 0.5f) : new_thickness;
+                float end_thickness = curve_index == 0 ? new_thickness : Utilities.Remap(end_angle_x, 0, 90, new_thickness, new_thickness * 0.5f);
+
+                curve.n1.Scale = Vector3.one * (start_thickness + (end_thickness - start_thickness) * startRate);
+                curve.n2.Scale = Vector3.one * (start_thickness + (end_thickness - start_thickness) * endRate);
+            }
+            else
+            {
+                curve.n1.Scale = Vector3.one * new_thickness;
+                curve.n2.Scale = Vector3.one * new_thickness;
+            }
+
+            
         }
     }
 

@@ -10,6 +10,8 @@ public class EffectRopeController : MonoBehaviour
 {
     public Transform performerTransformRoot;
 
+    public Vector3 ropeOffset;
+
     RoleManager roleManager;
 
     List<Performer> performerList = new List<Performer>();
@@ -33,6 +35,7 @@ public class EffectRopeController : MonoBehaviour
             EffectRope rope = transform.GetChild(i).GetComponent<EffectRope>();
             Vector2Int performer_index = GetPerformerIndexOfRope(i);
             rope.BindPerformer(performerList[performer_index.x], performerList[performer_index.y]);
+            rope.SetPerformerOffset(ropeOffset);
             ropeList.Add(rope);
         }
     }

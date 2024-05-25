@@ -188,11 +188,6 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Join As Server.");
 
-        if (isSoloMode)
-        {
-            EnterSoloMode();
-        }
-
         connectionManager.StartServer(callback: OnReceiveResult_JoinAsServer);
     }
 
@@ -208,6 +203,11 @@ public class GameManager : MonoBehaviour
 
             //StartRelocalization();
             UIController.GoIntoGame(); // No need to relocalize as server
+
+            if (isSoloMode)
+            {
+                EnterSoloMode();
+            }
         }
         else
         {

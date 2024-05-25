@@ -36,6 +36,10 @@ public class EffectRope : MonoBehaviour
     float startMass;
     float endMass;
 
+    float cornerThickness = 2;
+    float centerThickness = 40;
+    float offsetMultiplier = 5;
+
     void Awake()
     {
         ropeIndex = transform.GetSiblingIndex();
@@ -91,11 +95,22 @@ public class EffectRope : MonoBehaviour
         //ropeStart.localPosition = performerStart.position + nor* 0.3f;
         //ropeEnd.localPosition = performerEnd.position -nor*0.3f;
 
-        ropeStart.localPosition = performerStart.transform.TransformPoint(ropeOffset);
-        ropeEnd.localPosition = performerEnd.transform.TransformPoint(ropeOffset);
 
-        ropeStart.localRotation = performerStart.transform.localRotation;
-        ropeEnd.localRotation = performerEnd.transform.localRotation;
+        ropeStart.localPosition = ApplyOffset(performerStart.transform);
+        ropeEnd.localPosition = ApplyOffset(performerEnd.transform);
+
+
+        //ropeStart.localRotation = performerStart.transform.localRotation;
+        //ropeEnd.localRotation = performerEnd.transform.localRotation;
+    }
+
+    Vector3 ApplyOffset(Transform trans)
+    {
+        float angle_x = Mathf.Abs(trans.localRotation.eulerAngles.x);
+        angle_x = angle_x > 180 ? 360 - angle_x : angle_x;
+
+        float offset_multipler = Utilities.Remap(angle_x, 0, 90, 1f, Mathf.Max(1, offsetMultiplier), true);
+        return trans.TransformPoint(Vector3.Scale(ropeOffset, Vector3.forward * offset_multipler));
     }
 
     void UpdateNodes()
@@ -125,8 +140,8 @@ public class EffectRope : MonoBehaviour
     }
     void UpdateRopeEffect()
     {
-        float min_thickness = Utilities.Remap(spline.Length, 0, 10, 2, 1, true);
-        float max_thickness = Utilities.Remap(ropevel.Value, 0, 20, min_thickness, 20);
+        float min_thickness = Utilities.Remap(spline.Length, 0, 10, cornerThickness, 1, true);
+        float max_thickness = Utilities.Remap(ropevel.Value, 0, 20, min_thickness, centerThickness);
 
         float currentLength = 0;
         foreach (CubicBezierCurve curve in spline.GetCurves())
@@ -223,10 +238,10 @@ public class EffectRope : MonoBehaviour
         performerEnd = performer_end;
     }
 
-    //public void SetPerformerOffset(Vector3 offset)
-    //{
-    //    ropeOffset = offset;
-    //}
+    public void SetPerformerOffset(Vector3 offset)
+    {
+        ropeOffset = offset;
+    }
 
     //public void BindRopeAnchors(Transform performer_start, Transform performer_end)
     //{
