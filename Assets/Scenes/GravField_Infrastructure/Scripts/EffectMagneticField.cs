@@ -66,9 +66,9 @@ public class EffectMagneticField : MonoBehaviour
         vfx.SetBool("IsPerformingB", performerList[1].localData.isPerforming);
         vfx.SetBool("IsPerformingC", performerList[2].localData.isPerforming);
 
-        vfx.SetBool("MagneticA", performerList[0].localData.positive);
-        vfx.SetBool("MagneticB", performerList[1].localData.positive);
-        vfx.SetBool("MagneticC", performerList[2].localData.positive);
+        vfx.SetBool("IsPositiveA", performerList[0].localData.positive);
+        vfx.SetBool("IsPositiveB", performerList[1].localData.positive);
+        vfx.SetBool("IsPositiveC", performerList[2].localData.positive);
     }
 
 
