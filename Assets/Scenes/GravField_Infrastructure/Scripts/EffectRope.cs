@@ -31,7 +31,10 @@ public class EffectRope : MonoBehaviour
     public Vector3 CentroidPos { get => centroidPos; }
     private Vector3 centroidVel;
     public Vector3 CentroidVel { get => centroidVel; }
+    private Vector3 centroidAcc;
+    public Vector3 CentroidAcc { get => centroidAcc; }
     AutoSwitchedParameter<float> ropevel = new AutoSwitchedParameter<float>();
+    AutoSwitchedParameter<float> ropeacc = new AutoSwitchedParameter<float>();
 
     // Parameters    
     float ropeMeshScale;
@@ -141,10 +144,13 @@ public class EffectRope : MonoBehaviour
     {
         Vector3 last_pos = centroidPos;
         centroidPos = centroidTransform.localPosition;
+        Vector3 last_vel = centroidVel;
         centroidVel = (centroidPos - last_pos) / Time.deltaTime;
+        centroidAcc = (centroidVel- last_vel) / Time.deltaTime;
 
         float vel =0;
-        ropevel.OrginalValue = Mathf.SmoothDamp(ropevel.Value, centroidVel.magnitude, ref vel, 0.2f);
+        ropevel.OrginalValue = Mathf.SmoothDamp(ropevel.Value, centroidVel.magnitude, ref vel, 0.1f);
+        ropeacc.OrginalValue = Mathf.SmoothDamp(ropeacc.Value, centroidAcc.magnitude, ref vel, 0.1f);
     }
 
     void UpdateVFX()
@@ -240,6 +246,7 @@ public class EffectRope : MonoBehaviour
         if (NetworkManager.Singleton.IsServer == false) return;
 
         SenderForLive.Instance.RegisterOscPropertyToSend(FormatedOscAddress("vel"), ropevel);
+        SenderForLive.Instance.RegisterOscPropertyToSend(FormatedOscAddress("acc"), ropeacc);
     }
     #endregion
 

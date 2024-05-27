@@ -20,38 +20,14 @@ public class Performer : NetworkBehaviour
     public NetworkVariable<bool> isPerforming;
 
 
-
-    //public NetworkVariable<float> floatValue1;
-
-    //public NetworkVariable<float> floatValue2;
-
-    //public NetworkVariable<float> floatValue3;
-
-    //public NetworkVariable<float> floatValue4;
-
-    //public NetworkVariable<float> floatValue5;
-
-    //public NetworkVariable<int> intValue1;
-
-    //public NetworkVariable<int> intValue2;
-
-    //public NetworkVariable<int> intValue3;
-
-    //public NetworkVariable<int> intValue4;
-
-    //public NetworkVariable<int> intValue5;
-
-    //public NetworkVariable<Vector3> vectorValue1;
-
-    //public NetworkVariable<Vector3> vectorValue2;
-
-    //public NetworkVariable<Vector3> vectorValue3;
-
     public NetworkVariable<float> remoteThickness;
     AutoSwitchedParameter<float> localThickness = new AutoSwitchedParameter<float>(10);
 
     public NetworkVariable<float> remoteMass;
     public AutoSwitchedParameter<float> localMass = new AutoSwitchedParameter<float>(1);
+
+    public NetworkVariable<float> effectRope_mass;
+    public NetworkVariable<float> effectRope_thickness;
 
     public NetworkVariable<float> magnetic;
 
@@ -153,6 +129,8 @@ public class Performer : NetworkBehaviour
 
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("mass"), new UnityAction<float>(OnReceive_Mass));
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("thickness"), new UnityAction<float>(OnReceive_Thickness));
+
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/mass", new UnityAction<float>((float v) => { effectRope_mass.Value = v; }));
     }
 
     string FormatedOscAddress(string param)

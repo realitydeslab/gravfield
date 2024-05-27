@@ -44,7 +44,9 @@ public class PerformerGroup : NetworkBehaviour
     public AutoSwitchedParameter<float> mode2 = new AutoSwitchedParameter<float>();
 
 
-    public NetworkVariable<float> ropeMeshScale;
+    public NetworkVariable<float> ropeMeshScale;    
+
+
 
     public UnityEvent OnPerformerFinishSpawn;
     bool performerFinishSpawn = false;
@@ -128,6 +130,7 @@ public class PerformerGroup : NetworkBehaviour
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshy", new UnityAction<float>(OnReceive_MeshY));
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshnoise", new UnityAction<float>(OnReceive_MeshNoise));
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshsize", new UnityAction<float>(OnReceive_MeshSize));
+        
     }
 
     void OnReceive_Mode(float v)

@@ -9,6 +9,7 @@ public class EffectMagneticField : MonoBehaviour
     public Transform performerTransformRoot;
 
     List<Performer> performerList = new  List<Performer>();
+    [SerializeField] float headOffsetY;
     VisualEffect vfx;
     bool effectEnabled = false;
 
@@ -62,6 +63,11 @@ public class EffectMagneticField : MonoBehaviour
 
     void UpdateVFX()
     {
+        vfx.SetVector3("PerformerA" + "_position", performerList[0].localData.position + new Vector3(0, headOffsetY, 0));
+        vfx.SetVector3("PerformerB" + "_position", performerList[1].localData.position + new Vector3(0, headOffsetY, 0));
+        vfx.SetVector3("PerformerC" + "_position", performerList[2].localData.position + new Vector3(0, headOffsetY, 0));
+
+
         vfx.SetBool("IsPerformingA", performerList[0].localData.isPerforming);
         vfx.SetBool("IsPerformingB", performerList[1].localData.isPerforming);
         vfx.SetBool("IsPerformingC", performerList[2].localData.isPerforming);

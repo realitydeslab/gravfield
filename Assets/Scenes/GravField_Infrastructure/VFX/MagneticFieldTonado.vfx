@@ -158,10 +158,10 @@ MonoBehaviour:
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: 639
-    y: 690
-    width: 2891
-    height: 4698
+    x: 0
+    y: 0
+    width: 3530
+    height: 5388
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -20510,7 +20510,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615209}
   m_ExposedName: PerformerB
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 1
   m_Category: 
   m_Min:
     m_Type:
@@ -21006,7 +21006,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615223}
   m_ExposedName: PerformerC
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 2
   m_Category: 
   m_Min:
     m_Type:
@@ -21502,7 +21502,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615237}
   m_ExposedName: IsPositiveA
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 3
   m_Category: 
   m_Min:
     m_Type:
@@ -21590,7 +21590,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615239}
   m_ExposedName: IsPositiveB
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 4
   m_Category: 
   m_Min:
     m_Type:
@@ -21678,7 +21678,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615241}
   m_ExposedName: IsPositiveC
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 5
   m_Category: 
   m_Min:
     m_Type:
@@ -21766,7 +21766,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615243}
   m_ExposedName: BaseSDF
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 6
   m_Category: 
   m_Min:
     m_Type:
@@ -21852,7 +21852,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615245}
   m_ExposedName: Initial Color Cycle
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 7
   m_Category: 
   m_Min:
     m_Type:
@@ -21932,7 +21932,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615247}
   m_ExposedName: Color Over Life
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 8
   m_Category: 
   m_Min:
     m_Type:
@@ -22012,7 +22012,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615249}
   m_ExposedName: SDF A
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 9
   m_Category: 
   m_Min:
     m_Type:
@@ -22098,7 +22098,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615251}
   m_ExposedName: Brightness
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 10
   m_Category: 
   m_Min:
     m_Type:
@@ -22178,7 +22178,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615253}
   m_ExposedName: TonadoTransform
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 11
   m_Category: 
   m_Min:
     m_Type:
@@ -22672,7 +22672,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615267}
   m_ExposedName: Lerp Curve
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 12
   m_Category: 
   m_Min:
     m_Type:
@@ -22758,7 +22758,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615269}
   m_ExposedName: Initial Color Cycle Duration
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 13
   m_Category: 
   m_Min:
     m_Type:
@@ -22838,7 +22838,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615271}
   m_ExposedName: IsPerformingA
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 14
   m_Category: 
   m_Min:
     m_Type:
@@ -22926,7 +22926,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615273}
   m_ExposedName: IsPerformingB
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 15
   m_Category: 
   m_Min:
     m_Type:
@@ -23014,7 +23014,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615275}
   m_ExposedName: IsPerformingC
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 16
   m_Category: 
   m_Min:
     m_Type:
@@ -23102,7 +23102,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615277}
   m_ExposedName: InfluenceLocalRadius
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 17
   m_Category: 
   m_Min:
     m_Type:
@@ -23188,7 +23188,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615279}
   m_ExposedName: InfluenceRemoteRadius
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 18
   m_Category: 
   m_Min:
     m_Type:
@@ -23274,7 +23274,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615281}
   m_ExposedName: EmitScale
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 19
   m_Category: 
   m_Min:
     m_Type:
