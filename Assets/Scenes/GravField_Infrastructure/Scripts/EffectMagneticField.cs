@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.VFX;
+using UnityEngine.VFX.Utility;
 
 public class EffectMagneticField : MonoBehaviour
 {
@@ -24,8 +25,9 @@ public class EffectMagneticField : MonoBehaviour
     void Awake()
     {
         vfx = transform.GetComponentInChildren<VisualEffect>();
+        transform.GetComponentInChildren<VFXPropertyBinder>().enabled = false;
 
-        for(int i=0; i< performerTransformRoot.childCount; i++)
+        for (int i=0; i< performerTransformRoot.childCount; i++)
         {
             performerList.Add(performerTransformRoot.GetChild(i).GetComponent<Performer>());
         }
