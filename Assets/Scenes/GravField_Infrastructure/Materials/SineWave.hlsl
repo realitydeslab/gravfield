@@ -1,10 +1,10 @@
 #define MAX_LINE_COUNT 5
 
-uniform float waveShakeY[MAX_LINE_COUNT];
-uniform float waveSinShift[MAX_LINE_COUNT];
-uniform float waveSinFrequncy[MAX_LINE_COUNT];
-uniform float waveThickness[MAX_LINE_COUNT];
-uniform float waveChaos[MAX_LINE_COUNT];
+float waveShakeY[MAX_LINE_COUNT];
+float waveSinShift[MAX_LINE_COUNT];
+float waveSinFrequncy[MAX_LINE_COUNT];
+float waveThickness[MAX_LINE_COUNT];
+float waveChaos[MAX_LINE_COUNT];
 
 
 // 2D Random
@@ -69,17 +69,26 @@ void CalculateLine_float(float2 uv, float frequency, float strength, float thick
     [unroll]
     for(int i=0; i<MAX_LINE_COUNT; i++)
     {
-        float shake_y = waveShakeY[i];
+        float shake_y = waveShakeY[i];//max(0.05, waveShakeY[i]);
         float sin_base = uv.x;
 
-        float sin_y = sin(uv.x * waveSinFrequncy[i] + waveSinShift[i]) * shake_y;
-        thickness = waveThickness[i];
+        float sin_y = sin(uv.x * waveSinFrequncy[i] + waveSinShift[i]) * shake_y;// * noise_factor;
 
-        
+
         // float sin_y = sin(uv.x * frequency) * abs(strength);
         float uv_y = (uv.y-0.5)*2;
         // uv_y += noise_factor * noise(uv);
-        sin_y += noise_factor * waveChaos[i];
+        // sin_y += noise_factor * waveChaos[i];
+
+        if(uv.x < 0.1)
+        {
+            sin_y = sin_y * remap(uv.x, 0, 0.1, 0, 1);
+        } 
+        else if(uv.x >0.9)
+        {
+            sin_y = sin_y * remap(uv.x, 0.9, 1, 1, 0);
+        }
+
 
         float value = 0;
 
@@ -112,7 +121,9 @@ void CalculateLine_float(float2 uv, float frequency, float strength, float thick
             {
                 value = 0;
             }
-        }        
+        }       
+
+        
 
         final_value = max(final_value, value);
     }

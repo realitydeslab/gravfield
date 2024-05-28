@@ -276,20 +276,20 @@ public class AudioProcessor : MonoBehaviour
     /// Caution!
     /// Will execute even the script is disabled.
     /// </summary>
-    void OnApplicationFocus(bool focus)
-    {
-        if (focus)
-        {
-            //Debug.Log("OnFocus:Start");
-            StartMicrophone();
-        }
+    //void OnApplicationFocus(bool focus)
+    //{
+    //    if (focus)
+    //    {
+    //        //Debug.Log("OnFocus:Start");
+    //        StartMicrophone();
+    //    }
 
-        else
-        {
-            //Debug.Log("OnLoseFocus:End");
-            StopMicrophone();
-        } 
-    }
+    //    else
+    //    {
+    //        //Debug.Log("OnLoseFocus:End");
+    //        StopMicrophone();
+    //    } 
+    //}
     
 
     public void ToggleRecording()

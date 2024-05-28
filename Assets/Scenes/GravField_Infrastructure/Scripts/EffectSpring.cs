@@ -8,13 +8,20 @@ using UnityEngine;
 
 public class SoundWaveLine
 {
-    public float soundData;
+    public float soundData = 0;
     public float shakeY;
     public float sinShift;
     public float sinSpeed;
+    public float curSinSpeed;
     public float sinFrequency;
     public float chaos;
     public float thickness;
+
+    public float dstSoundData = 0;
+    public float falloffSpeed = 0.5f;
+    public float direction = 1;
+    public float elapsedTime = 0;
+    public float duration = 0.5f;
 }
 
 
@@ -31,7 +38,7 @@ public class EffectSpring : MonoBehaviour
     bool isInitialized = false;
 
 
-    // Path
+    // Path    
     Spline spline;
     List<GameObject> wayPoints = new List<GameObject>();
     LineRenderer lineRenderer;
@@ -55,20 +62,26 @@ public class EffectSpring : MonoBehaviour
 
     float sinBaseValue;
 
-    
 
     [SerializeField]
     Material meshMat;
     const int LINE_COUNT = 5;
     float soundwaveFrequency = 30;
     float frequencyRange = 30;
-    float soundAmplifier = 3;
+    public float soundAmplifier = 6;
     List<SoundWaveLine> soundWaveList = new List<SoundWaveLine>();
 
     float maxDistance = 8;
     float maxSpringThickness = 1;
     float minSpringThickness = 0.2f;
+    public Vector2 switchDirectionTime = new Vector2(0, 1f);
+    public float attackSpeed = 0.01f;
+    public float decaySpeed = 0.001f;
+    public float sinChangeSpeed = 0.001f;
+    public Vector2 sinSpeedRange = new Vector2(0.4f, 1f);
 
+    public float amplifier = 1;
+    public float period = 1;
 
     void Awake()
     {
@@ -89,6 +102,9 @@ public class EffectSpring : MonoBehaviour
             soundwave.sinShift = Random.Range(0f, 1000f);
             soundwave.sinSpeed = Random.Range(5f, 11f); 
             soundwave.sinFrequency = soundwaveFrequency + Random.Range(-0.5f, 0.5f) * frequencyRange;
+
+            soundwave.direction = Random.Range(0f, 1f) > 0.5f ? 1 : -1;
+            soundwave.duration = Random.Range(0f, 1f);
         }
     }
 
@@ -195,35 +211,70 @@ public class EffectSpring : MonoBehaviour
     void UpdateSpringMaterial()
     {
         List<float> audio_data = GameManager.Instance.AudioProcessor.ListFFT;
-        int step = Mathf.FloorToInt(audio_data.Count / LINE_COUNT);
+        int step = Mathf.FloorToInt(audio_data.Count / LINE_COUNT * 0.5f) ;
         for (int i = 0; i < LINE_COUNT; i++)
         {
             SoundWaveLine soundwave = soundWaveList[i];
 
-            // decay
-            soundwave.soundData -= Time.deltaTime * 2f;
-            if (soundwave.soundData < 0)
-                soundwave.soundData = 0;
+            float new_sound_data = 0;
 
-            // pick sound data every 2 frames
-            if (Time.frameCount % 2 == 0)
+            if (audio_data.Count > 0)
+                new_sound_data = Mathf.Abs(audio_data[i * step]) * soundAmplifier; // Utilities.Remap(Mathf.Abs(audio_data[i * step] * soundAmplifier), 0, 1, 0, 1, true);
+
+
+
+
+            //if (Mathf.Abs(new_sound_data) > Mathf.Abs(soundwave.dstSoundData))
+            //{
+            //    soundwave.direction = -soundwave.direction;
+            //}
+
+            //soundwave.elapsedTime += Time.deltaTime;
+            //if (soundwave.elapsedTime > soundwave.duration)
+            //{
+            //    soundwave.direction = -soundwave.direction;
+            //    soundwave.elapsedTime = 0;
+            //    soundwave.duration = Random.Range(switchDirectionTime.x, switchDirectionTime.y);
+            //}
+
+            soundwave.dstSoundData = new_sound_data * soundwave.direction;
+
+            if (Mathf.Sign(soundwave.dstSoundData) != Mathf.Sign(soundwave.soundData))
             {
-                float new_sound_data = 0;
-                if (audio_data.Count > 0)
-                    new_sound_data = Utilities.Remap(Mathf.Abs(audio_data[i * step] * soundAmplifier), 0, 1, 0, 1, true);
+                soundwave.soundData = Mathf.Lerp(soundwave.soundData, soundwave.dstSoundData, attackSpeed);
+            }
+            else if (Mathf.Abs(soundwave.dstSoundData) > Mathf.Abs(soundwave.soundData))
+            {
+                soundwave.soundData = Mathf.Lerp(soundwave.soundData, soundwave.dstSoundData, attackSpeed);
+            }
+            else
+            {
+                soundwave.soundData = Mathf.Lerp(soundwave.soundData, soundwave.dstSoundData, decaySpeed);
+            }
 
-                soundwave.soundData = new_sound_data > soundwave.soundData ? new_sound_data : soundwave.soundData;
-            }                
+            //if (i == 0)
+            //{
+            //    Debug.Log($"shake:{soundwave.soundData}, dir:{soundwave.direction}, dst:{soundwave.dstSoundData}");
+            //}
 
-            float shake_y = Mathf.Sin(soundwave.sinShift);
-            shake_y = Mathf.Sign(shake_y) * EasingFunctions.InCubic(Mathf.Abs(shake_y));
-            soundwave.shakeY = soundwave.soundData * shake_y;
+            soundwave.soundData = Oscillator(0, Mathf.Abs(soundwave.soundData) * amplifier, period);
 
 
-            soundwave.sinShift += soundwave.sinSpeed * Time.deltaTime;
+
+            //float shake_y = Mathf.Sin(soundwave.sinShift);
+            //shake_y = Mathf.Sign(shake_y) * EasingFunctions.InCubic(Mathf.Abs(shake_y));
+            //soundwave.shakeY = soundwave.soundData * shake_y;
+            soundwave.shakeY = soundwave.soundData;
+
+            float new_sin_speed = soundwave.sinSpeed * Utilities.Remap(GameManager.Instance.AudioProcessor.AudioVolume, 0, 1f, sinSpeedRange.x, sinSpeedRange.y);
+
+            soundwave.curSinSpeed = Mathf.Lerp(soundwave.curSinSpeed, new_sin_speed, sinChangeSpeed);
+            soundwave.sinShift += soundwave.curSinSpeed * Time.deltaTime;
 
             soundwave.thickness = Utilities.Remap(soundwave.soundData, 0f, 1, 0.02f, 0.2f, true);
-            soundwave.chaos = Utilities.Remap(soundwave.soundData, 0.5f, 1, 0, 0.2f, true);
+            soundwave.chaos = Utilities.Remap(soundwave.soundData, 0.5f, 1, 0, 0.02f, true);
+
+            soundwave.sinFrequency = 30 + Mathf.PerlinNoise1D(performerStart.localData.position.x) * soundwaveFrequency;
         }
 
 
@@ -232,6 +283,8 @@ public class EffectSpring : MonoBehaviour
 
     void PushChangeToMaterial()
     {
+        //meshMat = transform.Find("generated by SplineMeshTiling").GetComponentInChildren<MeshRenderer>().material;
+
         float[] shake_y = new float[LINE_COUNT];
         float[] sin_shift = new float[LINE_COUNT];
         float[] sin_freq = new float[LINE_COUNT];
@@ -254,6 +307,17 @@ public class EffectSpring : MonoBehaviour
 
         meshMat.SetFloat("_SpringLength", Utilities.Remap(spline.Length, 0, maxDistance, 0, 1, true));
         
+    }
+
+    float Oscillator(float _origin, float _ampitude, float _period)
+    {
+        var pos = _origin + _ampitude * Mathf.Sin(2.0f * Mathf.PI * Time.time / _period);
+        return pos;
+    }
+
+    float Oscillator2(float time, float speed, float scale)
+    {
+        return Mathf.Cos(time * speed / Mathf.PI) * scale;
     }
 
     void UpdateNodes()
