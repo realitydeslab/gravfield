@@ -13,6 +13,7 @@ public class EffectMagneticField : MonoBehaviour
     [SerializeField] float headOffsetY;
     VisualEffect vfx;
     bool effectEnabled = false;
+    bool isInitialized = false;
 
     // Output to LIVE
     AutoSwitchedParameter<float> magabpos = new AutoSwitchedParameter<float>();
@@ -37,19 +38,29 @@ public class EffectMagneticField : MonoBehaviour
     {
         
     }
-    void OnEnable()
-    {
-        GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
-    }
+    //void OnEnable()
+    //{
+    //    GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
+    //}
 
     void OnPerformerFinishSpawn()
     {
+        if (NetworkManager.Singleton.IsServer == false) return;
+
+        RegisterNetworkVariableCallback_Client();
+
         RegisterPropertiesToLive_Server();
     }
 
 
     void Update()
     {
+        if(isInitialized == false && GameManager.Instance.PerformerGroup.PerformerFinishSpawn == true)
+        {
+            OnPerformerFinishSpawn();
+            isInitialized = true;
+        }
+
         if (effectEnabled == false) return;
 
         UpdateVFX();
@@ -126,7 +137,23 @@ public class EffectMagneticField : MonoBehaviour
         //mag *= (start.localData.positive != end.localData.positive) ? -1f : 1f;
 
         return mag;
+    }
+    #endregion
+
+    #region NetworkVariable
+    void InitializeLocalVariable()
+    {
         
     }
+
+    void RegisterNetworkVariableCallback_Client()
+    {
+        if (NetworkManager.Singleton.IsServer == false) return;
+
+    }
+    #endregion
+
+    #region Paramters received from Coda
+
     #endregion
 }

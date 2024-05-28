@@ -31,6 +31,17 @@ public class Performer : NetworkBehaviour
 
     public NetworkVariable<float> magnetic;
 
+    // Rope Effect
+    public NetworkVariable<float> ropeMass = new NetworkVariable<float>(42.8f);
+    public NetworkVariable<float> ropeMaxWidth = new NetworkVariable<float>(40);
+    public NetworkVariable<float> ropeScaler = new NetworkVariable<float>(5);
+
+    // Spring Effect
+    public NetworkVariable<float> springFreq = new NetworkVariable<float>(30);
+    public NetworkVariable<float> springWidth = new NetworkVariable<float>(1);
+
+    // Magnetic Effect
+
     int performerIndex = 0;
 
     string performerName = "A";
@@ -127,15 +138,29 @@ public class Performer : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("mass"), new UnityAction<float>(OnReceive_Mass));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("thickness"), new UnityAction<float>(OnReceive_Thickness));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-mass"), new UnityAction<float>((v) => { ropeMass.Value = v; }));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-maxwidth"), new UnityAction<float>((v) => { ropeMaxWidth.Value = v; }));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-scaler"), new UnityAction<float>((v) => { ropeScaler.Value = v; }));
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/mass", new UnityAction<float>((float v) => { effectRope_mass.Value = v; }));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/spring-freq"), new UnityAction<float>((v) => { springFreq.Value = v; }));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/spring-width"), new UnityAction<float>((v) => { springWidth.Value = v; }));
+
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/mag"), new UnityAction<float>((v) => { magnetic.Value = v; }));
     }
 
     string FormatedOscAddress(string param)
     {
-        return "/" + performerName + "-" + param;
+        if (param[0] == '/')
+        {
+            param = param.Substring(1);
+        }
+        if(param.Contains("-"))
+        {
+            string[] split_str = param.Split("-");
+            return "/" + split_str[0] + performerIndex.ToString() + "-" + split_str[1];
+        }
+
+        return "/" + param + performerIndex.ToString();
     }
 
     void OnReceive_Mass(float v)

@@ -37,15 +37,18 @@ public class EffectRope : MonoBehaviour
     AutoSwitchedParameter<float> ropeacc = new AutoSwitchedParameter<float>();
 
     // Parameters    
-    float ropeMeshScale;
-    float startThickness;
-    float endThickness;
-    float startMass;
-    float endMass;
+    //float ropeMeshScale;
+    //float startThickness;
+    //float endThickness;
+    //float startMass;
+    //float endMass;
+    float ropeMass = 42.8f;
 
     float cornerThickness = 2;
     float centerThickness = 40;
     float offsetMultiplier = 5;
+
+    bool isInitialized = false;
 
     void Awake()
     {
@@ -56,14 +59,10 @@ public class EffectRope : MonoBehaviour
 
         vfx = GetComponent<VisualEffect>();
     }
-    void OnEnable()
-    {
-        GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
-    }
 
     void OnPerformerFinishSpawn()
     {
-        AssignLocalVariable();
+        InitializeLocalVariable();
 
         RegisterNetworkVariableCallback_Client();
 
@@ -79,25 +78,29 @@ public class EffectRope : MonoBehaviour
         AssignSplineNodes();
     }
 
-    string FormatedOscAddress(string param)
-    {
-        return "/rope" + ropeIndex.ToString() + param;
-    }
-
     void Update()
     {
+        if(isInitialized == false && GameManager.Instance.PerformerGroup.PerformerFinishSpawn == true)
+        {
+            OnPerformerFinishSpawn();
+            isInitialized = true;
+        }
+
+
         if (ropeEnabled == false) return;
 
         UpdateRopeAnchors();
 
-        UpdateParamtersForLive();
+        UpdateNodes();
+
+        
+
+        UpdateRopeEffect();
 
         UpdateVFX();
 
-        UpdateNodes();
 
-        UpdateRopeEffect();
-        
+        UpdateParamtersForLive();
     }
 
     void UpdateRopeAnchors()
@@ -189,13 +192,17 @@ public class EffectRope : MonoBehaviour
 
 
     #region NetworkVariable
-    void AssignLocalVariable()
+    void InitializeLocalVariable()
     {
-        ropeMeshScale = GameManager.Instance.PerformerGroup.ropeMeshScale.Value;
-        startThickness = performerStart.remoteThickness.Value;
-        endThickness = performerEnd.remoteThickness.Value;
-        startMass = performerStart.remoteMass.Value;
-        endMass = performerEnd.remoteMass.Value;
+        //ropeMeshScale = GameManager.Instance.PerformerGroup.ropeMeshScale.Value;
+        //startThickness = performerStart.remoteThickness.Value;
+        //endThickness = performerEnd.remoteThickness.Value;
+        //startMass = performerStart.remoteMass.Value;
+        //endMass = performerEnd.remoteMass.Value;
+
+        ropeMass =  GameManager.Instance.PerformerList[ropeIndex].ropeMass.Value;
+        centerThickness = GameManager.Instance.PerformerList[ropeIndex].ropeMaxWidth.Value;
+        offsetMultiplier = GameManager.Instance.PerformerList[ropeIndex].ropeScaler.Value;
     }
 
     void RegisterNetworkVariableCallback_Client()
@@ -203,25 +210,15 @@ public class EffectRope : MonoBehaviour
         //performerStart.remoteThickness.OnValueChanged += (float prev, float cur) => { startThickness = cur; UpdateRopeThickness(); };
         //performerEnd.remoteThickness.OnValueChanged += (float prev, float cur) => { endThickness = cur; UpdateRopeThickness(); };
 
-        performerStart.remoteMass.OnValueChanged += (float prev, float cur) => { startMass = cur; UpdateRopeMass(); };
-        performerEnd.remoteMass.OnValueChanged += (float prev, float cur) => { endMass = cur; UpdateRopeMass(); };
+        //performerStart.remoteMass.OnValueChanged += (float prev, float cur) => { startMass = cur; UpdateRopeMass(); };
+        //performerEnd.remoteMass.OnValueChanged += (float prev, float cur) => { endMass = cur; UpdateRopeMass(); };
 
-        GameManager.Instance.PerformerGroup.ropeMeshScale.OnValueChanged += (float prev, float cur) => { ropeMeshScale = cur; UpdateRopeMeshScale(); };
+        //GameManager.Instance.PerformerGroup.ropeMeshScale.OnValueChanged += (float prev, float cur) => { ropeMeshScale = cur; UpdateRopeMeshScale(); };
 
-    }
-    void UpdateRopeThickness()
-    {
-        float currentLength = 0;
-        foreach (CubicBezierCurve curve in spline.GetCurves())
-        {
-            float startRate = currentLength / spline.Length;
-            currentLength += curve.Length;
-            float endRate = currentLength / spline.Length;
-
-            curve.n1.Scale = Vector3.one * (startThickness + (endThickness - startThickness) * startRate);
-            curve.n2.Scale = Vector3.one * (startThickness + (endThickness - startThickness) * endRate);
-        }
-    }
+        GameManager.Instance.PerformerList[ropeIndex].ropeMass.OnValueChanged += (float prev, float cur) => { ropeMass = Mathf.Clamp(cur, 10, 80); UpdateRopeMass();  };
+        GameManager.Instance.PerformerList[ropeIndex].ropeMaxWidth.OnValueChanged += (float prev, float cur) => { centerThickness = Mathf.Clamp(cur, 1, 100);  };
+        GameManager.Instance.PerformerList[ropeIndex].ropeScaler.OnValueChanged += (float prev, float cur) => { offsetMultiplier = Mathf.Clamp(cur, 1, 20); };
+    }    
 
     void UpdateRopeMass()
     {
@@ -229,15 +226,29 @@ public class EffectRope : MonoBehaviour
         for (int m = 0; m < segment_root.childCount; m++)
         {
             Rigidbody rigid = segment_root.GetChild(m).GetComponent<Rigidbody>();
-            rigid.mass = Mathf.Lerp(startMass, endMass, m / segment_root.childCount - 1);
+            rigid.mass = ropeMass; //Mathf.Lerp(startMass, endMass, m / segment_root.childCount - 1);
         }
     }
 
-    void UpdateRopeMeshScale()
-    {
-        SplineMeshTiling meshTiling = GetComponent<SplineMeshTiling>();
-        meshTiling.scale = Mathf.Max(0.05f, ropeMeshScale) * Vector3.one;
-    }
+    //void UpdateRopeThickness()
+    //{
+    //    float currentLength = 0;
+    //    foreach (CubicBezierCurve curve in spline.GetCurves())
+    //    {
+    //        float startRate = currentLength / spline.Length;
+    //        currentLength += curve.Length;
+    //        float endRate = currentLength / spline.Length;
+
+    //        curve.n1.Scale = Vector3.one * (startThickness + (endThickness - startThickness) * startRate);
+    //        curve.n2.Scale = Vector3.one * (startThickness + (endThickness - startThickness) * endRate);
+    //    }
+    //}
+
+    //void UpdateRopeMeshScale()
+    //{
+    //    SplineMeshTiling meshTiling = GetComponent<SplineMeshTiling>();
+    //    meshTiling.scale = Mathf.Max(0.05f, ropeMeshScale) * Vector3.one;
+    //}
     #endregion
 
     #region Parameter sent to Live
@@ -245,8 +256,13 @@ public class EffectRope : MonoBehaviour
     {
         if (NetworkManager.Singleton.IsServer == false) return;
 
-        SenderForLive.Instance.RegisterOscPropertyToSend(FormatedOscAddress("vel"), ropevel);
-        SenderForLive.Instance.RegisterOscPropertyToSend(FormatedOscAddress("acc"), ropeacc);
+        SenderForLive.Instance.RegisterOscPropertyToSend(FormatedOscAddressToLive("vel"), ropevel);
+        SenderForLive.Instance.RegisterOscPropertyToSend(FormatedOscAddressToLive("acc"), ropeacc);
+    }
+
+    string FormatedOscAddressToLive(string param)
+    {
+        return "/rope" + ropeIndex.ToString() + param;
     }
     #endregion
 
