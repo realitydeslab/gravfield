@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class EffectManager : MonoBehaviour
 {
+    public Volume volume;
+    Bloom bloom;
+
     public EffectRopeController effectRope;
 
     public EffectSpringController effectSpring;
@@ -23,6 +28,36 @@ public class EffectManager : MonoBehaviour
     void OnDisable()
     {
         //GameManager.Instance.RoleManager.OnSpecifyPlayerRoleEvent.RemoveListener(OnSpecifyPlayerRole);
+    }
+
+    void Start()
+    {
+        GameManager.Instance.HolokitCameraManager.OnScreenRenderModeChanged += OnScreenRenderModeChanged;
+
+        SetBloomState(GameManager.Instance.HolokitCameraManager.ScreenRenderMode);
+    }
+
+    void OnScreenRenderModeChanged(HoloKit.ScreenRenderMode mode)
+    {
+        SetBloomState(mode);
+    }
+
+    void SetBloomState(HoloKit.ScreenRenderMode mode)
+    {
+        VolumeProfile profile = volume.sharedProfile;
+        profile.TryGet<Bloom>(out bloom);
+#if UNITY_EDITOR
+        bloom.active = true;
+#else
+        if (mode == HoloKit.ScreenRenderMode.Mono)
+        {
+            bloom.active = false;
+        }
+        else
+        {
+            bloom.active = true;
+        }
+#endif
     }
 
     void OnSpecifyPlayerRole(RoleManager.PlayerRole role)

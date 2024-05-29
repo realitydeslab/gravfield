@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.VFX;
 using UnityEngine.VFX.Utility;
 
+
 public class EffectMagneticField : MonoBehaviour
 {
     public Transform performerTransformRoot;
@@ -34,10 +35,7 @@ public class EffectMagneticField : MonoBehaviour
         }
         
     }
-    void Start()
-    {
-        
-    }
+    
     //void OnEnable()
     //{
     //    GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
@@ -91,7 +89,7 @@ public class EffectMagneticField : MonoBehaviour
     }
 
 
-    #region Parameter sent to Live
+#region Parameter sent to Live
     void RegisterPropertiesToLive_Server()
     {
         if (NetworkManager.Singleton.IsServer == false) return;
@@ -138,9 +136,9 @@ public class EffectMagneticField : MonoBehaviour
 
         return mag;
     }
-    #endregion
+#endregion
 
-    #region NetworkVariable
+#region NetworkVariable
     void InitializeLocalVariable()
     {
         
@@ -151,9 +149,9 @@ public class EffectMagneticField : MonoBehaviour
         if (NetworkManager.Singleton.IsServer == false) return;
 
     }
-    #endregion
+#endregion
 
-    #region Paramters received from Coda
+#region Paramters received from Coda
 
-    #endregion
+#endregion
 }
