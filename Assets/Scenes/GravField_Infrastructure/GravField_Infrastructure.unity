@@ -8444,7 +8444,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 309391296}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -8483,7 +8483,7 @@ VisualEffect:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 309391296}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: d25f869bc2ef84213b590883bc04762f, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
@@ -11508,8 +11508,6 @@ MonoBehaviour:
   decaySpeed: 0.005
   sinChangeSpeed: 0.005
   sinSpeedRange: {x: 0, y: 13}
-  fixedShakeY: 1
-  everyFrameNumber: 10
   amplifier: 1
   period: 1
 --- !u!1 &416180762
@@ -35050,8 +35048,6 @@ MonoBehaviour:
   decaySpeed: 0.005
   sinChangeSpeed: 0.005
   sinSpeedRange: {x: 0, y: 13}
-  fixedShakeY: 1
-  everyFrameNumber: 10
   amplifier: 1
   period: 1
 --- !u!1 &1509922943
@@ -36437,8 +36433,6 @@ MonoBehaviour:
   decaySpeed: 0.005
   sinChangeSpeed: 0.005
   sinSpeedRange: {x: 0, y: 13}
-  fixedShakeY: 1
-  everyFrameNumber: 10
   amplifier: 1
   period: 1
 --- !u!1 &1560462836

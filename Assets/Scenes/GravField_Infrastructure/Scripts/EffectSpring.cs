@@ -274,7 +274,9 @@ public class EffectSpring : MonoBehaviour
             soundwave.thickness = Utilities.Remap(soundwave.soundData, 0f, 1, 0.02f, 0.2f, true);
             soundwave.chaos = Utilities.Remap(soundwave.soundData, 0.5f, 1, 0, 0.02f, true);
 
-            soundwave.sinFrequency = 30 + Mathf.PerlinNoise1D(performerStart.localData.position.x) * soundwaveFrequency;
+            //soundwave.sinFrequency = 30 + Mathf.PerlinNoise1D(performerStart.localData.position.x) * soundwaveFrequency;
+
+            soundwave.sinFrequency = 30 + Mathf.PerlinNoise(Time.time, springIndex) * soundwaveFrequency;
         }
 
 
