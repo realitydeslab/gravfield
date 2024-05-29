@@ -8598,7 +8598,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614859}
   m_ExposedName: VectorFieldTransform
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 1
   m_Category: 
   m_Min:
     m_Type:
@@ -9094,7 +9094,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614873}
   m_ExposedName: VF
   m_Exposed: 1
-  m_Order: 0
+  m_Order: 2
   m_Category: 
   m_Min:
     m_Type:

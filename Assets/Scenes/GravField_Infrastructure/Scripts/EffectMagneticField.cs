@@ -26,7 +26,7 @@ public class EffectMagneticField : MonoBehaviour
     void Awake()
     {
         vfx = transform.GetComponentInChildren<VisualEffect>();
-        transform.GetComponentInChildren<VFXPropertyBinder>().enabled = false;
+        //transform.GetComponentInChildren<VFXPropertyBinder>().enabled = false;
 
         for (int i=0; i< performerTransformRoot.childCount; i++)
         {
