@@ -51,7 +51,7 @@ public class EffectRope : MonoBehaviour
 
     float cornerThickness = 2;
     float centerThickness = 40;
-    float offsetMultiplier = 5;
+    float offsetMultiplier = 3;
 
     bool isInitialized = false;
 
@@ -132,7 +132,7 @@ public class EffectRope : MonoBehaviour
         angle_x = angle_x > 180 ? 360 - angle_x : angle_x;
 
         float offset_multipler = Utilities.Remap(angle_x, 0, 90, 1f, Mathf.Max(1, offsetMultiplier), true);
-        return trans.TransformPoint(Vector3.Scale(ropeOffset, Vector3.forward * offset_multipler));
+        return trans.TransformPoint(new Vector3(ropeOffset.x, ropeOffset.y, ropeOffset.z * offset_multipler));
     }
 
     void UpdateNodes()
@@ -256,6 +256,7 @@ public class EffectRope : MonoBehaviour
         GameManager.Instance.PerformerList[ropeIndex].ropeMass.OnValueChanged += (float prev, float cur) => { ropeMass = Mathf.Clamp(cur, 10, 80); UpdateRopeMass();  };
         GameManager.Instance.PerformerList[ropeIndex].ropeMaxWidth.OnValueChanged += (float prev, float cur) => { centerThickness = Mathf.Clamp(cur, 1, 100);  };
         GameManager.Instance.PerformerList[ropeIndex].ropeScaler.OnValueChanged += (float prev, float cur) => { offsetMultiplier = Mathf.Clamp(cur, 1, 20); };
+        GameManager.Instance.PerformerList[ropeIndex].ropeOffsetY.OnValueChanged += (float prev, float cur) => { ropeOffset.y = cur; };
     }    
 
     void UpdateRopeMass()

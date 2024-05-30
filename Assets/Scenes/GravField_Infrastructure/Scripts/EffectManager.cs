@@ -47,15 +47,18 @@ public class EffectManager : MonoBehaviour
         VolumeProfile profile = volume.sharedProfile;
         profile.TryGet<Bloom>(out bloom);
 #if UNITY_EDITOR
-        bloom.active = true;
+        //bloom.active = true;
+        //bloom.intensity.value = 1.93f;
 #else
         if (mode == HoloKit.ScreenRenderMode.Mono)
         {
-            bloom.active = false;
+            //bloom.int = false;
+            bloom.intensity.value = 0.93f;
         }
         else
         {
-            bloom.active = true;
+            //bloom.active = true;
+            bloom.intensity.value = 1.93f;
         }
 #endif
     }

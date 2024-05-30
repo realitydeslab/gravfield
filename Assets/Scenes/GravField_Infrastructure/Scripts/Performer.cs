@@ -35,6 +35,7 @@ public class Performer : NetworkBehaviour
     public NetworkVariable<float> ropeMass = new NetworkVariable<float>(42.8f);
     public NetworkVariable<float> ropeMaxWidth = new NetworkVariable<float>(40);
     public NetworkVariable<float> ropeScaler = new NetworkVariable<float>(5);
+    public NetworkVariable<float> ropeOffsetY = new NetworkVariable<float>(-0.3f);
 
     // Spring Effect
     public NetworkVariable<float> springFreq = new NetworkVariable<float>(30);
@@ -141,6 +142,7 @@ public class Performer : NetworkBehaviour
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-mass"), new UnityAction<float>((v) => { ropeMass.Value = v; }));
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-maxwidth"), new UnityAction<float>((v) => { ropeMaxWidth.Value = v; }));
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-scaler"), new UnityAction<float>((v) => { ropeScaler.Value = v; }));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-offset"), new UnityAction<float>((v) => { ropeOffsetY.Value = v; }));
 
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/spring-freq"), new UnityAction<float>((v) => { springFreq.Value = v; }));
         ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/spring-width"), new UnityAction<float>((v) => { springWidth.Value = v; }));

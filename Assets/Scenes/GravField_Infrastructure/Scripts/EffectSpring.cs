@@ -77,7 +77,7 @@ public class EffectSpring : MonoBehaviour
     List<SoundWaveLine> soundWaveList = new List<SoundWaveLine>();
 
     float maxDistance = 8;
-    public float maxSpringThickness = 1;
+    public float maxSpringThickness = 20;
     public float minSpringThickness = 0.2f;
     public Vector2 switchDirectionTime = new Vector2(0, 1f);
     public float attackSpeed = 0.01f;

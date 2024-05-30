@@ -32,14 +32,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 736473998118647235}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7125772, z: 0, w: 0.7015937}
-  m_LocalPosition: {x: -4.61, y: 1.07, z: 0.04}
+  m_LocalRotation: {x: 0, y: -0.7682556, z: 0, w: 0.6401432}
+  m_LocalPosition: {x: -0.38, y: 1.37, z: 10.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4201837170489348089}
   m_Father: {fileID: 2386362520638764014}
-  m_LocalEulerAnglesHint: {x: 0, y: 90.89, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -100.395, z: 0}
 --- !u!33 &7947205146624120478
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -162,8 +162,22 @@ MonoBehaviour:
     m_InternalValue: 1
   remoteMass:
     m_InternalValue: 42.8
+  effectRope_mass:
+    m_InternalValue: 0
+  effectRope_thickness:
+    m_InternalValue: 0
   magnetic:
     m_InternalValue: 0
+  ropeMass:
+    m_InternalValue: 42.8
+  ropeMaxWidth:
+    m_InternalValue: 40
+  ropeScaler:
+    m_InternalValue: 3
+  springFreq:
+    m_InternalValue: 30
+  springWidth:
+    m_InternalValue: 20
   OnStartPerforming:
     m_PersistentCalls:
       m_Calls: []
@@ -250,14 +264,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1898256842492866041}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.017303517, y: -0.081529126, z: 0.0036036435, w: 0.99651426}
-  m_LocalPosition: {x: -0.433, y: 0.90800005, z: -2.195}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -8.41, y: 1.34, z: 9.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7465011194706105630}
   m_Father: {fileID: 2386362520638764014}
-  m_LocalEulerAnglesHint: {x: 2.01, y: -9.35, z: 0.25}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &1716546584157225760
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -380,8 +394,22 @@ MonoBehaviour:
     m_InternalValue: 1
   remoteMass:
     m_InternalValue: 42.8
+  effectRope_mass:
+    m_InternalValue: 0
+  effectRope_thickness:
+    m_InternalValue: 0
   magnetic:
     m_InternalValue: 1
+  ropeMass:
+    m_InternalValue: 42.8
+  ropeMaxWidth:
+    m_InternalValue: 40
+  ropeScaler:
+    m_InternalValue: 3
+  springFreq:
+    m_InternalValue: 30
+  springWidth:
+    m_InternalValue: 20
   OnStartPerforming:
     m_PersistentCalls:
       m_Calls: []
@@ -478,14 +506,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4536412796755592805}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.05, y: 1.07, z: -5.7}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.037, y: 1.28, z: 1.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3051335585521964392}
   m_Father: {fileID: 2386362520638764014}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &1378967759141239729
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -608,8 +636,22 @@ MonoBehaviour:
     m_InternalValue: 1
   remoteMass:
     m_InternalValue: 42.8
+  effectRope_mass:
+    m_InternalValue: 0
+  effectRope_thickness:
+    m_InternalValue: 0
   magnetic:
     m_InternalValue: 0
+  ropeMass:
+    m_InternalValue: 42.8
+  ropeMaxWidth:
+    m_InternalValue: 40
+  ropeScaler:
+    m_InternalValue: 3
+  springFreq:
+    m_InternalValue: 30
+  springWidth:
+    m_InternalValue: 20
   OnStartPerforming:
     m_PersistentCalls:
       m_Calls: []
@@ -671,8 +713,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.18, y: 0.18, z: 0.18}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5407489973997020536}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -691,7 +733,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5702063934198755548}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -776,8 +818,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.18, y: 0.18, z: 0.18}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2593224298917409493}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -796,7 +838,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6341327653340958666}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -940,31 +982,9 @@ MonoBehaviour:
     m_InternalValue: 0
   meshsize:
     m_InternalValue: 0
-  floatValue4:
-    m_InternalValue: 0
-  floatValue5:
-    m_InternalValue: 0
-  intValue1:
-    m_InternalValue: 0
-  intValue2:
-    m_InternalValue: 0
-  intValue3:
-    m_InternalValue: 0
-  intValue4:
-    m_InternalValue: 0
-  intValue5:
-    m_InternalValue: 0
-  vectorValue1:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  vectorValue2:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  vectorValue3:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  ropeTransformRoot: {fileID: 0}
   effectMode:
     m_InternalValue: 0
-  ropeMeshScale:
-    m_InternalValue: 0.2
+  ropeTransformRoot: {fileID: 0}
   OnPerformerFinishSpawn:
     m_PersistentCalls:
       m_Calls: []
@@ -997,8 +1017,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.18, y: 0.18, z: 0.18}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1335072611827631672}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1017,7 +1037,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8170742325841811808}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
