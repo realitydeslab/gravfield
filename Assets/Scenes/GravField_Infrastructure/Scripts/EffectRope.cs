@@ -24,6 +24,11 @@ public class EffectRope : MonoBehaviour
 
     // VFX
     VisualEffect vfx;
+    List<Vector3> ropePointList = new List<Vector3>();
+    private const int BUFFER_STRIDE = 12; // 12 Bytes for a vector3
+    private const int bufferInitialCapacity = 100;
+    private bool dynamicallyResizeBuffer = false;
+    private GraphicsBuffer bufferRopePoints;
 
     // Output to LIVE
     Transform centroidTransform;
@@ -58,6 +63,9 @@ public class EffectRope : MonoBehaviour
         ropeEnd = transform.Find("Anchors").GetChild(1);
 
         vfx = GetComponent<VisualEffect>();
+        EnsureBufferCapacity(ref bufferRopePoints, bufferInitialCapacity, BUFFER_STRIDE);
+        int VertexBufferPropertyID = Shader.PropertyToID("RopePointBuffer");
+        vfx.SetGraphicsBuffer(VertexBufferPropertyID, bufferRopePoints);
     }
 
     void OnPerformerFinishSpawn()
@@ -158,6 +166,36 @@ public class EffectRope : MonoBehaviour
 
     void UpdateVFX()
     {
+        //int sample_count = bufferInitialCapacity;
+        //if(ropePointList.Count < sample_count)
+        //{
+        //    ropePointList = new List<Vector3>(sample_count);
+        //}
+
+        ropePointList.Clear();
+        float start_percentage = 0.1f;
+        float end_percentage = 0.9f;
+        for(int i=0; i< bufferInitialCapacity; i++)
+        {
+            try
+            {
+                CurveSample point = spline.GetSampleAtDistance(spline.Length * Utilities.Remap(i,  0, (bufferInitialCapacity - 1), start_percentage, end_percentage));
+                ropePointList.Add(point.location);
+            }
+            catch
+            {
+
+            }
+        }
+        
+
+        // Set Buffer data, but before that ensure there is enough capacity
+        // We use Audio Raw Data instead of FFT
+        EnsureBufferCapacity(ref bufferRopePoints, ropePointList.Count, BUFFER_STRIDE);
+        bufferRopePoints.SetData(ropePointList);
+
+        
+
         vfx.SetVector3("RopeCenterPos", centroidPos);
         vfx.SetVector3("RopeCenterVel", centroidVel);
         vfx.SetVector3("RopeCenterRight", centroidTransform.right);
@@ -271,7 +309,28 @@ public class EffectRope : MonoBehaviour
     #endregion
 
 
-
+    private void EnsureBufferCapacity(ref GraphicsBuffer buffer, int capacity, int stride)
+    {
+        // Reallocate new buffer only when null or capacity is not sufficient
+        if (buffer == null || (dynamicallyResizeBuffer && buffer.count < capacity)) // remove dynamic allocating function
+        {
+            Debug.Log("Graphic Buffer reallocated!");
+            // Buffer memory must be released
+            buffer?.Release();
+            // Vfx Graph uses structured buffer
+            buffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, capacity, stride);
+        }
+    }
+    private void ReleaseBuffer(ref GraphicsBuffer buffer)
+    {
+        // Buffer memory must be released
+        buffer?.Release();
+        buffer = null;
+    }
+    void OnDestroy()
+    {
+        ReleaseBuffer(ref bufferRopePoints);
+    }
 
     public void BindPerformer(Performer performer_start, Performer performer_end)
     {

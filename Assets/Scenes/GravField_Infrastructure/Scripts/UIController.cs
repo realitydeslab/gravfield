@@ -189,7 +189,7 @@ public class UIController : MonoBehaviour
             transButtonStart,
             transButtonPerformer,
             transButtonSettings,
-            transButtonServer
+            //transButtonServer
         };
 
         ShowElementsOnly(element_list);
