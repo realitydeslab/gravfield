@@ -15702,6 +15702,7 @@ GameObject:
   m_Component:
   - component: {fileID: 522668989}
   - component: {fileID: 522668990}
+  - component: {fileID: 522668991}
   m_Layer: 0
   m_Name: HoloKit Camera
   m_TagString: Untagged
@@ -15751,6 +15752,20 @@ MonoBehaviour:
   m_iOSPhoneModelList: {fileID: 11400000, guid: 97e080f80a8ae49d78e255ae53b17e11, type: 2}
   m_DefaultAndroidPhoneModelList: {fileID: 11400000, guid: f192a44dbc7c041758df0ca7a4e8befe, type: 2}
   m_CustomAndroidPhoneModelList: {fileID: 0}
+--- !u!114 &522668991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522668988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c28e0610cb724608a537e6d05116057, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsEnabled: 1
+  m_DisableVideoEnhancementInStereoMode: 1
 --- !u!1 &531743534
 GameObject:
   m_ObjectHideFlags: 0
@@ -36046,7 +36061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a39e928d059a4258b22f1e8849f3a81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldOriginPosition: {x: 0, y: 1.8, z: 0}
+  worldOriginPosition: {x: 0, y: 1.15, z: 0}
   m_WorldOriginResetter: {fileID: 1549586813}
 --- !u!1 &1551015936
 GameObject:

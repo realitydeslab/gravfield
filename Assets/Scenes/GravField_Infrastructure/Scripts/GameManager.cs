@@ -208,6 +208,9 @@ public class GameManager : MonoBehaviour
             {
                 EnterSoloMode();
             }
+
+            // Register world origin callback
+           
         }
         else
         {
