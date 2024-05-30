@@ -26,7 +26,7 @@ public class EffectMagneticField : MonoBehaviour
 
     void Awake()
     {
-        vfx = transform.GetComponentInChildren<VisualEffect>();
+        vfx = transform.GetComponent<VisualEffect>();
         //transform.GetComponentInChildren<VFXPropertyBinder>().enabled = false;
 
         for (int i=0; i< performerTransformRoot.childCount; i++)
@@ -74,18 +74,18 @@ public class EffectMagneticField : MonoBehaviour
 
     void UpdateVFX()
     {
-        vfx.SetVector3("PerformerA" + "_position", performerList[0].localData.position + new Vector3(0, headOffsetY, 0));
-        vfx.SetVector3("PerformerB" + "_position", performerList[1].localData.position + new Vector3(0, headOffsetY, 0));
-        vfx.SetVector3("PerformerC" + "_position", performerList[2].localData.position + new Vector3(0, headOffsetY, 0));
+        //vfx.SetVector3("PerformerA" + "_position", performerList[0].localData.position + new Vector3(0, headOffsetY, 0));
+        //vfx.SetVector3("PerformerB" + "_position", performerList[1].localData.position + new Vector3(0, headOffsetY, 0));
+        //vfx.SetVector3("PerformerC" + "_position", performerList[2].localData.position + new Vector3(0, headOffsetY, 0));
 
 
         vfx.SetBool("IsPerformingA", performerList[0].localData.isPerforming);
         vfx.SetBool("IsPerformingB", performerList[1].localData.isPerforming);
         vfx.SetBool("IsPerformingC", performerList[2].localData.isPerforming);
 
-        vfx.SetBool("IsPositiveA", performerList[0].localData.positive);
-        vfx.SetBool("IsPositiveB", performerList[1].localData.positive);
-        vfx.SetBool("IsPositiveC", performerList[2].localData.positive);
+        vfx.SetBool("MagneticA", performerList[0].localData.positive);
+        vfx.SetBool("MagneticB", performerList[1].localData.positive);
+        vfx.SetBool("MagneticC", performerList[2].localData.positive);
     }
 
 
