@@ -190,7 +190,7 @@ public class EffectSpring : MonoBehaviour
             MeshRenderer mesh_renderer = springMeshList[i];
             mesh_renderer.transform.position = Vector3.Lerp(start_pos, end_pos, 0.5f);
             float length = Vector3.Distance(start_pos, end_pos);
-            float new_width = Utilities.Remap(length, 1, maxDistance, maxSpringThickness, minSpringThickness, true);
+            float new_width = Utilities.Remap(length, 0, maxDistance, maxSpringThickness, minSpringThickness, false);
             mesh_renderer.transform.localScale = new Vector3(length / 5.0f, 1, new_width);
 
             Vector3 dis = end_pos - start_pos;
@@ -318,7 +318,7 @@ public class EffectSpring : MonoBehaviour
 
             //soundwave.sinFrequency = 30 + Mathf.PerlinNoise1D(performerStart.localData.position.x) * soundwaveFrequency;
 
-            soundwave.sinFrequency = 30 + Mathf.PerlinNoise(Time.time, springIndex) * soundwaveFrequency;
+            soundwave.sinFrequency = 10 + Mathf.PerlinNoise(Time.time, springIndex) * soundwaveFrequency;
         }
 
 
@@ -472,6 +472,9 @@ public class EffectSpring : MonoBehaviour
         //endThickness = performerEnd.remoteThickness.Value;
         //startMass = performerStart.remoteMass.Value;
         //endMass = performerEnd.remoteMass.Value;
+
+        soundwaveFrequency = GameManager.Instance.PerformerList[springIndex].springFreq.Value;
+        maxSpringThickness = GameManager.Instance.PerformerList[springIndex].springWidth.Value;
     }
 
     void RegisterNetworkVariableCallback_Client()
@@ -485,7 +488,7 @@ public class EffectSpring : MonoBehaviour
         //GameManager.Instance.PerformerGroup.ropeMeshScale.OnValueChanged += (float prev, float cur) => { ropeMeshScale = cur; UpdateRopeMeshScale(); };
 
         GameManager.Instance.PerformerList[springIndex].springFreq.OnValueChanged += (float prev, float cur) => { soundwaveFrequency = Mathf.Clamp(cur, 0, 200); };
-        GameManager.Instance.PerformerList[springIndex].springWidth.OnValueChanged += (float prev, float cur) => { maxSpringThickness = Mathf.Clamp(cur, minSpringThickness, 40); };
+        GameManager.Instance.PerformerList[springIndex].springWidth.OnValueChanged += (float prev, float cur) => { maxSpringThickness = Mathf.Clamp(cur, minSpringThickness, 1000); };
 
 
     }

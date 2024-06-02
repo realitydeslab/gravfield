@@ -99,13 +99,13 @@ public class PerfomerDataProcessor : MonoBehaviour
         //SenderForLive.Instance.RegisterOscPropertyToSend("/accMin", AccMin);
         //SenderForLive.Instance.RegisterOscPropertyToSend("/accMax", AccMax);
 
-        //SenderForLive.Instance.RegisterOscPropertyToSend("/disTotal", DisTotal);
-        //SenderForLive.Instance.RegisterOscPropertyToSend("/disMin", DisMin);
-        //SenderForLive.Instance.RegisterOscPropertyToSend("/disMax", DisMax);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/disTotal", DisTotal);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/disMin", DisMin);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/disMax", DisMax);
 
         //SenderForLive.Instance.RegisterOscPropertyToSend("/angleMin", AngleMin);
         //SenderForLive.Instance.RegisterOscPropertyToSend("/angleMax", AngleMax);
-        //SenderForLive.Instance.RegisterOscPropertyToSend("/area", Area);
+        SenderForLive.Instance.RegisterOscPropertyToSend("/area", Area);
 
         SenderForLive.Instance.RegisterOscPropertyToSend("/ay", ay);
         SenderForLive.Instance.RegisterOscPropertyToSend("/by", by);

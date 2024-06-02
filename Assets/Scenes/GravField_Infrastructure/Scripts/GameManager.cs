@@ -286,10 +286,11 @@ public class GameManager : MonoBehaviour
 
     void OnFinishRelocalization(Vector3 position, Quaternion rotation)
     {
+        //DisplayMessageOnUI($"pos: {position}, angle: {rotation.eulerAngles}");
+
 #if !UNITY_EDITOR
             GameManager.Instance.RelocalizationStablizer.OnTrackedImagePoseStablized.RemoveListener(OnFinishRelocalization);
 #endif
-
         UIController.GoIntoGame();
     }
 
