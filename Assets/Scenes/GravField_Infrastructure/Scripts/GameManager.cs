@@ -92,13 +92,27 @@ public class GameManager : MonoBehaviour
 
     IEnumerator CheckIfNeedJoinAsServer()
     {
-        yield return new WaitForSeconds(5f);
+        float start_time = Time.time;
+        bool enter_solo_mode = false;
+        while(Time.time - start_time < 5)
+        {
+            if(Input.GetKey(KeyCode.S))
+            {
+                enter_solo_mode = true;
+                break;
+            }
+            yield return null;
+        }
+        
 
         if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer
             || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
         {
             if(RoleManager.Role == RoleManager.PlayerRole.Undefined)
-                JoinAsServer();            
+            {
+                isSoloMode = enter_solo_mode;
+                JoinAsServer();
+            }           
         }
     }
 
