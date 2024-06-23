@@ -179,6 +179,9 @@ public class ParameterReceiver : MonoBehaviour
             receiver._dataType = OscEventReceiverModified.DataType.Vector3;
             receiver._vector3Event = new OscEventReceiverModified.Vector3Event();
             receiver._vector3Event.AddListener(property.vector3Action);
+            receiver._vector3Event.AddListener((v) => {
+                OnUpdateDisplay(property.oscAddress, v);
+            });
 
             receiver.Initialize();
         }
@@ -216,6 +219,18 @@ public class ParameterReceiver : MonoBehaviour
 
         Transform item = transformDisplayPanel.Find(address.Substring(1));
         if(item != null)
+        {
+            item.Find("Value").GetComponent<TextMeshProUGUI>().text = v.ToString();
+        }
+    }
+
+    void OnUpdateDisplay(string address, Vector3 v)
+    {
+        if (displayPanelShown == false)
+            return;
+
+        Transform item = transformDisplayPanel.Find(address.Substring(1));
+        if (item != null)
         {
             item.Find("Value").GetComponent<TextMeshProUGUI>().text = v.ToString();
         }

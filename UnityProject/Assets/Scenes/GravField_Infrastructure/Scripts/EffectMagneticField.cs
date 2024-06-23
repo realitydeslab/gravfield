@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.VFX;
+using UnityEngine.VFX.Utility;
+
 
 public class EffectMagneticField : MonoBehaviour
 {
     public Transform performerTransformRoot;
 
     List<Performer> performerList = new  List<Performer>();
+    [SerializeField] float headOffsetY;
     VisualEffect vfx;
     bool effectEnabled = false;
+    bool isInitialized = false;
 
     // Output to LIVE
     AutoSwitchedParameter<float> magabpos = new AutoSwitchedParameter<float>();
@@ -22,31 +26,39 @@ public class EffectMagneticField : MonoBehaviour
 
     void Awake()
     {
-        vfx = transform.GetComponentInChildren<VisualEffect>();
+        vfx = transform.GetComponent<VisualEffect>();
+        //transform.GetComponentInChildren<VFXPropertyBinder>().enabled = false;
 
-        for(int i=0; i< performerTransformRoot.childCount; i++)
+        for (int i=0; i< performerTransformRoot.childCount; i++)
         {
             performerList.Add(performerTransformRoot.GetChild(i).GetComponent<Performer>());
         }
         
     }
-    void Start()
-    {
-        
-    }
-    void OnEnable()
-    {
-        GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
-    }
+    
+    //void OnEnable()
+    //{
+    //    GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
+    //}
 
     void OnPerformerFinishSpawn()
     {
+        if (NetworkManager.Singleton.IsServer == false) return;
+
+        RegisterNetworkVariableCallback_Client();
+
         RegisterPropertiesToLive_Server();
     }
 
 
     void Update()
     {
+        if(isInitialized == false && GameManager.Instance.PerformerGroup.PerformerFinishSpawn == true)
+        {
+            OnPerformerFinishSpawn();
+            isInitialized = true;
+        }
+
         if (effectEnabled == false) return;
 
         UpdateVFX();
@@ -62,6 +74,11 @@ public class EffectMagneticField : MonoBehaviour
 
     void UpdateVFX()
     {
+        //vfx.SetVector3("PerformerA" + "_position", performerList[0].localData.position + new Vector3(0, headOffsetY, 0));
+        //vfx.SetVector3("PerformerB" + "_position", performerList[1].localData.position + new Vector3(0, headOffsetY, 0));
+        //vfx.SetVector3("PerformerC" + "_position", performerList[2].localData.position + new Vector3(0, headOffsetY, 0));
+
+
         vfx.SetBool("IsPerformingA", performerList[0].localData.isPerforming);
         vfx.SetBool("IsPerformingB", performerList[1].localData.isPerforming);
         vfx.SetBool("IsPerformingC", performerList[2].localData.isPerforming);
@@ -72,7 +89,7 @@ public class EffectMagneticField : MonoBehaviour
     }
 
 
-    #region Parameter sent to Live
+#region Parameter sent to Live
     void RegisterPropertiesToLive_Server()
     {
         if (NetworkManager.Singleton.IsServer == false) return;
@@ -118,7 +135,23 @@ public class EffectMagneticField : MonoBehaviour
         //mag *= (start.localData.positive != end.localData.positive) ? -1f : 1f;
 
         return mag;
+    }
+#endregion
+
+#region NetworkVariable
+    void InitializeLocalVariable()
+    {
         
     }
-    #endregion
+
+    void RegisterNetworkVariableCallback_Client()
+    {
+        if (NetworkManager.Singleton.IsServer == false) return;
+
+    }
+#endregion
+
+#region Paramters received from Coda
+
+#endregion
 }

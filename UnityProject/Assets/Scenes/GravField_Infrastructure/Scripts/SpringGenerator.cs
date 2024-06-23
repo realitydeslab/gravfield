@@ -7,7 +7,7 @@ using UnityEngine;
 public class SpringGenerator : RopeGenerator
 {
 
-    int ropeCountEachSpring = 5;
+    int ropeCountEachSpring = 1;
 
     #region Generate Spring
     [ContextMenu("GenerateSprings")]
@@ -44,18 +44,15 @@ public class SpringGenerator : RopeGenerator
         SplineSmoother smoother = go.AddComponent<SplineSmoother>();
         smoother.curvature = 0.4f;
 
-        //SplineMeshTiling meshTilling = go.AddComponent<SplineMeshTiling>();
-        //meshTilling.mesh = ropeMesh;
-        //meshTilling.material = ropeMat;
-        //meshTilling.rotation = new Vector3(0, 0, 0);
-        //meshTilling.scale = Vector3.one * 0.1f;
+        SplineMeshTiling meshTilling = go.AddComponent<SplineMeshTiling>();
+        meshTilling.mesh = ropeMesh;
+        meshTilling.material = ropeMat;
+        meshTilling.rotation = new Vector3(0, 0, 0);
+        meshTilling.scale = Vector3.one * 0.1f;
 
-        //meshTilling.generateCollider = false;
-        //meshTilling.updateInPlayMode = true;
-        //meshTilling.curveSpace = false;
-
-        //meshTilling.rotation = new Vector3(0, 90, 0);
-        //meshTilling.scale = Vector3.one * RandomValue(0.02f);
+        meshTilling.generateCollider = false;
+        meshTilling.updateInPlayMode = true;
+        meshTilling.curveSpace = false;
 
 
         LineRenderer line_renderer = go.AddComponent<LineRenderer>();
@@ -63,6 +60,7 @@ public class SpringGenerator : RopeGenerator
         line_renderer.positionCount = 100;
         line_renderer.startWidth = 0.01f;
         line_renderer.endWidth = 0.01f;
+        line_renderer.enabled = false;
     }
 
     protected override void DoExtraSettings(GameObject go, int start_index, int end_index)
@@ -98,8 +96,8 @@ public class SpringGenerator : RopeGenerator
 
             Rigidbody rigid_body = joint.GetComponent<Rigidbody>();
             rigid_body.mass = random_joint_mass;
-            rigid_body.linearDamping = random_joint_drag;
-            rigid_body.angularDamping = random_joint_angular_drag;
+            rigid_body.drag = random_joint_drag;
+            rigid_body.angularDrag = random_joint_angular_drag;
             rigid_body.useGravity = false;
 
             HingeJoint hinge = joint.GetComponent<HingeJoint>();
@@ -117,8 +115,8 @@ public class SpringGenerator : RopeGenerator
             Transform segment = segment_root.GetChild(i);
             Rigidbody rigid_body = segment.GetComponent<Rigidbody>();
             rigid_body.mass = random_segment_mass;
-            rigid_body.linearDamping = random_segment_drag;
-            rigid_body.angularDamping = random_segment_angular_drag;
+            rigid_body.drag = random_segment_drag;
+            rigid_body.angularDrag = random_segment_angular_drag;
             rigid_body.useGravity = false;
         }
 

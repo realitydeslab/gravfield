@@ -12,7 +12,7 @@ public class UIController : MonoBehaviour
     Transform transButtonStart;
     Transform transButtonPerformer;
     Transform transButtonSettings;
-    Transform transButtonServer;
+    //Transform transButtonServer;
 
     Transform transPanelCalibration;
     Transform transPanelPassword;
@@ -38,7 +38,7 @@ public class UIController : MonoBehaviour
         transButtonStart = FindTransformAndRegister("Button_Start"); 
         transButtonPerformer = FindTransformAndRegister("Button_Performer");
         transButtonSettings = FindTransformAndRegister("Button_Settings");
-        transButtonServer = FindTransformAndRegister("Button_Server"); transButtonServer.gameObject.SetActive(GameManager.Instance.IsInDevelopment ? true : false);
+        //transButtonServer = FindTransformAndRegister("Button_Server"); transButtonServer.gameObject.SetActive(GameManager.Instance.IsInDevelopment ? true : false);
 
         transPanelPassword = FindTransformAndRegister("Panel_Password");
         transPanelServerIP = FindTransformAndRegister("Panel_ServerIP");
@@ -77,7 +77,7 @@ public class UIController : MonoBehaviour
     {
         // Bind Basic Listener
         transButtonStart.GetComponent<Button>().onClick.AddListener(OnClickStart);
-        transButtonServer.GetComponent<Button>().onClick.AddListener(OnClickServer);
+        //transButtonServer.GetComponent<Button>().onClick.AddListener(OnClickServer);
         transButtonPerformer.GetComponent<Button>().onClick.AddListener(OnClickPerformer);
         transButtonSettings.GetComponent<Button>().onClick.AddListener(OnClickSettings);
 
@@ -189,7 +189,7 @@ public class UIController : MonoBehaviour
             transButtonStart,
             transButtonPerformer,
             transButtonSettings,
-            transButtonServer
+            //transButtonServer
         };
 
         ShowElementsOnly(element_list);

@@ -8,7 +8,7 @@ public class PerformerRotationTest : MonoBehaviour
     Vector3 target;
     Vector3 defalutAngle;
     GameObject targetGO;
-    void Start()
+    void OnEnable()
     {
         defalutAngle = transform.localEulerAngles;
         targetGO = new GameObject("target");
@@ -29,7 +29,7 @@ public class PerformerRotationTest : MonoBehaviour
 
             float angle = Input.mousePosition.x / Screen.width * 360;
 
-            target = targetGO.transform.TransformPoint(new Vector3(Mathf.Sin(angle), Mathf.Cos(angle), 5));
+            target = targetGO.transform.TransformPoint(new Vector3(Mathf.Sin(angle), Mathf.Cos(angle), 2));
             transform.LookAt(target, Vector3.up);
         }
         else

@@ -108,11 +108,11 @@ public class EffectSpringController : MonoBehaviour
 
     void SetRopeState(int index, bool state)
     {
-        for(int i=0; i< springList[index].Count; i++)
+        for (int i = 0; i < springList[index].Count; i++)
         {
             springList[index][i].SetSpringState(state);
         }
-        
+
 
         //transform.GetChild(index).gameObject.SetActive(state);
         //SetSplineMeshVisible(index, state);

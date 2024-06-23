@@ -20,40 +20,28 @@ public class Performer : NetworkBehaviour
     public NetworkVariable<bool> isPerforming;
 
 
-
-    //public NetworkVariable<float> floatValue1;
-
-    //public NetworkVariable<float> floatValue2;
-
-    //public NetworkVariable<float> floatValue3;
-
-    //public NetworkVariable<float> floatValue4;
-
-    //public NetworkVariable<float> floatValue5;
-
-    //public NetworkVariable<int> intValue1;
-
-    //public NetworkVariable<int> intValue2;
-
-    //public NetworkVariable<int> intValue3;
-
-    //public NetworkVariable<int> intValue4;
-
-    //public NetworkVariable<int> intValue5;
-
-    //public NetworkVariable<Vector3> vectorValue1;
-
-    //public NetworkVariable<Vector3> vectorValue2;
-
-    //public NetworkVariable<Vector3> vectorValue3;
-
     public NetworkVariable<float> remoteThickness;
     AutoSwitchedParameter<float> localThickness = new AutoSwitchedParameter<float>(10);
 
     public NetworkVariable<float> remoteMass;
     public AutoSwitchedParameter<float> localMass = new AutoSwitchedParameter<float>(1);
 
+    public NetworkVariable<float> effectRope_mass;
+    public NetworkVariable<float> effectRope_thickness;
+
     public NetworkVariable<float> magnetic;
+
+    // Rope Effect
+    public NetworkVariable<float> ropeMass = new NetworkVariable<float>(42.8f);
+    public NetworkVariable<float> ropeMaxWidth = new NetworkVariable<float>(40);
+    public NetworkVariable<float> ropeScaler = new NetworkVariable<float>(5);
+    public NetworkVariable<float> ropeOffsetY = new NetworkVariable<float>(-0.3f);
+
+    // Spring Effect
+    public NetworkVariable<float> springFreq = new NetworkVariable<float>(30);
+    public NetworkVariable<float> springWidth = new NetworkVariable<float>(1);
+
+    // Magnetic Effect
 
     int performerIndex = 0;
 
@@ -151,13 +139,30 @@ public class Performer : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("mass"), new UnityAction<float>(OnReceive_Mass));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("thickness"), new UnityAction<float>(OnReceive_Thickness));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-mass"), new UnityAction<float>((v) => { ropeMass.Value = v; }));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-maxwidth"), new UnityAction<float>((v) => { ropeMaxWidth.Value = v; }));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-scaler"), new UnityAction<float>((v) => { ropeScaler.Value = v; }));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-offset"), new UnityAction<float>((v) => { ropeOffsetY.Value = v; }));
+
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/spring-freq"), new UnityAction<float>((v) => { springFreq.Value = v; }));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/spring-width"), new UnityAction<float>((v) => { springWidth.Value = v; }));
+
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/mag"), new UnityAction<float>((v) => { magnetic.Value = v; }));
     }
 
     string FormatedOscAddress(string param)
     {
-        return "/" + performerName + "-" + param;
+        if (param[0] == '/')
+        {
+            param = param.Substring(1);
+        }
+        if(param.Contains("-"))
+        {
+            string[] split_str = param.Split("-");
+            return "/" + split_str[0] + performerIndex.ToString() + "-" + split_str[1];
+        }
+
+        return "/" + param + performerIndex.ToString();
     }
 
     void OnReceive_Mass(float v)

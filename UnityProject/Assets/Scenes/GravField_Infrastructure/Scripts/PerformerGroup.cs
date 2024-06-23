@@ -14,40 +14,26 @@ public class PerformerGroup : NetworkBehaviour
 
     public NetworkVariable<float> meshsize;
 
-    public NetworkVariable<float> floatValue4;
 
-    public NetworkVariable<float> floatValue5;
-
-    public NetworkVariable<int> intValue1;
-
-    public NetworkVariable<int> intValue2;
-
-    public NetworkVariable<int> intValue3;
-
-    public NetworkVariable<int> intValue4;
-
-    public NetworkVariable<int> intValue5;
-
-    public NetworkVariable<Vector3> vectorValue1;
-
-    public NetworkVariable<Vector3> vectorValue2;
-
-    public NetworkVariable<Vector3> vectorValue3;
-
-    public Transform ropeTransformRoot;
-
-    private List<Performer> performerList = new List<Performer>();
-
+    // Mode
     public NetworkVariable<float> effectMode;
     public AutoSwitchedParameter<float> mode0 = new AutoSwitchedParameter<float>();
     public AutoSwitchedParameter<float> mode1 = new AutoSwitchedParameter<float>();
     public AutoSwitchedParameter<float> mode2 = new AutoSwitchedParameter<float>();
 
+    
+    public Transform ropeTransformRoot;
 
-    public NetworkVariable<float> ropeMeshScale;
+   
 
+
+    
+
+
+    private List<Performer> performerList = new List<Performer>();
     public UnityEvent OnPerformerFinishSpawn;
     bool performerFinishSpawn = false;
+    public bool PerformerFinishSpawn { get => performerFinishSpawn; }
 
     void Awake()
     {
@@ -65,7 +51,6 @@ public class PerformerGroup : NetworkBehaviour
 
             RegisterPropertiesToLive_Server();
         }
-
     }
 
 
@@ -125,9 +110,7 @@ public class PerformerGroup : NetworkBehaviour
 
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/mode", new UnityAction<float>(OnReceive_Mode));
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshy", new UnityAction<float>(OnReceive_MeshY));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshnoise", new UnityAction<float>(OnReceive_MeshNoise));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/meshsize", new UnityAction<float>(OnReceive_MeshSize));
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/magrandom", new UnityAction<Vector3>((v) => { OnChangePerformMagnetic(); }));
     }
 
     void OnReceive_Mode(float v)
@@ -138,28 +121,14 @@ public class PerformerGroup : NetworkBehaviour
         effectMode.Value = v;
     }
 
-    void OnReceive_MeshY(float v)
+    void OnChangePerformMagnetic()
     {
         if (!IsServer)
             return;
 
-        meshy.Value = SmoothValue(meshy.Value, v);
-    }
-
-    void OnReceive_MeshNoise(float v)
-    {
-        if (!IsServer)
-            return;
-
-        meshnoise.Value = SmoothValue(meshnoise.Value, v);
-    }
-
-    void OnReceive_MeshSize(float v)
-    {
-        if (!IsServer)
-            return;
-
-        meshsize.Value = v;
+        performerList[0].magnetic.Value = Mathf.RoundToInt(Random.Range(0f, 1f));
+        performerList[1].magnetic.Value = Mathf.RoundToInt(Random.Range(0f, 1f));
+        performerList[2].magnetic.Value = Mathf.RoundToInt(Random.Range(0f, 1f));
     }
 
     float SmoothValue(float cur, float dst, float t = 0.2f)

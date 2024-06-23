@@ -10,6 +10,8 @@ public class EffectRopeController : MonoBehaviour
 {
     public Transform performerTransformRoot;
 
+    public Vector3 ropeOffset;
+
     RoleManager roleManager;
 
     List<Performer> performerList = new List<Performer>();
@@ -33,6 +35,7 @@ public class EffectRopeController : MonoBehaviour
             EffectRope rope = transform.GetChild(i).GetComponent<EffectRope>();
             Vector2Int performer_index = GetPerformerIndexOfRope(i);
             rope.BindPerformer(performerList[performer_index.x], performerList[performer_index.y]);
+            rope.SetPerformerOffset(ropeOffset);
             ropeList.Add(rope);
         }
     }
@@ -162,8 +165,8 @@ public class EffectRopeController : MonoBehaviour
             foreach (Rigidbody rigid in rigid_list)
             {
                 if (param == "mass") rigid.mass = v;
-                else if (param == "drag") rigid.linearDamping = v;
-                else if (param == "angular") rigid.angularDamping = v;
+                else if (param == "drag") rigid.drag = v;
+                else if (param == "angular") rigid.angularDrag = v;
             }
         }
     }
