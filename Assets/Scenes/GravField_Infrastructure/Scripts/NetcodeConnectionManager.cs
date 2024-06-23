@@ -10,6 +10,7 @@ using UnityEngine.Events;
 
 public class NetcodeConnectionManager : MonoBehaviour
 {
+    [SerializeField]
     string serverIP = "192.168.0.135";
     public string ServerIP { get => serverIP; set => serverIP = value; }
 
