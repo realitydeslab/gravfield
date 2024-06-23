@@ -1,56 +1,90 @@
-![coda.js](docs/static/coda_logo.svg)
+# Coda Project for GravField
+Considering the real-time data processing requirements for GravField's live performances，we choose [Coda.js](https://github.com/JulesFrancoise/coda) as live-coding environment.
+<div>
+<img src="Documentation~/screenshot.jpg" width="800" />
+</div>
+<br>
+We added OSC communication capabilities to Coda, enabling it to receive data signals from Unity Server and send control signals back to Unity Server.
+<div>
+<img src="Documentation~/TechSpec.jpg" width="800" />
+</div>
 
-**coda.js** is a Javascript library and live-coding environment for designing movement-based interactions in the browser.
+## System Requirement:
+Nodejs Version: v16.20
 
-**coda.js** integrates a number of modules for movement sensing (with wrappers for common devices such as the Myo Armband or the Leap Motion), movement signal processing (from low-level analysis blocks and filters to more advanced representations such as the wavelet transform), mapping tools (from direct mapping to machine learning-based recognition and regression), as well as some sound synthesis and effect engines.
+## System Machanism:
+As coda runs in web environment, it can't receive UDP messages directly. You have to start a UDP server as a message transfer station, then the UDP server will communicate with coda via websocket.
 
-### Features
+### Run Order
+- Start UDP server by running command in CodaProject folder<br>
+```npm run socket```
+- Start Coda by running command in CodaProject folder<br>
+```npm run dev```
 
-- **Fully Reactive**
-  coda.js relies on the most.js reactive programming library, allowing for easy asynchronous data stream processing.
-- **Compact Syntax**
-  coda.js was designed with a compact syntax allowing for extremely rapid prototyping of movement-based interactions.
-**Multiple Devices**
-  coda.js integrates binding to several commercial sensing devices such as the Myo armband or the Leap Motion, and easily communicates with Cycling'74 Max 8
-- **Low-level Signal Processing**
-- **Movement Data Visualisation**
-- **Interactive Machine Learning**
-- **Sound Synthesis**
-
-### Getting Started with the Live-Coding environment
-
-Just get to [https://animacoda.netlify.com](https://animacoda.netlify.com) and start playing!
-
-### Installing and integrating coda.js
-
-##### Browser
-
-Just grab the full library and start playing:
+### IP Configuration
+To change the ip port that UDP server connects with, open ```/playground/server.js``` and modify ip and port in it.
+#### Listening 
 ```
-<script src="https://codajs.netlify.com/coda.js"></script>
+const osc = require('osc');
+const udpPort = new osc.UDPPort({
+  localAddress: '0.0.0.0', //listen from all possible ip address
+  localPort: 13500, //change port here
+  metadata: true,
+});
+```
+#### Sending
+```
+const unityOscIp = "127.0.0.1";
+const unityOscPort = 13600;
 ```
 
-##### Node.js
+## Avaliable Functions
+- ```performer(id)``` to get performer position. 
+- ```oscto(id, address)``` to send command to specific performer.
+- ```osctoall(address)``` to send command to all performers.
+- ```pfm_maxy(ids)``` to calculate max of Y position among specific performers.
+- ```pfm_miny(ids)``` to calculate min of Y position among specific performers.
+- ```pfm_dist(ids)``` to calculate distance between specific performers.
 
-[TODO]
+## Avaliable Address
+Sending data to osc adress is setting a parameter in Unity application. Current available address includes
+| OSC Address | Need Specify ID | Rough Range | Type | Description
+|----------|----------|----------|----------|----------|
+|mode | No | 0, 1, 2 | int | Change effect mode|
+|  |  |  |  | 
+| rope-mass | Yes | [20, 80] | float | How heavy the rope is. | 
+| rope-maxwidth | Yes	[1, 40] | float | Max thickness of the central part of the rope | 
+| rope-scaler | Yes	[1, 10] | float | Make it easier to swing the rope | 
+| rope-offset | Yes	[-10,10] | float | Vertical offset to head | 
+|  |  |  |  | 
+| spring-freq | Yes | [0, 200] | float | Sine frequency | 
+| spring-width | Yes | [0.2, 400] | float | Max width | 
+|  |  |  |  | 
+| mag | Yes | 0,1 | int | Is positve | 
+| magrandom | No	 | 0,1 | int | Randomize magnetic for all|
 
-### Why coda.js ?
+> Coda will add ```/``` automatically to complete osc address for you.
 
-The coda.js library emerged in the context of the CO/DA research project at [LIMSI-CNRS](https://www.limsi.fr), that focuses on live-coding as a practice for improvisation in interactive dance. The project aims develop a set of tools for prototyping movement-based interactions on the fly, while a dancer is improvising.
+## Usage Example 
 
-### Credits
+```
+const sm = periodic(1000)
+// change to mode 0
+.constant(0)
+.osctoall("mode");
+```
 
-CO/DA has been developed at [LIMSI-CNRS](https://www.limsi.fr/en/) by [Jules Françoise](https://www.julesfrancoise.com), and is released under the MIT Licence. The CO/DA project is funded by Réseau Francilien en Sciences Informatiques ([DIM RFSI](https://dim-rfsi.fr/)) of the French Ile-de-France region (2018).
+```
+const sm = periodic(10)
+// show position of performer A
+.performer("A")
+.plot()
+// calculate distance between A and C
+.pfm_dist("AC")
+.plot()
+// set thickness react with distance
+.scale({ outmin: 0, outmax: 10 })
+.oscto("AC", "thickness");
+```
 
-**Contributors:**
-- Jules Françoise
-- Lucie Van Nieuwenhuyze
 
-Coda would not exist without the tremendous work of other open-source contributors. In particular, coda heavily relies on several open-source libraries:
-- [Most](https://github.com/mostjs/core): Monadic Event Stream
-- [Vue](https://vuejs.org): The Progressive JavaScript Framework
-- [Waves-LFO](https://github.com/wavesjs/waves-lfo): Ircam's Low Frequency Operators
-- [Tonal](https://github.com/danigb/tonal): A functional music theory library for Javascript
-- [complex-js](https://github.com/patrickroberts/complex-js): JavaScript Complex Math
-- [myo.js](https://github.com/thalmiclabs/myo.js): Myo javascript bindings
-- [Codemirror](http://codemirror.net/): a versatile text editor implemented in JavaScript for the browser
