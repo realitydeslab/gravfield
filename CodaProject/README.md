@@ -15,11 +15,26 @@ Nodejs Version: v16.20
 ## System Machanism:
 As coda runs in web environment, it can't receive UDP messages directly. You have to start a UDP server as a message transfer station, then the UDP server will communicate with coda via websocket.
 
+### Installation
+- Install codajs platform by running command in CodaProject folder<br>
+```
+npm install
+```
+- Install UDP server by running command in sub-folder called "playground"<br>
+```
+cd playground
+npm install
+```
+
 ### Run Order
 - Start UDP server by running command in CodaProject folder<br>
-```npm run socket```
+```
+npm run socket
+```
 - Start Coda by running command in CodaProject folder<br>
-```npm run dev```
+```
+npm run dev
+```
 
 ### IP Configuration
 To change the ip port that UDP server connects with, open ```/playground/server.js``` and modify ip and port in it.
