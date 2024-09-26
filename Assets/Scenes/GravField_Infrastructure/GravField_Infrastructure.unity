@@ -6214,6 +6214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35c22665d3f44defa8a9ba54f212fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverIP: 192.168.0.135
   OnClientJoinedEvent:
     m_PersistentCalls:
       m_Calls: []
