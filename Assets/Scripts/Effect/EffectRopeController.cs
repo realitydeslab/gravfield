@@ -126,7 +126,7 @@ public class EffectRopeController : MonoBehaviour
         effectEnabled = state;
         UpdateAllRopeState();
     }
-
+    /*
     #region OscReceiverFunction
     //void OnReceive_JointMass(float v)
     //{
@@ -149,7 +149,7 @@ public class EffectRopeController : MonoBehaviour
     //    SetRopePathThickness(v);
     //}
 
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -211,8 +211,8 @@ public class EffectRopeController : MonoBehaviour
         }
     }
     #endregion
-
-
+    */
+/*
     int CombinationFormula(int total, int choose)
     {
         if (choose < 1 || total < choose)
@@ -282,7 +282,7 @@ public class EffectRopeController : MonoBehaviour
         SetRigidBody("Segments", "mass", v);
     }
     #endregion
-
+    */
     ////////////////////////////////////////////////////////////
     // Attempt to set connected anchor position automatically to make the rope movement more reasonable.
     // But it failed.
