@@ -14,10 +14,11 @@ public class EffectParameter<T>
 public class EffectRopeNetworkObject : EffectBaseNetworkObject
 {
     public NetworkVariable<Vector3> thickness;
-    //public NetworkVariable<float> mass;
+    public NetworkVariable<float> mass;
     public NetworkVariable<float> maxWidth = new NetworkVariable<float>(40);
     public NetworkVariable<float> ropeScaler = new NetworkVariable<float>(5);
     public NetworkVariable<float> ropeOffsetY = new NetworkVariable<float>(-0.3f);
+    public NetworkVariable<Vector3> ropeOffset = new NetworkVariable<Vector3>(new Vector3(0,-0.2f,0.3f));
 
     //public NetworkVariable<EffectParameter_Float> thickness2 = new NetworkVariable<EffectParameter_Float>(
     //    new EffectParameter_Float("/rope-thickness", 1), NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);

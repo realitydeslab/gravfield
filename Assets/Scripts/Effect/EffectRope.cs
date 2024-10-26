@@ -9,12 +9,13 @@ using UnityEngine.VFX;
 
 public class EffectRope : MonoBehaviour
 {
+    
     // Basic
     public Performer performerStart;
     public Performer performerEnd;
     Transform ropeStart;
     Transform ropeEnd; 
-    public Vector3 ropeOffset;
+    
     int ropeIndex;
     bool ropeEnabled = false;
 
@@ -32,26 +33,19 @@ public class EffectRope : MonoBehaviour
 
     // Output to LIVE
     Transform centroidTransform;
-    private Vector3 centroidPos;
-    public Vector3 CentroidPos { get => centroidPos; }
-    private Vector3 centroidVel;
-    public Vector3 CentroidVel { get => centroidVel; }
-    private Vector3 centroidAcc;
-    public Vector3 CentroidAcc { get => centroidAcc; }
+    Vector3 centroidPos;
+    Vector3 centroidVel;
+    Vector3 centroidAcc;
     AutoSwitchedParameter<float> ropevel = new AutoSwitchedParameter<float>();
     AutoSwitchedParameter<float> ropeacc = new AutoSwitchedParameter<float>();
 
-    // Parameters    
-    //float ropeMeshScale;
-    //float startThickness;
-    //float endThickness;
-    //float startMass;
-    //float endMass;
+    // Parameters
+    public EffectRopeNetworkObject ropeParameter;
     float ropeMass = 42.8f;
-
     float cornerThickness = 2;
     float centerThickness = 40;
     float offsetMultiplier = 3;
+    Vector3 ropeOffset;
 
     bool isInitialized = false;
 
@@ -63,16 +57,16 @@ public class EffectRope : MonoBehaviour
         ropeEnd = transform.Find("Anchors").GetChild(1);
 
         vfx = GetComponent<VisualEffect>();
-        EnsureBufferCapacity(ref bufferRopePoints, bufferInitialCapacity, BUFFER_STRIDE);
+        bufferRopePoints = new GraphicsBuffer(GraphicsBuffer.Target.Structured, bufferInitialCapacity, BUFFER_STRIDE);
         int VertexBufferPropertyID = Shader.PropertyToID("RopePointBuffer");
         vfx.SetGraphicsBuffer(VertexBufferPropertyID, bufferRopePoints);
     }
 
     void OnPerformerFinishSpawn()
     {
-        InitializeLocalVariable();
+        //InitializeLocalVariable();
 
-        RegisterNetworkVariableCallback_Client();
+        //RegisterNetworkVariableCallback_Client();
 
         RegisterPropertiesToLive_Server();
     }
@@ -88,7 +82,7 @@ public class EffectRope : MonoBehaviour
 
     void Update()
     {
-        if(isInitialized == false && GameManager.Instance.PerformerGroup.PerformerFinishSpawn == true)
+        if (isInitialized == false && GameManager.Instance.PerformerGroup.PerformerFinishSpawn == true && ropeParameter.IsSpawned == true)
         {
             OnPerformerFinishSpawn();
             isInitialized = true;
@@ -97,33 +91,45 @@ public class EffectRope : MonoBehaviour
 
         if (ropeEnabled == false) return;
 
+        // update parameters
+        UpdateParameter();
+
+
+        // update rope
         UpdateRopeAnchors();
 
         UpdateNodes();
 
         
-
+        // update effect
         UpdateRopeEffect();
+
+        UpdateRopeMass();
 
         UpdateVFX();
 
-
+        // update data sent to live
         UpdateParamtersForLive();
+    }
+
+    void UpdateParameter()
+    {
+        ropeMass = ropeParameter.mass.Value;
+        ropeMass = Mathf.Clamp(ropeMass, 10, 80);
+
+        centerThickness = ropeParameter.maxWidth.Value;
+        centerThickness = Mathf.Clamp(centerThickness, 1, 100);
+
+        offsetMultiplier = ropeParameter.ropeScaler.Value;
+        offsetMultiplier = Mathf.Clamp(offsetMultiplier, 1, 20);
+
+        ropeOffset = ropeParameter.ropeOffset.Value;
     }
 
     void UpdateRopeAnchors()
     {
-        //Vector3 nor = (performerEnd.position - performerStart.position).normalized;
-        //ropeStart.localPosition = performerStart.position + nor* 0.3f;
-        //ropeEnd.localPosition = performerEnd.position -nor*0.3f;
-
-
         ropeStart.localPosition = ApplyOffset(performerStart.transform);
         ropeEnd.localPosition = ApplyOffset(performerEnd.transform);
-
-
-        //ropeStart.localRotation = performerStart.transform.localRotation;
-        //ropeEnd.localRotation = performerEnd.transform.localRotation;
     }
 
     Vector3 ApplyOffset(Transform trans)
@@ -191,7 +197,6 @@ public class EffectRope : MonoBehaviour
 
         // Set Buffer data, but before that ensure there is enough capacity
         // We use Audio Raw Data instead of FFT
-        EnsureBufferCapacity(ref bufferRopePoints, ropePointList.Count, BUFFER_STRIDE);
         bufferRopePoints.SetData(ropePointList);
 
         
@@ -230,34 +235,20 @@ public class EffectRope : MonoBehaviour
 
 
     #region NetworkVariable
-    void InitializeLocalVariable()
-    {
-        //ropeMeshScale = GameManager.Instance.PerformerGroup.ropeMeshScale.Value;
-        //startThickness = performerStart.remoteThickness.Value;
-        //endThickness = performerEnd.remoteThickness.Value;
-        //startMass = performerStart.remoteMass.Value;
-        //endMass = performerEnd.remoteMass.Value;
+    //void InitializeLocalVariable()
+    //{
+    //    ropeMass = GameManager.Instance.PerformerList[ropeIndex].ropeMass.Value;
+    //    centerThickness = GameManager.Instance.PerformerList[ropeIndex].ropeMaxWidth.Value;
+    //    offsetMultiplier = GameManager.Instance.PerformerList[ropeIndex].ropeScaler.Value;
+    //}
 
-        ropeMass =  GameManager.Instance.PerformerList[ropeIndex].ropeMass.Value;
-        centerThickness = GameManager.Instance.PerformerList[ropeIndex].ropeMaxWidth.Value;
-        offsetMultiplier = GameManager.Instance.PerformerList[ropeIndex].ropeScaler.Value;
-    }
-
-    void RegisterNetworkVariableCallback_Client()
-    {
-        //performerStart.remoteThickness.OnValueChanged += (float prev, float cur) => { startThickness = cur; UpdateRopeThickness(); };
-        //performerEnd.remoteThickness.OnValueChanged += (float prev, float cur) => { endThickness = cur; UpdateRopeThickness(); };
-
-        //performerStart.remoteMass.OnValueChanged += (float prev, float cur) => { startMass = cur; UpdateRopeMass(); };
-        //performerEnd.remoteMass.OnValueChanged += (float prev, float cur) => { endMass = cur; UpdateRopeMass(); };
-
-        //GameManager.Instance.PerformerGroup.ropeMeshScale.OnValueChanged += (float prev, float cur) => { ropeMeshScale = cur; UpdateRopeMeshScale(); };
-
-        GameManager.Instance.PerformerList[ropeIndex].ropeMass.OnValueChanged += (float prev, float cur) => { ropeMass = Mathf.Clamp(cur, 10, 80); UpdateRopeMass();  };
-        GameManager.Instance.PerformerList[ropeIndex].ropeMaxWidth.OnValueChanged += (float prev, float cur) => { centerThickness = Mathf.Clamp(cur, 1, 100);  };
-        GameManager.Instance.PerformerList[ropeIndex].ropeScaler.OnValueChanged += (float prev, float cur) => { offsetMultiplier = Mathf.Clamp(cur, 1, 20); };
-        GameManager.Instance.PerformerList[ropeIndex].ropeOffsetY.OnValueChanged += (float prev, float cur) => { ropeOffset.y = cur; };
-    }    
+    //void RegisterNetworkVariableCallback_Client()
+    //{
+    //    GameManager.Instance.PerformerList[ropeIndex].ropeMass.OnValueChanged += (float prev, float cur) => { ropeMass = Mathf.Clamp(cur, 10, 80); UpdateRopeMass(); };
+    //    GameManager.Instance.PerformerList[ropeIndex].ropeMaxWidth.OnValueChanged += (float prev, float cur) => { centerThickness = Mathf.Clamp(cur, 1, 100); };
+    //    GameManager.Instance.PerformerList[ropeIndex].ropeScaler.OnValueChanged += (float prev, float cur) => { offsetMultiplier = Mathf.Clamp(cur, 1, 20); };
+    //    GameManager.Instance.PerformerList[ropeIndex].ropeOffsetY.OnValueChanged += (float prev, float cur) => { ropeOffset.y = cur; };
+    //}
 
     void UpdateRopeMass()
     {
@@ -310,18 +301,7 @@ public class EffectRope : MonoBehaviour
     #endregion
 
 
-    private void EnsureBufferCapacity(ref GraphicsBuffer buffer, int capacity, int stride)
-    {
-        // Reallocate new buffer only when null or capacity is not sufficient
-        if (buffer == null || (dynamicallyResizeBuffer && buffer.count < capacity)) // remove dynamic allocating function
-        {
-            Debug.Log("Graphic Buffer reallocated!");
-            // Buffer memory must be released
-            buffer?.Release();
-            // Vfx Graph uses structured buffer
-            buffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, capacity, stride);
-        }
-    }
+
     private void ReleaseBuffer(ref GraphicsBuffer buffer)
     {
         // Buffer memory must be released

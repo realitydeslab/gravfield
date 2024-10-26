@@ -259,7 +259,6 @@ public class RopeGenerator : MonoBehaviour
         EffectRope rope_path = go.AddComponent<EffectRope>();
         rope_path.performerStart = performerTransformRoot.GetChild(start_index).GetComponent<Performer>();
         rope_path.performerEnd = performerTransformRoot.GetChild(end_index).GetComponent<Performer>();
-        rope_path.ropeOffset = ropeCornerOffset;
     }
 
     protected virtual void AddExtraComponent(GameObject go, int start_index, int end_index)
