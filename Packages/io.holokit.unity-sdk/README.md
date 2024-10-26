@@ -21,11 +21,10 @@ You can install HoloKit Unity SDK from the following git URL in Package Manager:
 https://github.com/holokit/holokit-unity-sdk.git
 ```
 <img width="279" alt="image" src="https://github.com/holokit/holokit-unity-sdk/assets/44870300/a82656c9-aa73-4158-83b5-20d5178c8a81">
-<img width="326" alt="image" src="https://github.com/holokit/holokit-unity-sdk/assets/44870300/511c748f-251c-42a5-b481-fd3160c19c63">
 
 or by directly adding the following line to the `Packages/manifest.json` file.
 ```
-"io.holokit.unity": "https://github.com/holokit/holokit-unity-sdk.git"
+"io.holokit.unity-sdk": "https://github.com/holokit/holokit-unity-sdk.git"
 ```
 
 ## Supported Software Versions
@@ -43,6 +42,7 @@ We aim to continually test and verify compatibility with newer versions of these
 ## Phone Compatibility
 
 ### iOS
+- iOS 18.0 or higher
 
 HoloKit was primarily built for iOS devices. Please see the [Supported iOS Devices](Supported_iOS_Devices.md) to check if your iPhone is supported.
 

@@ -446,8 +446,8 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.xr.arfoundation": "5.1.2",
-        "com.unity.xr.arkit": "5.1.2"
+        "com.unity.xr.arfoundation": "5.1.5",
+        "com.unity.xr.arkit": "5.1.5"
       }
     },
     "jp.keijiro.midi-jack": {
