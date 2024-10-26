@@ -12,18 +12,13 @@ using HoloKit;
 [DefaultExecutionOrder(-20)]
 public class GameManager : MonoBehaviour
 {
-    string performerPassword = "111";
-    public string PerformerPassword { get => performerPassword; set => performerPassword = value; }
-
     [SerializeField]
-    bool isInDevelopment = true;
+    bool isInDevelopment = false;
     public bool IsInDevelopment { get => isInDevelopment; set => isInDevelopment = value; }
 
-    [SerializeField]
-    bool isSoloMode = true;
+    bool isSoloMode = false;
     public bool IsSoloMode { get => isSoloMode; set => isSoloMode = value; }
 
-    [SerializeField]
     bool showPerformerAxis = false;
 
     HoloKitCameraManager holoKitCameraManager;
@@ -31,6 +26,9 @@ public class GameManager : MonoBehaviour
 
     private AudioProcessor audioProcessor;
     public AudioProcessor AudioProcessor { get => audioProcessor; }
+
+    private ServerIPSynchronizer serverIPSynchronizer;
+    public ServerIPSynchronizer ServerIPSynchronizer { get => serverIPSynchronizer; }
 
     private NetcodeConnectionManager connectionManager;
     public NetcodeConnectionManager ConnectionManager { get => connectionManager; }
@@ -76,17 +74,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        //// Specify Role When Testing
-        if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer
-            || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
-        {
-            
-        }
-        else
-        {
-            isSoloMode = false;
-        }
-
+        // Specify Role When Testing
         StartCoroutine(CheckIfNeedJoinAsServer());
     }
 
@@ -122,9 +110,9 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Join As Audience.");
 
-        ConnectionManager.StartClient(callback: OnReceiveResult_JoinAsAudience);
-
         UIController.GotoWaitingPage("Connecting to server.");
+
+        ConnectionManager.StartClient(callback: OnReceiveResult_JoinAsAudience);
     }
 
     void OnReceiveResult_JoinAsAudience(bool result, string msg)
@@ -147,28 +135,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void JoinAsPerformer(string password="")
+    public void JoinAsPerformer()
     {
         Debug.Log("Join As Performer.");
 
-        if(password == PerformerPassword)
-        {
-            ConnectionManager.StartClient(callback: OnReceiveResult_JoinAsPerformer);
+        UIController.GotoWaitingPage("Connecting to server.");
 
-            UIController.GotoWaitingPage("Connecting to server.");
-        }
-        else
-        {
-            UIController.ShowWarningText("Wrong Password.");
-        }
+        ConnectionManager.StartClient(callback: OnReceiveResult_JoinAsPerformer);
     }
     void OnReceiveResult_JoinAsPerformer(bool result, string msg)
     {
         if (result == true)
         {
-            RoleManager.ApplyPerformer(callback: OnReceiveResult_ApplyPeroformer);
-
             UIController.GotoWaitingPage("Applying to be a performer.");
+
+            RoleManager.ApplyPerformer(callback: OnReceiveResult_ApplyPeroformer);
         }
         else
         {
@@ -224,7 +205,7 @@ public class GameManager : MonoBehaviour
             }
 
             // Register world origin callback
-           
+
         }
         else
         {
@@ -238,6 +219,35 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Enter Solo Mode");
         RoleManager.EnterSoloMode();
+    }
+
+    public void JoinAsCommander()
+    {
+        Debug.Log("Join As Commander.");
+
+        UIController.GotoWaitingPage("Connecting to server.");
+
+        ConnectionManager.StartClient(callback: OnReceiveResult_JoinAsCommander);
+    }
+
+    void OnReceiveResult_JoinAsCommander(bool result, string msg)
+    {
+        if (result == true)
+        {
+            RoleManager.JoinAsCommander();
+
+            UIController.GotoWaitingPage("Connected.");
+
+            isPlaying = true;
+
+            StartRelocalization();
+        }
+        else
+        {
+            UIController.GotoWaitingPage(msg);
+
+            RestartGame();
+        }
     }
     #endregion
 
@@ -310,6 +320,8 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        serverIPSynchronizer.ResetConnection();
+
         ConnectionManager.ShutDown();
 
         isPlaying = false;
@@ -359,6 +371,12 @@ public class GameManager : MonoBehaviour
         if (audioProcessor == null)
         {
             Debug.LogError("No AudioProcessor Found.");
+        }
+
+        serverIPSynchronizer = FindObjectOfType<ServerIPSynchronizer>();
+        if (serverIPSynchronizer == null)
+        {
+            Debug.LogError("No ServerIPSynchronizer Found.");
         }
 
         connectionManager = FindObjectOfType<NetcodeConnectionManager>();

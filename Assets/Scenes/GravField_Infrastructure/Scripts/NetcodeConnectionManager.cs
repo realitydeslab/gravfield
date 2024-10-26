@@ -11,8 +11,10 @@ using UnityEngine.Events;
 public class NetcodeConnectionManager : MonoBehaviour
 {
     [SerializeField]
-    string serverIP = "192.168.0.135";
-    public string ServerIP { get => serverIP; set => serverIP = value; }
+    //string serverIP = "192.168.0.135";
+    //public string ServerIP { get => serverIP; set => serverIP = value; }
+
+    public ServerIPSynchronizer serverIPSynchronizer;
 
     string localIP = "";
     public string LocalIP { get => localIP; }
@@ -45,12 +47,12 @@ public class NetcodeConnectionManager : MonoBehaviour
         Debug.Log("Add All NetCode Listener");
         networkManager.OnClientConnectedCallback += OnClientConnectedCallback;
         networkManager.OnClientDisconnectCallback += OnClientDisconnectCallback;
-        networkManager.OnClientStarted += OnClientStarted;
-        networkManager.OnClientStopped += OnClientStopped;
-        networkManager.OnServerStarted += OnServerStarted;
-        networkManager.OnServerStopped += OnServerStopped;
-        networkManager.OnTransportFailure += OnTransportFailure;
-        networkManager.OnConnectionEvent += OnConnectionEvent;
+        //networkManager.OnClientStarted += OnClientStarted;
+        //networkManager.OnClientStopped += OnClientStopped;
+        //networkManager.OnServerStarted += OnServerStarted;
+        //networkManager.OnServerStopped += OnServerStopped;
+        //networkManager.OnTransportFailure += OnTransportFailure;
+        //networkManager.OnConnectionEvent += OnConnectionEvent;
     }
 
     void OnDisable()
@@ -58,45 +60,45 @@ public class NetcodeConnectionManager : MonoBehaviour
         Debug.Log("Remove All NetCode Listener");
         networkManager.OnClientConnectedCallback -= OnClientConnectedCallback;
         networkManager.OnClientDisconnectCallback -= OnClientDisconnectCallback;
-        networkManager.OnClientStarted -= OnClientStarted;
-        networkManager.OnClientStopped -= OnClientStopped;
-        networkManager.OnServerStarted -= OnServerStarted;
-        networkManager.OnServerStopped -= OnServerStopped;
-        networkManager.OnTransportFailure -= OnTransportFailure;
-        networkManager.OnConnectionEvent -= OnConnectionEvent;
+        //networkManager.OnClientStarted -= OnClientStarted;
+        //networkManager.OnClientStopped -= OnClientStopped;
+        //networkManager.OnServerStarted -= OnServerStarted;
+        //networkManager.OnServerStopped -= OnServerStopped;
+        //networkManager.OnTransportFailure -= OnTransportFailure;
+        //networkManager.OnConnectionEvent -= OnConnectionEvent;
     }
 
-    void OnClientStarted()
-    {
-        Debug.Log("Listener : OnClientStarted");
-        localIP = GetLocalIPAddress();
-    }
+    //void OnClientStarted()
+    //{
+    //    Debug.Log("Listener : OnClientStarted");
+    //    localIP = GetLocalIPAddress();
+    //}
 
-    void OnClientStopped(bool result)
-    {
-        Debug.Log("Listener : OnClientStopped " + result);
-    }
+    //void OnClientStopped(bool result)
+    //{
+    //    Debug.Log("Listener : OnClientStopped " + result);
+    //}
 
-    void OnServerStarted()
-    {
-        Debug.Log("Listener : OnServerStarted");
-        localIP = GetLocalIPAddress();
-    }
+    //void OnServerStarted()
+    //{
+    //    Debug.Log("Listener : OnServerStarted");
+    //    localIP = GetLocalIPAddress();
+    //}
 
-    void OnServerStopped(bool result)
-    {
-        Debug.Log("Listener : OnServerStopped " + result);
-    }
+    //void OnServerStopped(bool result)
+    //{
+    //    Debug.Log("Listener : OnServerStopped " + result);
+    //}
 
-    void OnTransportFailure()
-    {
-        Debug.Log("OnTransportFailure");
-    }
+    //void OnTransportFailure()
+    //{
+    //    Debug.Log("OnTransportFailure");
+    //}
 
-    void OnConnectionEvent(NetworkManager manager, ConnectionEventData data)
-    {
-        //Debug.Log("OnConnectionEvent | " + data.ClientId + "Remain Count " + manager.ConnectedClientsList.Count + "," + manager.ConnectedClients.Count + ", " + manager.ConnectedClientsIds.Count);
-    }
+    //void OnConnectionEvent(NetworkManager manager, ConnectionEventData data)
+    //{
+    //    //Debug.Log("OnConnectionEvent | " + data.ClientId + "Remain Count " + manager.ConnectedClientsList.Count + "," + manager.ConnectedClients.Count + ", " + manager.ConnectedClientsIds.Count);
+    //}
 
     void OnClientConnectedCallback(ulong client_id)
     {
@@ -157,24 +159,32 @@ public class NetcodeConnectionManager : MonoBehaviour
     {
         return System.Text.RegularExpressions.Regex.IsMatch(ip, @"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$");
     }
-    public void SetServerIP(string ip)
-    {
-        serverIP = ip;
-    }
+    //public void SetServerIP(string ip)
+    //{
+    //    serverIP = ip;
+    //}
 
     public void StartClient(Action<bool, string> callback)
     {
-        OnBeforeClientStarted();
-
-        bool result = NetworkManager.Singleton.StartClient();
-
-        if (result == true)
+        if(serverIPSynchronizer.IsServerIpValid)
         {
-              OnReceiveConnectionResultAction = callback;
+            OnBeforeClientStarted();
+
+            bool result = NetworkManager.Singleton.StartClient();
+
+            if (result == true)
+            {
+                OnReceiveConnectionResultAction = callback;
+            }
+            else
+            {
+                string msg = "Failed to start client.";
+                callback?.Invoke(false, msg);
+            }
         }
         else
         {
-            string msg = "Failed to start client.";
+            string msg = "Didn't find server in network.";
             callback?.Invoke(false, msg);
         }
     }
@@ -187,6 +197,10 @@ public class NetcodeConnectionManager : MonoBehaviour
 
         string msg = result ? "Server started." : "Failed to start server";
         callback?.Invoke(result, msg);
+
+
+        localIP = GetLocalIPAddress();
+        serverIPSynchronizer.StartBroadcastingServerIp(localIP);
     }
 
     public void ShutDown()
@@ -194,7 +208,6 @@ public class NetcodeConnectionManager : MonoBehaviour
         if(NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer || NetworkManager.Singleton.IsHost)
             NetworkManager.Singleton.Shutdown();
     }
-
 
     void OnBeforeHostStarted()
     {
@@ -212,7 +225,8 @@ public class NetcodeConnectionManager : MonoBehaviour
         var unityTransport = NetworkManager.Singleton.GetComponent<UnityTransport>();
         if (unityTransport != null)
         {
-            unityTransport.SetConnectionData(ServerIP, (ushort)7777);
+            string server_ip = serverIPSynchronizer.ServerIP;
+            unityTransport.SetConnectionData(server_ip, (ushort)7777);
         }
     }
 

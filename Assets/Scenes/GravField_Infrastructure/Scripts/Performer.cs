@@ -20,16 +20,14 @@ public class Performer : NetworkBehaviour
     public NetworkVariable<bool> isPerforming;
 
 
-    public NetworkVariable<float> remoteThickness;
-    AutoSwitchedParameter<float> localThickness = new AutoSwitchedParameter<float>(10);
+    //public NetworkVariable<float> remoteThickness;
+    //AutoSwitchedParameter<float> localThickness = new AutoSwitchedParameter<float>(10);
 
-    public NetworkVariable<float> remoteMass;
-    public AutoSwitchedParameter<float> localMass = new AutoSwitchedParameter<float>(1);
+    //public NetworkVariable<float> remoteMass;
+    //public AutoSwitchedParameter<float> localMass = new AutoSwitchedParameter<float>(1);
 
-    public NetworkVariable<float> effectRope_mass;
-    public NetworkVariable<float> effectRope_thickness;
-
-    public NetworkVariable<float> magnetic;
+    //public NetworkVariable<float> effectRope_mass;
+    //public NetworkVariable<float> effectRope_thickness;
 
     // Rope Effect
     //public NetworkVariable<float> ropeMass = new NetworkVariable<float>(42.8f);
@@ -42,6 +40,7 @@ public class Performer : NetworkBehaviour
     public NetworkVariable<float> springWidth = new NetworkVariable<float>(1);
 
     // Magnetic Effect
+    public NetworkVariable<float> magnetic;
 
     int performerIndex = 0;
 
@@ -165,19 +164,19 @@ public class Performer : NetworkBehaviour
         return "/" + param + performerIndex.ToString();
     }
 
-    void OnReceive_Mass(float v)
-    {
-        v = Mathf.Clamp(v, 0.1f, 100);
-        //localMass.CodaValue = SmoothValue(localMass.Value, v);
-        remoteMass.Value = SmoothValue(remoteMass.Value, v);
-    }
+    //void OnReceive_Mass(float v)
+    //{
+    //    v = Mathf.Clamp(v, 0.1f, 100);
+    //    //localMass.CodaValue = SmoothValue(localMass.Value, v);
+    //    remoteMass.Value = SmoothValue(remoteMass.Value, v);
+    //}
 
-    void OnReceive_Thickness(float v)
-    {
-        v = Mathf.Clamp(v, 1f, 50);
-        //localThickness.CodaValue = SmoothValue(localThickness.Value, v);
-        remoteThickness.Value = SmoothValue(remoteThickness.Value, v);
-    }
+    //void OnReceive_Thickness(float v)
+    //{
+    //    v = Mathf.Clamp(v, 1f, 50);
+    //    //localThickness.CodaValue = SmoothValue(localThickness.Value, v);
+    //    remoteThickness.Value = SmoothValue(remoteThickness.Value, v);
+    //}
 
     float SmoothValue(float cur, float dst, float t = 0)
     {

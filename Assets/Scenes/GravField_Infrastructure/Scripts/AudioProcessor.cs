@@ -337,7 +337,7 @@ public class AudioProcessor : MonoBehaviour
         // Reallocate new buffer only when null or capacity is not sufficient
         if (buffer == null || (dynamicallyResizeBuffer && buffer.count < capacity)) // remove dynamic allocating function
         {
-            Debug.Log("Graphic Buffer reallocated!");
+            //Debug.Log("Graphic Buffer reallocated!");
             // Buffer memory must be released
             buffer?.Release();
             // Vfx Graph uses structured buffer

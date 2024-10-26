@@ -19,7 +19,8 @@ public class RoleManager : NetworkBehaviour
         Undefined,
         Audience,
         Performer,
-        Server
+        Server,
+        Commander
     }
     private PlayerRole playerRole = PlayerRole.Undefined;
     public PlayerRole Role { get => playerRole; }
@@ -129,6 +130,11 @@ public class RoleManager : NetworkBehaviour
     {
         SetPlayerRole(PlayerRole.Server);
     }
+
+    public void JoinAsCommander()
+    {
+        SetPlayerRole(PlayerRole.Commander);
+    }    
 
     public PlayerRole GetPlayerRole()
     {

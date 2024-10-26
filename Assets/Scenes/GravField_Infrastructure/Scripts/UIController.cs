@@ -9,10 +9,20 @@ using System;
 
 public class UIController : MonoBehaviour
 {
+    [SerializeField]
+    string performerPassword = "111";
+
+    [SerializeField]
+    string serverPassword = "222";
+
+    [SerializeField]
+    string commanderPassword = "333";
+
     Transform transButtonStart;
     Transform transButtonPerformer;
-    Transform transButtonSettings;
-    //Transform transButtonServer;
+    //Transform transButtonSettings;
+    Transform transButtonServer;
+    Transform transButtonCommander;
 
     Transform transPanelCalibration;
     Transform transPanelPassword;
@@ -32,13 +42,16 @@ public class UIController : MonoBehaviour
     public float LongPressedTimeThreshold = 3;
     float longPressedTime = 0;
 
+    Transform pressedButtonBeforePassword;
+
     void Awake()
     {
         // UI Elements
         transButtonStart = FindTransformAndRegister("Button_Start"); 
         transButtonPerformer = FindTransformAndRegister("Button_Performer");
-        transButtonSettings = FindTransformAndRegister("Button_Settings");
-        //transButtonServer = FindTransformAndRegister("Button_Server"); transButtonServer.gameObject.SetActive(GameManager.Instance.IsInDevelopment ? true : false);
+        //transButtonSettings = FindTransformAndRegister("Button_Settings");
+        transButtonServer = FindTransformAndRegister("Button_Server");
+        transButtonCommander = FindTransformAndRegister("Button_Commander");
 
         transPanelPassword = FindTransformAndRegister("Panel_Password");
         transPanelServerIP = FindTransformAndRegister("Panel_ServerIP");
@@ -76,10 +89,11 @@ public class UIController : MonoBehaviour
     void Start()
     {
         // Bind Basic Listener
-        transButtonStart.GetComponent<Button>().onClick.AddListener(OnClickStart);
-        //transButtonServer.GetComponent<Button>().onClick.AddListener(OnClickServer);
+        transButtonStart.GetComponent<Button>().onClick.AddListener(OnClickStart);        
         transButtonPerformer.GetComponent<Button>().onClick.AddListener(OnClickPerformer);
-        transButtonSettings.GetComponent<Button>().onClick.AddListener(OnClickSettings);
+        //transButtonSettings.GetComponent<Button>().onClick.AddListener(OnClickSettings);
+        transButtonServer.GetComponent<Button>().onClick.AddListener(OnClickServer);
+        transButtonCommander.GetComponent<Button>().onClick.AddListener(OnClickCommander);
 
         transPanelPassword.Find("Button_Enter").GetComponent<Button>().onClick.AddListener(OnEnterPassword);
         transPanelServerIP.Find("Button_Enter").GetComponent<Button>().onClick.AddListener(OnEnterServerIp);
@@ -130,6 +144,11 @@ public class UIController : MonoBehaviour
 
     void OnClickPerformer()
     {
+        pressedButtonBeforePassword = transButtonPerformer;
+
+        if (GameManager.Instance.IsInDevelopment)
+            inputPassword.text = performerPassword;
+
         GotoPasswordPage();
     }
 
@@ -140,25 +159,74 @@ public class UIController : MonoBehaviour
 
     void OnClickServer()
     {
-        GameManager.Instance.JoinAsServer();
+        pressedButtonBeforePassword = transButtonServer;
+
+        if (GameManager.Instance.IsInDevelopment)
+            inputPassword.text = serverPassword;
+
+        GotoPasswordPage();
+    }
+
+    void OnClickCommander()
+    {
+        pressedButtonBeforePassword = transButtonCommander;
+
+        if(GameManager.Instance.IsInDevelopment)
+            inputPassword.text = commanderPassword;
+
+        GotoPasswordPage();
     }
 
     public void OnEnterPassword()
     {
-        GameManager.Instance.JoinAsPerformer(inputPassword.text);
+        if(pressedButtonBeforePassword == transButtonPerformer)
+        {
+            if(inputPassword.text == performerPassword)
+            {
+                GameManager.Instance.JoinAsPerformer();
+            }
+            else
+            {
+                ShowWarningText("Wrong Password.");
+            }
+        }
+        else if (pressedButtonBeforePassword == transButtonServer)
+        {
+
+            if (inputPassword.text == serverPassword)
+            {
+                GameManager.Instance.JoinAsServer();
+            }
+            else
+            {
+                ShowWarningText("Wrong Password.");
+            }
+        }
+        else if (pressedButtonBeforePassword == transButtonCommander)
+        {
+
+            if (inputPassword.text == commanderPassword)
+            {
+                GameManager.Instance.JoinAsCommander();
+            }
+            else
+            {
+                ShowWarningText("Wrong Password.");
+            }
+        }
     }
 
     public void OnEnterServerIp()
     {
-        if(GameManager.Instance.ConnectionManager.IsIPAddressValide(inputServerIP.text))
-        {
-            GameManager.Instance.ConnectionManager.SetServerIP(inputServerIP.text);
-            GoBackToHomePage();
-        }
-        else
-        {
-            ShowWarningText("Wrong ServerIp.");
-        }
+        //if(GameManager.Instance.ConnectionManager.IsIPAddressValide(inputServerIP.text))
+        //{
+        //    GameManager.Instance.ConnectionManager.SetServerIP(inputServerIP.text);
+        //    GoBackToHomePage();
+        //}
+        //else
+        //{
+        //    ShowWarningText("Wrong ServerIp.");
+        //}
     }
     #endregion
 
@@ -188,8 +256,9 @@ public class UIController : MonoBehaviour
         Transform[] element_list = new Transform[] {
             transButtonStart,
             transButtonPerformer,
-            transButtonSettings,
-            //transButtonServer
+            //transButtonSettings,
+            transButtonServer,
+            transButtonCommander
         };
 
         ShowElementsOnly(element_list);
