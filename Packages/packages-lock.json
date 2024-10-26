@@ -424,12 +424,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.xiaobo.xiaobo.unity.toolkit": {
-      "version": "file:unity-toolkit",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "io.holokit.image-tracking-relocalization": {
       "version": "file:io.holokit.image-tracking-relocalization",
       "depth": 0,
