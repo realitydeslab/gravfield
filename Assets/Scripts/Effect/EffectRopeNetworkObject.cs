@@ -13,18 +13,17 @@ public class EffectParameter<T>
 
 public class EffectRopeNetworkObject : EffectBaseNetworkObject
 {
-    public NetworkVariable<Vector3> thickness;
-    public NetworkVariable<float> mass;
+    public NetworkVariable<float> mass = new NetworkVariable<float>(42.8f);
     public NetworkVariable<float> maxWidth = new NetworkVariable<float>(40);
     public NetworkVariable<float> ropeScaler = new NetworkVariable<float>(5);
     public NetworkVariable<float> ropeOffsetY = new NetworkVariable<float>(-0.3f);
-    public NetworkVariable<Vector3> ropeOffset = new NetworkVariable<Vector3>(new Vector3(0,-0.2f,0.3f));
+    public NetworkVariable<float> ropeOffsetZ = new NetworkVariable<float>(0.3f);
 
     //public NetworkVariable<EffectParameter_Float> thickness2 = new NetworkVariable<EffectParameter_Float>(
     //    new EffectParameter_Float("/rope-thickness", 1), NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     //public NetworkVariable<EffectParameter_Float> mass2 = new NetworkVariable<EffectParameter_Float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
-    //List<NetworkVariableBase> AllParametersNeedToBeRegistered;
+    //List<NetworkVariableBase> AllParametersNeedToBeRegistered; 
 
 
 
@@ -42,11 +41,11 @@ public class EffectRopeNetworkObject : EffectBaseNetworkObject
     {
         if (!IsServer) return;
 
-        //parameterList.Add("/rope-mass", mass);
+        parameterList.Add("/rope-mass", mass);
         parameterList.Add("/rope-maxWidth", maxWidth);
         parameterList.Add("/rope-scaler", ropeScaler);
-        parameterList.Add("/thickness", thickness);
         parameterList.Add("/rope-offset-y", ropeOffsetY);
+        parameterList.Add("/rope-offset-z", ropeOffsetZ);
     }
 
     

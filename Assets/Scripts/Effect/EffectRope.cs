@@ -123,7 +123,8 @@ public class EffectRope : MonoBehaviour
         offsetMultiplier = ropeParameter.ropeScaler.Value;
         offsetMultiplier = Mathf.Clamp(offsetMultiplier, 1, 20);
 
-        ropeOffset = ropeParameter.ropeOffset.Value;
+        ropeOffset.y = ropeParameter.ropeOffsetY.Value;
+        ropeOffset.z = ropeParameter.ropeOffsetZ.Value;
     }
 
     void UpdateRopeAnchors()
