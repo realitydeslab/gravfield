@@ -10,12 +10,19 @@ public class SenderForCoda : MonoBehaviour
     [SerializeField] OscConnection senderConnection = null;
     
     private bool connectedWithCoda = false;
-    public bool ConnectedWithCoda { get => connectedWithCoda; }
+    public bool ConnectedWithCoda {
+        get
+        {
+            if (transSender == null || transSender.gameObject.activeSelf == false)
+                return false;
+            else
+                return connectedWithCoda;
+        }
+    }
 
     Transform transSender;
 
     List<OscPropertySenderModified> sernderList;
-
 
     void Awake()
     {
@@ -24,31 +31,41 @@ public class SenderForCoda : MonoBehaviour
         sernderList = new List<OscPropertySenderModified>(transSender.GetComponents<OscPropertySenderModified>());
     }
 
+    void Start()
+    {
+        SetSenderState(false);
+    }
 
     public void TurnOn()
     {
-        Debug.Log("SenderForCoda | TurnOn");
+        Debug.Log($"[{this.GetType()}] TurnOn");
 
-        if (transSender == null)
-            transSender = transform.Find("Sender");
-
-        transSender.gameObject.SetActive(true);
+        SetSenderState(true);
     }
 
     public void TurnOff()
     {
-        Debug.Log("SenderForCoda | TurnOff");
+        Debug.Log($"[{this.GetType()}] TurnOff");
 
+        SetSenderState(false);
+    }
+
+    void SetSenderState(bool state)
+    {
         if (transSender == null)
             transSender = transform.Find("Sender");
 
-        transSender.gameObject.SetActive(false);
+        transSender.gameObject.SetActive(state);
     }
 
 
     void Update()
     {
-        if (!NetworkManager.Singleton.IsServer) return;
+        if (!NetworkManager.Singleton.IsServer)
+            return;
+
+        if (transSender == null || transSender.gameObject.activeSelf == false)
+            return;
 
         bool successfully_send = true;
         foreach (OscPropertySenderModified sender in sernderList)
@@ -58,89 +75,4 @@ public class SenderForCoda : MonoBehaviour
 
         connectedWithCoda = successfully_send;
     }
-
-
-
-
-    //void RegisterPropertyForReceiving()
-    //{
-    //    propertiesForReceiving.Clear();
-    //    propertiesForReceiving.Add(new OscPropertyForReceiving("/floatvalue1", new UnityAction<float>(OnReceiveGroup_FloatValue1)));
-    //    propertiesForReceiving.Add(new OscPropertyForReceiving("/floatvalue2", new UnityAction<float>(OnReceiveGroup_FloatValue2)));
-    //    propertiesForReceiving.Add(new OscPropertyForReceiving("/floatvalue3", new UnityAction<float>(OnReceiveGroup_FloatValue3)));
-    //    propertiesForReceiving.Add(new OscPropertyForReceiving("/floatvalue4", new UnityAction<float>(OnReceiveGroup_FloatValue4)));
-    //    propertiesForReceiving.Add(new OscPropertyForReceiving("/floatvalue5", new UnityAction<float>(OnReceiveGroup_FloatValue5)));
-
-    //    propertiesForReceiving.Add(new OscPropertyForReceiving("/vector3value1", new UnityAction<Vector3>(OnReceiveGroup_Vector3Value1)));
-    //    propertiesForReceiving.Add(new OscPropertyForReceiving("/vector3value2", new UnityAction<Vector3>(OnReceiveGroup_Vector3Value2)));
-    //}
-    //public void OnReceiveGroup_FloatValue1(float v)
-    //{
-    //    Debug.Log("OnReceiveGroup_FloatValue1:" + v.ToString());
-    //    if (NetworkManager.Singleton.IsServer)
-    //    {
-    //        // Change NetworkVariables
-    //    }
-    //}
-    //public void OnReceiveGroup_FloatValue2(float v)
-    //{
-
-    //}
-    //public void OnReceiveGroup_FloatValue3(float v)
-    //{
-
-    //}
-    //public void OnReceiveGroup_FloatValue4(float v)
-    //{
-
-    //}
-    //public void OnReceiveGroup_FloatValue5(float v)
-    //{
-
-    //}
-
-    //public void OnReceiveGroup_Vector3Value1(Vector3 v)
-    //{
-
-    //}
-    //public void OnReceiveGroup_Vector3Value2(Vector3 v)
-    //{
-
-    //}
-
-
-
-    //[ContextMenu("SetSenderConnection")]
-    //public void SetSenderConnection()
-    //{
-    //    if (transSender == null)
-    //    {
-    //        transSender = transform.Find("Sender");
-    //    }
-    //    OscPropertySenderModified[] senders = transSender.gameObject.GetComponents<OscPropertySenderModified>();
-    //    foreach (OscPropertySenderModified sender in senders)
-    //    {
-    //        sender._connection = senderConnection;
-    //    }
-    //}
-    #region Instance
-    private static SenderForCoda _Instance;
-
-    public static SenderForCoda Instance
-    {
-        get
-        {
-            if (_Instance == null)
-            {
-                _Instance = GameObject.FindObjectOfType<SenderForCoda>();
-                if (_Instance == null)
-                {
-                    GameObject go = new GameObject();
-                    _Instance = go.AddComponent<SenderForCoda>();
-                }
-            }
-            return _Instance;
-        }
-    }
-    #endregion
 }

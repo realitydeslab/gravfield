@@ -16,27 +16,20 @@ public class TestScenarioManager : MonoBehaviour
 
     PlayableDirector timeline;
 
-    RoleManager roleManager;
+    PlayerManager roleManager;
     PerformerSynchronizer performerSynchronizer;
 
     bool needSynchronize = false;
 
     void Awake()
     {
-        roleManager = FindObjectOfType<RoleManager>();
+        roleManager = FindObjectOfType<PlayerManager>();
         performerSynchronizer = FindObjectOfType<PerformerSynchronizer>();
 
         testEnvionmentTransformRoot = transform.Find("Environment");
         testPerformerTransformRoot = transform.Find("Humanoids");
 
         timeline = transform.Find("Timeline").GetComponent<PlayableDirector>();
-    }
-    void Start()
-    {
-        if(IsValidEnvironment() == false)
-        {
-            gameObject.SetActive(false);
-        }
     }
 
     void Update()
@@ -53,37 +46,49 @@ public class TestScenarioManager : MonoBehaviour
 
     void OnEnable()
     {
-        roleManager?.OnSpecifyPlayerRoleEvent.AddListener(OnSpecifyPlayerRole);
+        GameManager.Instance.OnStartGame.AddListener(OnStartGame);
+        GameManager.Instance.OnStopGame.AddListener(OnStopGame);
     }
 
     void OnDisable()
     {
-        roleManager?.OnSpecifyPlayerRoleEvent.RemoveListener(OnSpecifyPlayerRole);
+        GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
+        GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
     }
 
-    void OnSpecifyPlayerRole(RoleManager.PlayerRole role)
+    public void TurnOn()
     {
-        if (IsValidEnvironment() && role == RoleManager.PlayerRole.Server)
+        testEnvionmentTransformRoot.gameObject.SetActive(true);
+        testPerformerTransformRoot.gameObject.SetActive(true);
+        timeline.gameObject.SetActive(true);
+        timeline.Play();
+
+        needSynchronize = true;
+    }
+
+    public void TurnOff()
+    {
+        testEnvionmentTransformRoot.gameObject.SetActive(false);
+        testPerformerTransformRoot.gameObject.SetActive(false);
+        timeline.gameObject.SetActive(false);
+        timeline.Stop();
+
+        needSynchronize = false;
+    }
+
+    void OnStartGame(PlayerRole role)
+    {
+        if (IsValidEnvironment() && role == PlayerRole.Server)
         {
-            testEnvionmentTransformRoot.gameObject.SetActive(true);
-            testPerformerTransformRoot.gameObject.SetActive(true);
-            timeline.gameObject.SetActive(true);
-            timeline.Play();
-
-            needSynchronize = true;
-
-            Debug.Log("Reveal Test Scene");
+            TurnOn();
         }
-        else
+    }
+
+    void OnStopGame(PlayerRole role)
+    {
+        if (IsValidEnvironment() && role == PlayerRole.Server)
         {
-            testEnvionmentTransformRoot.gameObject.SetActive(false);
-            testPerformerTransformRoot.gameObject.SetActive(false);
-            timeline.gameObject.SetActive(false);
-            timeline.Stop();
-
-            needSynchronize = false;
-
-            gameObject.SetActive(false);
+            TurnOff();
         }
     }
 

@@ -63,7 +63,7 @@ public class EffectManager : MonoBehaviour
 #endif
     }
 
-    void OnSpecifyPlayerRole(RoleManager.PlayerRole role)
+    void OnSpecifyPlayerRole(PlayerRole role)
     {
         ChangeEffectModeTo(GameManager.Instance.PerformerGroup.effectMode.Value);
     }

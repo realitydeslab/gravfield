@@ -51,7 +51,7 @@ public class PerfomerDataProcessor : MonoBehaviour
 
     List<Performer> performerList = new List<Performer>();
 
-    RoleManager roleManager;
+    PlayerManager roleManager;
 
     bool running = false;
 
@@ -59,7 +59,7 @@ public class PerfomerDataProcessor : MonoBehaviour
 
     void Awake()
     {
-        roleManager = FindObjectOfType<RoleManager>();
+        roleManager = FindObjectOfType<PlayerManager>();
     }
 
     void Start()

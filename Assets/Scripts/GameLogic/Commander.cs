@@ -18,25 +18,26 @@ public class Commander : MonoBehaviour
         // delete all sender;
     }
 
-
-    #region Instance
-    private static Commander _Instance;
-
-    public static Commander Instance
+    void OnEnable()
     {
-        get
-        {
-            if (_Instance == null)
-            {
-                _Instance = GameObject.FindObjectOfType<Commander>();
-                if (_Instance == null)
-                {
-                    GameObject go = new GameObject();
-                    _Instance = go.AddComponent<Commander>();
-                }
-            }
-            return _Instance;
-        }
+        GameManager.Instance.OnStartGame.AddListener(OnStartGame);
+        GameManager.Instance.OnStopGame.AddListener(OnStopGame);
     }
-    #endregion
+
+    void OnDisable()
+    {
+        GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
+        GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
+    }
+
+    void OnStartGame(PlayerRole role)
+    {
+
+    }
+
+    void OnStopGame(PlayerRole role)
+    {
+
+    }
+
 }

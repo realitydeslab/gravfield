@@ -6,7 +6,7 @@ public class EffectSpringController : MonoBehaviour
 {
     public Transform performerTransformRoot;
 
-    RoleManager roleManager;
+    PlayerManager roleManager;
 
     List<Performer> performerList = new List<Performer>();
     List<bool> springStateList = new List<bool>();
@@ -16,7 +16,7 @@ public class EffectSpringController : MonoBehaviour
 
     void Awake()
     {
-        roleManager = FindObjectOfType<RoleManager>();
+        roleManager = FindObjectOfType<PlayerManager>();
 
 
         for (int i=0; i<performerTransformRoot.childCount; i++)

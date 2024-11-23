@@ -7,21 +7,13 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-public class RoleManager : NetworkBehaviour
+public class PlayerManager : NetworkBehaviour
 {
     
     [SerializeField]
     private Transform performerTransformRoot;
     public Transform PerformerTransformRoot { get => performerTransformRoot; }
 
-    public enum PlayerRole
-    {
-        Undefined,
-        Audience,
-        Performer,
-        Server,
-        Commander
-    }
     private PlayerRole playerRole = PlayerRole.Undefined;
     public PlayerRole Role { get => playerRole; }
 
@@ -62,6 +54,9 @@ public class RoleManager : NetworkBehaviour
 
     void OnEnable()
     {
+        GameManager.Instance.OnStartGame.AddListener(OnStartGame);
+        GameManager.Instance.OnStopGame.AddListener(OnStopGame);
+
         for (int i = 0; i < performerList.Count; i++)
         {
             performerList[i].OnStartPerforming.AddListener(OnStartPerforming);
@@ -70,6 +65,9 @@ public class RoleManager : NetworkBehaviour
     }
     void OnDisable()
     {
+        GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
+        GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
+
         for (int i = 0; i < performerList.Count; i++)
         {
             performerList[i].OnStartPerforming.RemoveListener(OnStartPerforming);
@@ -114,39 +112,9 @@ public class RoleManager : NetworkBehaviour
         {
             OnReceiveRegistrationResult(false, "Performer Registration Times Out");
         }
-    }
-
-    public void JoinAsAudience()
-    {
-        SetPlayerRole(PlayerRole.Audience);
-    }
-
-    public void JoinAsPerformer()
-    {
-        SetPlayerRole(PlayerRole.Performer);
-    }
-
-    public void JoinAsServer()
-    {
-        SetPlayerRole(PlayerRole.Server);
-    }
-
-    public void JoinAsCommander()
-    {
-        SetPlayerRole(PlayerRole.Commander);
     }    
 
-    public PlayerRole GetPlayerRole()
-    {
-        return playerRole;
-    }
-
-    public void ResetPlayerRole()
-    {
-        SetPlayerRole(PlayerRole.Undefined);
-    }
-
-    public void EnterSoloMode()
+    void EnterSoloMode()
     {
         for(int i=0; i<performerList.Count; i++)
         {
@@ -159,7 +127,41 @@ public class RoleManager : NetworkBehaviour
 
         RefreshPlayerCount();
     }
+
+    void StopSoloMode()
+    {
+        for (int i = 0; i < performerList.Count; i++)
+        {
+            performerList[i].isPerforming.Value = false;
+            performerList[i].clientID.Value = 0;
+
+            OnStopPerformingEvent?.Invoke(i, (ulong)i);
+        }
+
+
+        RefreshPlayerCount();
+    }
     #endregion
+
+    void OnStartGame(PlayerRole player_role)
+    {
+        playerRole = player_role;
+
+        if(player_role == PlayerRole.Server && GameManager.Instance.IsSoloMode)
+        {
+            EnterSoloMode();
+        }
+    }
+
+    void OnStopGame(PlayerRole player_role)
+    {
+        playerRole = PlayerRole.Undefined;
+
+        if (player_role == PlayerRole.Server && GameManager.Instance.IsSoloMode)
+        {
+            StopSoloMode();
+        }
+    }
 
 
     #region RPCs
@@ -324,9 +326,9 @@ public class RoleManager : NetworkBehaviour
     {
         playerRole = role;
 
-        Debug.Log("Send Event OnSpecifyPlayerRole: " + role.ToString());
+        //Debug.Log("Send Event OnSpecifyPlayerRole: " + role.ToString());
 
-        OnSpecifyPlayerRoleEvent?.Invoke(role);
+        //OnSpecifyPlayerRoleEvent?.Invoke(role);
     }
 
 

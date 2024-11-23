@@ -8,6 +8,18 @@ using System.Net;
 using System.Net.Sockets;
 using System;
 using HoloKit;
+using UnityEngine.Events;
+
+public enum PlayerRole
+{
+    Undefined,
+
+    Performer,
+    Spectator,
+    Server,
+    SinglePlayer,
+    Commander
+}
 
 [DefaultExecutionOrder(-20)]
 public class GameManager : MonoBehaviour
@@ -27,9 +39,6 @@ public class GameManager : MonoBehaviour
     private AudioProcessor audioProcessor;
     public AudioProcessor AudioProcessor { get => audioProcessor; }
 
-    private ServerIPSynchronizer serverIPSynchronizer;
-    public ServerIPSynchronizer ServerIPSynchronizer { get => serverIPSynchronizer; }
-
     private NetcodeConnectionManager connectionManager;
     public NetcodeConnectionManager ConnectionManager { get => connectionManager; }
 
@@ -39,8 +48,8 @@ public class GameManager : MonoBehaviour
     private MiddlewareManager middlewareManager;
     public MiddlewareManager MiddlewareManager { get => middlewareManager; }
 
-    private RoleManager roleManager;
-    public RoleManager RoleManager { get => roleManager; }
+    private PlayerManager roleManager;
+    public PlayerManager RoleManager { get => roleManager; }
 
     private Commander commander;
     public Commander Commander { get => commander; }
@@ -57,211 +66,108 @@ public class GameManager : MonoBehaviour
     private List<Performer> performerList;
     public List<Performer> PerformerList { get => performerList; }
 
-    public RoleManager.PlayerRole PlayerRole { get => roleManager.GetPlayerRole(); }
+    private PlayerRole playerRole;
+    public PlayerRole PlayerRole { get => playerRole; }
 
     private bool isPlaying = false;
     public bool IsPlaying { get => isPlaying; }
 
+    public UnityEvent<PlayerRole> OnStartGame;
+    public UnityEvent<PlayerRole> OnStopGame;
+
     bool isInitialzed = false;
-    void Start()
-    {
-        // Read Command Line
-        string mode_from_command = GetModeFromCommandLine();
-        switch (mode_from_command)
-        {
-            case "server":
-                JoinAsServer();
-                break;
-            case "performer":
-                JoinAsPerformer();
-                break;
-            case "client":
-                JoinAsAudience();
-                break;
-            default:
-                // Do nothing
-                break;
-        }
-
-        // Specify Role When Testing
-        //StartCoroutine(CheckIfNeedJoinAsServer());
-    }
-
-    IEnumerator CheckIfNeedJoinAsServer()
-    {
-        float start_time = Time.time;
-        bool enter_solo_mode = false;
-        while(Time.time - start_time < 5)
-        {
-            if(Input.GetKey(KeyCode.S))
-            {
-                enter_solo_mode = true;
-                break;
-            }
-            yield return null;
-        }
-        
-
-        if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer
-            || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
-        {
-            if(RoleManager.Role == RoleManager.PlayerRole.Undefined)
-            {
-                isSoloMode = enter_solo_mode;
-                JoinAsServer();
-            }           
-        }
-    }
-
 
     #region Join As Specific Role
-    public void JoinAsAudience()
+    public void JoinAsSpectator(System.Action<bool, string> action)
     {
-        Debug.Log("Join As Audience.");
+        Debug.Log("Join As Spectator.");
 
-        UIController.GotoWaitingPage("Connecting to server.");
+        connectionManager.StartClient(((connection_result, connection_msg) => {
+            if (connection_result == true)
+            {
+                // Start Game as player
+                StartGame(PlayerRole.Spectator);
+            }
 
-        ConnectionManager.StartClient(callback: OnReceiveResult_JoinAsAudience);
+            // Update UI
+            action?.Invoke(connection_result, connection_msg);
+
+        }));
     }
 
-    void OnReceiveResult_JoinAsAudience(bool result, string msg)
-    {
-        if (result == true)
-        {
-            RoleManager.JoinAsAudience();
-
-            UIController.GotoWaitingPage("Connected.");
-
-            isPlaying = true;
-
-            StartRelocalization();
-        }
-        else
-        {
-            UIController.GotoWaitingPage(msg);
-
-            RestartGame();
-        }
-    }
-
-    public void JoinAsPerformer()
+    public void JoinAsPerformer(System.Action<bool, string> action)
     {
         Debug.Log("Join As Performer.");
 
-        UIController.GotoWaitingPage("Connecting to server.");
+        connectionManager.StartClient(((connection_result, connection_msg) => {
 
-        ConnectionManager.StartClient(callback: OnReceiveResult_JoinAsPerformer);
+            // Update UI
+            action?.Invoke(connection_result, connection_msg);
+
+        }));
     }
-    void OnReceiveResult_JoinAsPerformer(bool result, string msg)
+
+    public void ApplyPerformer(System.Action<bool, string> action)
     {
-        if (result == true)
+        RoleManager.ApplyPerformer((result, msg) =>
         {
-            UIController.GotoWaitingPage("Applying to be a performer.");
+            if (result == true)
+            {
+                StartGame(PlayerRole.Spectator);
+            }
+            else
+            {
+                connectionManager.ShutDown();
+            }
 
-            RoleManager.ApplyPerformer(callback: OnReceiveResult_ApplyPeroformer);
-        }
-        else
-        {
-            UIController.GotoWaitingPage(msg);
-
-            RestartGame();
-        }
+            // Update UI
+            action?.Invoke(result, msg);
+        });
     }
 
-    void OnReceiveResult_ApplyPeroformer(bool result, string msg)
-    {
-        if (result == true)
-        {
-            RoleManager.JoinAsPerformer();
 
-            UIController.GotoWaitingPage("Succeed.");
 
-            isPlaying = true;
 
-            StartRelocalization();
-        }
-        else
-        {
-            UIController.GotoWaitingPage(msg);
 
-            RestartGame();
-        }
-    }
-
-    public void JoinAsServer()
+    public void JoinAsServer(System.Action<bool, string> action)
     {
         Debug.Log("Join As Server.");
 
-        connectionManager.StartServer(callback: OnReceiveResult_JoinAsServer);
-    }
+        connectionManager.StartServer(new System.Action<bool, string>((result, msg) => {
 
-    void OnReceiveResult_JoinAsServer(bool result, string msg)
-    {
-        if (result == true)
-        {
-            RoleManager.JoinAsServer();
-
-            uiController.GotoWaitingPage("Connected.");
-
-            isPlaying = true;
-
-            //StartRelocalization();
-            UIController.GoIntoGame(); // No need to relocalize as server
-
-            if (isSoloMode)
+            if(result)
             {
-                EnterSoloMode();
+                StartGame(PlayerRole.Server);
             }
 
-            // Register world origin callback
-
-        }
-        else
-        {
-            uiController.GotoWaitingPage(msg);
-
-            RestartGame();
-        }
+            action?.Invoke(result, msg);
+        }));
     }
 
-    void EnterSoloMode()
-    {
-        Debug.Log("Enter Solo Mode");
-        RoleManager.EnterSoloMode();
-    }
 
-    public void JoinAsCommander()
+
+    public void JoinAsCommander(System.Action<bool, string> action)
     {
         Debug.Log("Join As Commander.");
 
-        UIController.GotoWaitingPage("Connecting to server.");
+        connectionManager.StartClient(((connection_result, connection_msg) => {
 
-        ConnectionManager.StartClient(callback: OnReceiveResult_JoinAsCommander);
+            if (connection_result == true)
+            {
+                StartGame(PlayerRole.Commander);
+
+                //        RoleManager.JoinAsCommander();
+                //        Commander.InitializeCommander();
+            }
+
+            // Update UI
+            action?.Invoke(connection_result, connection_msg);
+
+        }));
     }
 
-    void OnReceiveResult_JoinAsCommander(bool result, string msg)
-    {
 
-        Debug.Log($"Result:{result}");
-        if (result == true)
-        {
-            RoleManager.JoinAsCommander();
 
-            Commander.InitializeCommander();
-
-            UIController.GotoWaitingPage("Succeed.");
-
-            isPlaying = true;
-
-            StartRelocalization();
-        }
-        else
-        {
-            UIController.GotoWaitingPage(msg);
-
-            RestartGame();
-        }
-    }
     #endregion
 
 
@@ -291,69 +197,195 @@ public class GameManager : MonoBehaviour
     }
     void OnServerLost()
     {
-        RestartGame();
+        //RestartGame();
     }
     #endregion
 
 
-    #region UI Related Functions
-    public void StartRelocalization()
+    #region Relocalization
+    public void StartRelocalization(System.Action action)
     {
-        UIController.GoToRelocalizationPage();
-
 #if !UNITY_EDITOR
-        RelocalizationStablizer.OnTrackedImagePoseStablized.AddListener(OnFinishRelocalization);
+        UnityAction<Vector3, Quaternion> handler = null;
+        handler = (Vector3 position, Quaternion rotation) =>
+        {
+            relocalizationStablizer.OnTrackedImagePoseStablized.RemoveListener(handler);
 
-        RelocalizationStablizer.IsRelocalizing = true;
+            OnFinishRelocalization(position, rotation, action);            
+        };
+        relocalizationStablizer.OnTrackedImagePoseStablized.AddListener(handler);
+
+        relocalizationStablizer.IsRelocalizing = true;
 #else
-        OnFinishRelocalization(Vector3.zero, Quaternion.identity);
+        OnFinishRelocalization(Vector3.zero, Quaternion.identity, action);
+
+        // Rotate body by 90 degrees so the fake people representing unity editor can turn around to face real player holding phones
+        //OnFinishRelocalization(Vector3.zero, Quaternion.AngleAxis(90, Vector3.up), action);
 #endif
     }
 
     public void StopRelocalization()
     {
-        UIController.HideRelocalizationPage();
-
 #if !UNITY_EDITOR
-        GameManager.Instance.RelocalizationStablizer.OnTrackedImagePoseStablized.RemoveListener(OnFinishRelocalization);
+        relocalizationStablizer.OnTrackedImagePoseStablized.RemoveAllListeners() ;
 
-        RelocalizationStablizer.IsRelocalizing = false;
+        relocalizationStablizer.IsRelocalizing = false;
 #endif
     }
 
-    void OnFinishRelocalization(Vector3 position, Quaternion rotation)
+    void OnFinishRelocalization(Vector3 position, Quaternion rotation, System.Action action)
     {
-        //DisplayMessageOnUI($"pos: {position}, angle: {rotation.eulerAngles}");
-
 #if !UNITY_EDITOR
-            GameManager.Instance.RelocalizationStablizer.OnTrackedImagePoseStablized.RemoveListener(OnFinishRelocalization);
+        HoloKit.ColocatedMultiplayerBoilerplate.TrackedImagePoseTransformer trackedImagePoseTransformer;
+        trackedImagePoseTransformer = FindFirstObjectByType<HoloKit.ColocatedMultiplayerBoilerplate.TrackedImagePoseTransformer>();
+
+        if(trackedImagePoseTransformer == null)
+        {
+            Debug.LogError($"[{this.GetType()}] Can't find TrackedImagePoseTransformer.");
+        }
+        else
+        {
+            trackedImagePoseTransformer.OnTrackedImageStablized(position, rotation);
+        }
 #endif
-        UIController.GoIntoGame();
+
+        action?.Invoke();
     }
 
-    public void RestartGame()
+    public float GetRelocalizationProgress()
     {
-        serverIPSynchronizer.ResetConnection();
+        if (relocalizationStablizer.IsRelocalizing)
+            return relocalizationStablizer.Progress;
+        else
+            return 0;
+    }
 
+    #endregion
+
+
+
+
+    #region Game control
+    public void StartGame(PlayerRole player_role)
+    {
+        StartCoroutine(WaitForNetworkObjectSpawnedCoroutine(3, (result, msg) => {
+
+            if(result == true)
+            {
+                StartGameByPlayerRole(player_role);
+
+                
+            }
+            else
+            {
+                //RestartGame();
+            }
+        }));
+    }
+
+    IEnumerator WaitForNetworkObjectSpawnedCoroutine(float time_out, System.Action<bool, string> action)
+    {
+        float start_time = Time.time;
+        bool result = true;
+        while (true)
+        {
+            if(NetworkManager.Singleton != null && NetworkManager.Singleton.SpawnManager != null && NetworkManager.Singleton.SpawnManager.SpawnedObjects != null)
+            {
+                bool all_spawned = true;
+                foreach(var network_object in NetworkManager.Singleton.SpawnManager.SpawnedObjects)
+                {
+                    if(network_object.Value.IsSpawned == false)
+                    {
+                        all_spawned = false;
+                        break;
+                    }
+                }
+                if(all_spawned)
+                {
+                    break;
+                }
+            }
+
+            yield return new WaitForSeconds(0.1f);
+
+            if (Time.time - start_time > time_out)
+            {
+                result = false;
+                break;
+            }
+        }
+
+        string msg = result ? "Game initialization completed." : "Game initialization times out.";
+
+        Debug.Log($"[{this.GetType()}] {msg}");
+
+        action?.Invoke(result, msg);
+    }
+
+    void StartGameByPlayerRole(PlayerRole player_role)
+    {
+        playerRole = player_role;
+
+        //PlayerManager.SetRole();
+
+        OnStartGame?.Invoke(player_role);
+
+
+        //if (player_role == PlayerRole.Server)
+        //{
+        //    middlewareManager.TurnOn();            
+
+        //    Effect.RegisterSenderAndReceiver();
+
+        //    if(isSoloMode)
+        //    {
+        //        CameraMovement.StartCinemachineMode();
+
+        //        TestScenarioManager.TurnOn();
+        //    }
+        //}
+
+        //if(player_role == PlayerRole.Commander)
+        //{
+        //    commander.TurnOn();
+        //}
+
+        
+
+    }
+
+    public void RestartGame(System.Action action)
+    {
         ConnectionManager.ShutDown();
 
         isPlaying = false;
 
-        if (RoleManager.Role == RoleManager.PlayerRole.Server)
+        if (RoleManager.Role == PlayerRole.Server)
         {
             ControlPanel.ClearAllPropertyInControlPanel();
             MiddlewareManager.TurnOff();
-        }            
-        else if (RoleManager.Role == RoleManager.PlayerRole.Commander)
+        }
+        else if (RoleManager.Role == PlayerRole.Commander)
         {
             Commander.DeinitializeCommander();
         }
-            
 
-        RoleManager.ResetPlayerRole();
 
-        UIController.GoBackToHomePage();        
+        //RoleManager.ResetPlayerRole();
+
+        UIController.GoBackToHomePage();
     }
+
+    void ResetGame()
+    {
+
+    }
+    #endregion
+
+    #region UI Related Functions
+
+
+
 
     public void DisplayMessageOnUI(string msg)
     {
@@ -397,12 +429,6 @@ public class GameManager : MonoBehaviour
             Debug.LogError("No AudioProcessor Found.");
         }
 
-        serverIPSynchronizer = FindObjectOfType<ServerIPSynchronizer>();
-        if (serverIPSynchronizer == null)
-        {
-            Debug.LogError("No ServerIPSynchronizer Found.");
-        }
-
         connectionManager = FindObjectOfType<NetcodeConnectionManager>();
         if (connectionManager == null)
         {
@@ -421,7 +447,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("No MiddlewareManager Found.");
         }
 
-        roleManager = FindObjectOfType<RoleManager>();
+        roleManager = FindObjectOfType<PlayerManager>();
         if (roleManager == null)
         {
             Debug.LogError("No RoleManager Found.");
@@ -471,7 +497,7 @@ public class GameManager : MonoBehaviour
         {
             if (_Instance == null)
             {
-                _Instance = GameObject.FindObjectOfType<GameManager>();
+                _Instance = GameObject.FindFirstObjectByType<GameManager>();
                 if (_Instance == null)
                 {
                     GameObject go = new GameObject();

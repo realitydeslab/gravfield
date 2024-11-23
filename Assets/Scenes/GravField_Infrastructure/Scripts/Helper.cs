@@ -95,8 +95,8 @@ public class Helper : MonoBehaviour
         {
             SetInfo("PerformerCount", GameManager.Instance.RoleManager.PerformerCount.ToString());
             SetInfo("AudienceCount", GameManager.Instance.RoleManager.AudienceCount.ToString());
-            SetInfo("Coda", SenderForCoda.Instance.ConnectedWithCoda ? "Yes" : "No");
-            SetInfo("Live", SenderForLive.Instance.ConnectedWithLive ? "Yes" : "No");
+            //SetInfo("Coda", SenderForCoda.Instance.ConnectedWithCoda ? "Yes" : "No");
+            //SetInfo("Live", SenderForLive.Instance.ConnectedWithLive ? "Yes" : "No");
         }
     }
 

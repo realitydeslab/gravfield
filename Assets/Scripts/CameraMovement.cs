@@ -17,19 +17,17 @@ public class CameraMovement : MonoBehaviour
     //List<float> srcWeight = new List<float>();
     List<float> dstWeight = new List<float>();
 
-    RoleManager roleManager;
 
-    private void Awake()
-    {
-        roleManager = FindObjectOfType<RoleManager>();
-    }
     void OnEnable()
     {
-        roleManager?.OnSpecifyPlayerRoleEvent.AddListener(OnSpecifyPlayerRole);
+        GameManager.Instance.OnStartGame.AddListener(OnStartGame);
+        GameManager.Instance.OnStopGame.AddListener(OnStopGame);
     }
+
     void OnDisable()
     {
-        roleManager?.OnSpecifyPlayerRoleEvent.RemoveListener(OnSpecifyPlayerRole);
+        GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
+        GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
     }
 
     void Start()
@@ -94,7 +92,7 @@ public class CameraMovement : MonoBehaviour
         Debug.Log("Focus Camera to " + (index == 0 ? "Group" : (index < 4 ? "Performer" + (index-1).ToString() : "Performer-FPV" + (index-4).ToString())));
     }
 
-    public void StartCinemachineMode()
+    void StartCinemachineMode()
     {
         holokitCameraManager.enabled = false;
         cinemachineCameraManager.enabled = true;
@@ -107,7 +105,7 @@ public class CameraMovement : MonoBehaviour
         initialized = true;
     }
 
-    public void StopCinemachineMode()
+    void StopCinemachineMode()
     {
         holokitCameraManager.enabled = true;
         cinemachineCameraManager.enabled = false;
@@ -118,14 +116,17 @@ public class CameraMovement : MonoBehaviour
         initialized = false;
     }
 
-    void OnSpecifyPlayerRole(RoleManager.PlayerRole role)
+    void OnStartGame(PlayerRole role)
     {
-        if (IsValidEnvironment() && role == RoleManager.PlayerRole.Server)
+        if (IsValidEnvironment() && role == PlayerRole.Server)
         {
             StartCinemachineMode();
-            Debug.Log("Change Camera to Cinemachine Mode");
         }
-        else
+    }
+
+    void OnStopGame(PlayerRole role)
+    {
+        if (IsValidEnvironment() && role == PlayerRole.Server)
         {
             StopCinemachineMode();
         }
@@ -133,6 +134,6 @@ public class CameraMovement : MonoBehaviour
 
     bool IsValidEnvironment()
     {
-        return Application.platform != RuntimePlatform.IPhonePlayer;
+        return (GameManager.Instance.IsSoloMode == true && Application.platform != RuntimePlatform.IPhonePlayer);
     }
 }

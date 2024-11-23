@@ -9,13 +9,14 @@ using TMPro;
 public class SenderForLive : MonoBehaviour
 {
     [SerializeField] OscConnection senderConnection = null;
-    private bool connectedWithLive = false;
-    public bool ConnectedWithLive { get => connectedWithLive; }
 
     [Header("Control Panel")]
     [SerializeField] Transform transformControlPanel;
     [SerializeField] GameObject prefabPropertyItem;
 
+
+    private bool connectedWithLive = false;
+    public bool ConnectedWithLive { get => connectedWithLive; }
 
     List<OscPropertyForSending> propertiesForSending = new List<OscPropertyForSending>();
 
@@ -155,7 +156,7 @@ public class SenderForLive : MonoBehaviour
 
     public void TurnOn()
     {
-        Debug.Log("SenderForLive | TurnOn");
+        Debug.Log($"[{this.GetType()}] TurnOn");
 
         if (senderConnection != null)
             _client = OscMaster.GetSharedClient(senderConnection.host, senderConnection.port);
@@ -176,7 +177,7 @@ public class SenderForLive : MonoBehaviour
 
     public void TurnOff()
     {
-        Debug.Log("SenderForLive | TurnOff");
+        Debug.Log($"[{this.GetType()}] TurnOff");
 
         _client?.Dispose();
         _client = null;

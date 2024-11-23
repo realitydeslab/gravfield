@@ -7,7 +7,7 @@ public class JointMeshEffect : MonoBehaviour
     public Transform ropeTransformRoot;
     public GameObject meshBorder;
 
-    RoleManager roleManager;
+    PlayerManager roleManager;
     public Transform performerTransformRoot;
     List<Performer> performerList = new List<Performer>();
 
@@ -16,7 +16,7 @@ public class JointMeshEffect : MonoBehaviour
 
     void Awake()
     {
-        roleManager = FindObjectOfType<RoleManager>();
+        roleManager = FindObjectOfType<PlayerManager>();
 
 
         for (int i = 0; i < performerTransformRoot.childCount; i++)
