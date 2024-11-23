@@ -47,7 +47,7 @@ public class UIController : MonoBehaviour
     void Awake()
     {
         // UI Elements
-        transButtonStart = FindTransformAndRegister("Button_Start"); 
+        transButtonStart = FindTransformAndRegister("Button_Start");
         transButtonPerformer = FindTransformAndRegister("Button_Performer");
         //transButtonSettings = FindTransformAndRegister("Button_Settings");
         transButtonServer = FindTransformAndRegister("Button_Server");
@@ -89,7 +89,7 @@ public class UIController : MonoBehaviour
     void Start()
     {
         // Bind Basic Listener
-        transButtonStart.GetComponent<Button>().onClick.AddListener(OnClickStart);        
+        transButtonStart.GetComponent<Button>().onClick.AddListener(OnClickStart);
         transButtonPerformer.GetComponent<Button>().onClick.AddListener(OnClickPerformer);
         //transButtonSettings.GetComponent<Button>().onClick.AddListener(OnClickSettings);
         transButtonServer.GetComponent<Button>().onClick.AddListener(OnClickServer);
@@ -101,25 +101,25 @@ public class UIController : MonoBehaviour
         transPanelPassword.Find("Button_Close").GetComponent<Button>().onClick.AddListener(GoBackToHomePage);
         transPanelServerIP.Find("Button_Close").GetComponent<Button>().onClick.AddListener(GoBackToHomePage);
         transPanelCalibration.Find("Button_Close").GetComponent<Button>().onClick.AddListener(GameManager.Instance.StopRelocalization);
-        
+
         transPanelExtraMenu.Find("Button_Calibrate").GetComponent<Button>().onClick.AddListener(GameManager.Instance.StartRelocalization);
         transPanelExtraMenu.Find("Button_Exit").GetComponent<Button>().onClick.AddListener(GameManager.Instance.RestartGame);
         transPanelExtraMenu.Find("Button_Return").GetComponent<Button>().onClick.AddListener(HideExtraMenu);
 
-        transPanelExtraMenu.Find("Button_InfoPanel").gameObject.SetActive(GameManager.Instance.IsInDevelopment);
         transPanelExtraMenu.Find("Button_InfoPanel").GetComponent<Button>().onClick.AddListener(ToggleInfoPanel);
-        
+        transPanelExtraMenu.Find("Button_ControllerPanel").GetComponent<Button>().onClick.AddListener(ToggleControlPanel);
+        transPanelExtraMenu.Find("Button_OscSenderPanel").GetComponent<Button>().onClick.AddListener(ToggleOscSenderPanel);
     }
 
     void Update()
     {
         // Long Pressed
-        if(Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
             longPressedTime += Time.deltaTime;
-            if(longPressedTime >= LongPressedTimeThreshold)
+            if (longPressedTime >= LongPressedTimeThreshold)
             {
-                if(GameManager.Instance.IsPlaying && GameManager.Instance.HolokitCameraManager.ScreenRenderMode == HoloKit.ScreenRenderMode.Mono)
+                if (GameManager.Instance.IsPlaying && GameManager.Instance.HolokitCameraManager.ScreenRenderMode == HoloKit.ScreenRenderMode.Mono)
                 {
                     ShowExtraMenu();
                     longPressedTime = 0;
@@ -171,7 +171,7 @@ public class UIController : MonoBehaviour
     {
         pressedButtonBeforePassword = transButtonCommander;
 
-        if(GameManager.Instance.IsInDevelopment)
+        if (GameManager.Instance.IsInDevelopment)
             inputPassword.text = commanderPassword;
 
         GotoPasswordPage();
@@ -179,9 +179,9 @@ public class UIController : MonoBehaviour
 
     public void OnEnterPassword()
     {
-        if(pressedButtonBeforePassword == transButtonPerformer)
+        if (pressedButtonBeforePassword == transButtonPerformer)
         {
-            if(inputPassword.text == performerPassword)
+            if (inputPassword.text == performerPassword)
             {
                 GameManager.Instance.JoinAsPerformer();
             }
@@ -275,7 +275,7 @@ public class UIController : MonoBehaviour
         };
 
         ShowElementsOnly(element_list);
-        if(delay != 0 && callback != null)
+        if (delay != 0 && callback != null)
         {
             StartCoroutine(WaitToCallFunction(delay, callback));
         }
@@ -326,14 +326,14 @@ public class UIController : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         transPanelWarning.gameObject.SetActive(false);
-    }    
+    }
 
-    void ShowElementsOnly(Transform []dst_elemetns)
+    void ShowElementsOnly(Transform[] dst_elemetns)
     {
-        foreach(Transform element in registeredUIElements.Values)
+        foreach (Transform element in registeredUIElements.Values)
         {
             bool match = false;
-            if(dst_elemetns != null)
+            if (dst_elemetns != null)
             {
                 foreach (Transform dst_element in dst_elemetns)
                 {
@@ -351,6 +351,10 @@ public class UIController : MonoBehaviour
     void ShowExtraMenu()
     {
         transPanelExtraMenu.gameObject.SetActive(true);
+
+        transPanelExtraMenu.Find("Button_InfoPanel").gameObject.SetActive(GameManager.Instance.IsInDevelopment);
+        transPanelExtraMenu.Find("Button_ControllerPanel").gameObject.SetActive(GameManager.Instance.RoleManager.Role == RoleManager.PlayerRole.Server || GameManager.Instance.RoleManager.Role == RoleManager.PlayerRole.Commander);
+        transPanelExtraMenu.Find("Button_OscSenderPanel").gameObject.SetActive(GameManager.Instance.RoleManager.Role == RoleManager.PlayerRole.Server);
     }
 
     void HideExtraMenu()
@@ -361,6 +365,20 @@ public class UIController : MonoBehaviour
     void ToggleInfoPanel()
     {
         Helper.Instance.ToggleInfoPanel();
+
+        HideExtraMenu();
+    }
+
+    void ToggleControlPanel()
+    {
+        ControlPanel.Instance.ToggleDisplayPanel();
+
+        HideExtraMenu();
+    }
+
+    void ToggleOscSenderPanel()
+    {
+        HideExtraMenu();
     }
     #endregion
 

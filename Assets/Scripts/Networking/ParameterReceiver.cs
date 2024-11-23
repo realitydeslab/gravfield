@@ -5,65 +5,67 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class ParameterReceiver : MonoBehaviour
 {
     [SerializeField] OscConnection receiverConnection = null;
 
-    [Header("Control Panel")]
-    //[SerializeField] bool useDisplayPanel = false;
-    [SerializeField] Transform transformDisplayPanel;
-    [SerializeField] GameObject prefabPropertyItem;
-
-    bool displayPanelShown = false;
 
     List<OscPropertyForReceiving> propertiesForReceiving = new List<OscPropertyForReceiving>();
 
+    public List<OscPropertyForReceiving> PropertiesForReceiving { get => propertiesForReceiving; }
+
     Transform transReceiver;
 
-    public void RegisterOscReceiverFunction(string address, UnityAction<float> action)
+    public void RegisterOscReceiverFunction(string address, UnityAction<float> action, bool need_clamp = false, float min_value = 0, float max_value = 1)
     {
-        OscPropertyForReceiving property = new OscPropertyForReceiving(address, action);
+        OscPropertyForReceiving property = new OscPropertyForReceiving(address, action, need_clamp, min_value, max_value);
 
+        RegisterOscReceiverFunction(property);
+    }
+
+    public void RegisterOscReceiverFunction(string address, NetworkVariable<float> param, bool need_clamp = false, float min_value = 0, float max_value = 1)
+    {
+        OscPropertyForReceiving property = new OscPropertyForReceiving(address, new UnityAction<float>((v)=> { param.Value = v; }), need_clamp, min_value, max_value);
+
+        RegisterOscReceiverFunction(property);
+    }
+
+    public void RegisterOscReceiverFunction(OscPropertyForReceiving property)
+    {
         propertiesForReceiving.Add(property);
 
         AddReceiverComponent(property);
 
-        AddProperyInDisplayPanel(property);
+        ControlPanel.Instance.AddProperyInControlPanel_ServerMode(property);
     }
-    public void RegisterOscReceiverFunction(string address, UnityAction<Vector3> action)
-    {
-        OscPropertyForReceiving property = new OscPropertyForReceiving(address, action);
+    //public void RegisterOscReceiverFunction(string address, UnityAction<Vector3> action)
+    //{
+    //    OscPropertyForReceiving property = new OscPropertyForReceiving(address, action);
 
-        propertiesForReceiving.Add(property);
+    //    propertiesForReceiving.Add(property);
 
-        AddReceiverComponent(property);
-    }
-    public void RegisterOscReceiverFunction(string address, UnityAction<int> action)
-    {
-        OscPropertyForReceiving property = new OscPropertyForReceiving(address, action);
+    //    AddReceiverComponent(property);
+    //}
+    //public void RegisterOscReceiverFunction(string address, UnityAction<int> action)
+    //{
+    //    OscPropertyForReceiving property = new OscPropertyForReceiving(address, action);
 
-        propertiesForReceiving.Add(property);
+    //    propertiesForReceiving.Add(property);
 
-        AddReceiverComponent(property);
-    }
-    public void RegisterOscReceiverFunction(string address, UnityAction<string> action)
-    {
-        OscPropertyForReceiving property = new OscPropertyForReceiving(address, action);
+    //    AddReceiverComponent(property);
+    //}
+    //public void RegisterOscReceiverFunction(string address, UnityAction<string> action)
+    //{
+    //    OscPropertyForReceiving property = new OscPropertyForReceiving(address, action);
 
-        propertiesForReceiving.Add(property);
+    //    propertiesForReceiving.Add(property);
 
-        AddReceiverComponent(property);
-    }
+    //    AddReceiverComponent(property);
+    //}
 
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.F6) && NetworkManager.Singleton.IsServer)
-        {
-            if (displayPanelShown) HideDisplayPanel();
-            else ShowDisplayPanel();
-        }
-    }
+    
 
     public void TurnOn()
     {
@@ -168,84 +170,61 @@ public class ParameterReceiver : MonoBehaviour
         {
             receiver._dataType = OscEventReceiverModified.DataType.Float;
             receiver._floatEvent = new OscEventReceiverModified.FloatEvent();
-            receiver._floatEvent.AddListener(property.floatAction);
-            receiver._floatEvent.AddListener((v)=>{
-                OnUpdateDisplay(property.oscAddress, v);
-            });
-            receiver.Initialize();
-        }
-        else if (property.dataType == typeof(Vector3))
-        {
-            receiver._dataType = OscEventReceiverModified.DataType.Vector3;
-            receiver._vector3Event = new OscEventReceiverModified.Vector3Event();
-            receiver._vector3Event.AddListener(property.vector3Action);
-            receiver._vector3Event.AddListener((v) => {
-                OnUpdateDisplay(property.oscAddress, v);
-            });
+            receiver._floatEvent.AddListener((v)=> {
+                if (property.needClamp)
+                    v = Mathf.Clamp(v, property.minValue, property.maxValue);
 
-            receiver.Initialize();
-        }
-        else if (property.dataType == typeof(int))
-        {
-            receiver._dataType = OscEventReceiverModified.DataType.Int;
-            receiver._intEvent = new OscEventReceiverModified.IntEvent();
-            receiver._intEvent.AddListener(property.intAction);
+                property.floatAction?.Invoke(v);
 
+                ControlPanel.Instance.OnUpdateDisplay(property.oscAddress, v);
+            });            
             receiver.Initialize();
         }
-        else if (property.dataType == typeof(string))
-        {
-            receiver._dataType = OscEventReceiverModified.DataType.String;
-            receiver._stringEvent = new OscEventReceiverModified.StringEvent();
-            receiver._stringEvent.AddListener(property.stringAction);
+        //else if (property.dataType == typeof(Vector3))
+        //{
+        //    receiver._dataType = OscEventReceiverModified.DataType.Vector3;
+        //    receiver._vector3Event = new OscEventReceiverModified.Vector3Event();
+        //    receiver._vector3Event.AddListener(property.vector3Action);
+        //    receiver._vector3Event.AddListener((v) => {
+        //        OnUpdateDisplay(property.oscAddress, v);
+        //    });
 
-            receiver.Initialize();
-        }
+        //    receiver.Initialize();
+        //}
+        //else if (property.dataType == typeof(int))
+        //{
+        //    receiver._dataType = OscEventReceiverModified.DataType.Int;
+        //    receiver._intEvent = new OscEventReceiverModified.IntEvent();
+        //    receiver._intEvent.AddListener(property.intAction);
+
+        //    receiver.Initialize();
+        //}
+        //else if (property.dataType == typeof(string))
+        //{
+        //    receiver._dataType = OscEventReceiverModified.DataType.String;
+        //    receiver._stringEvent = new OscEventReceiverModified.StringEvent();
+        //    receiver._stringEvent.AddListener(property.stringAction);
+
+        //    receiver.Initialize();
+        //}
         receiver.enabled = false;
     }
 
-    void AddProperyInDisplayPanel(OscPropertyForReceiving property)
-    {
-        GameObject new_item = Instantiate(prefabPropertyItem, transformDisplayPanel.transform);
-        new_item.name = property.oscAddress.Substring(1);
-        new_item.transform.Find("Label").GetComponent<TextMeshProUGUI>().text = property.oscAddress;
-        new_item.transform.Find("Value").GetComponent<TextMeshProUGUI>().text = "";
-    }
 
-    void OnUpdateDisplay(string address, float v)
-    {
-        if (displayPanelShown == false)
-            return;
+    //void OnUpdateDisplay(string address, Vector3 v)
+    //{
+    //    if (displayPanelShown == false)
+    //        return;
 
-        Transform item = transformDisplayPanel.Find(address.Substring(1));
-        if(item != null)
-        {
-            item.Find("Value").GetComponent<TextMeshProUGUI>().text = v.ToString();
-        }
-    }
+    //    //Transform item = transformDisplayPanel.Find(address.Substring(1));
+    //    Transform item = parameterRoot.Find(address.Substring(1));
+    //    if (item != null)
+    //    {
+    //        item.Find("Value").GetComponent<TextMeshProUGUI>().text = v.ToString();
+    //    }
+    //}
 
-    void OnUpdateDisplay(string address, Vector3 v)
-    {
-        if (displayPanelShown == false)
-            return;
-
-        Transform item = transformDisplayPanel.Find(address.Substring(1));
-        if (item != null)
-        {
-            item.Find("Value").GetComponent<TextMeshProUGUI>().text = v.ToString();
-        }
-    }
-
-    void ShowDisplayPanel()
-    {
-        transformDisplayPanel.gameObject.SetActive(true);
-        displayPanelShown = true;
-    }
-    void HideDisplayPanel()
-    {
-        transformDisplayPanel.gameObject.SetActive(false);
-        displayPanelShown = false;
-    }
+    
 
     //[ContextMenu("SetReceiverConnection")]
     //public void SetReceiverConnection()

@@ -59,8 +59,7 @@ public class MiddlewareManager : MonoBehaviour
 
     void OnSpecifyPlayerRole(RoleManager.PlayerRole role)
     {        
-        // A phone server can not send data to coda or live
-        if (role == RoleManager.PlayerRole.Server && Application.platform != RuntimePlatform.IPhonePlayer)
+        if (role == RoleManager.PlayerRole.Server)// && Application.platform != RuntimePlatform.IPhonePlayer)
         {
             dataProcessor.TurnOn();
 
@@ -85,6 +84,20 @@ public class MiddlewareManager : MonoBehaviour
         }
         else
         {
+            parameterReceiver.TurnOff();
+        }
+    }
+
+    public void TurnOff()
+    {
+        if(roleManager.Role == RoleManager.PlayerRole.Server && Application.platform != RuntimePlatform.IPhonePlayer)
+        {
+            dataProcessor.TurnOff();
+
+            senderForCoda.TurnOff();
+
+            senderForLive.TurnOff();
+
             parameterReceiver.TurnOff();
         }
     }

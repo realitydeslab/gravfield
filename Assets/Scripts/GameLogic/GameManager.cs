@@ -36,11 +36,20 @@ public class GameManager : MonoBehaviour
     private ImageTrackingStablizer relocalizationStablizer;
     public ImageTrackingStablizer RelocalizationStablizer { get => relocalizationStablizer; }
 
+    private MiddlewareManager middlewareManager;
+    public MiddlewareManager MiddlewareManager { get => middlewareManager; }
+
     private RoleManager roleManager;
     public RoleManager RoleManager { get => roleManager; }
 
+    private Commander commander;
+    public Commander Commander { get => commander; }
+
     private UIController uiController;
     public UIController UIController { get => uiController; }
+
+    private ControlPanel controlPanel;
+    public ControlPanel ControlPanel { get => controlPanel; }
 
     private PerformerGroup performerGroup;
     public PerformerGroup PerformerGroup { get => performerGroup; }
@@ -75,7 +84,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Specify Role When Testing
-        StartCoroutine(CheckIfNeedJoinAsServer());
+        //StartCoroutine(CheckIfNeedJoinAsServer());
     }
 
     IEnumerator CheckIfNeedJoinAsServer()
@@ -232,11 +241,15 @@ public class GameManager : MonoBehaviour
 
     void OnReceiveResult_JoinAsCommander(bool result, string msg)
     {
+
+        Debug.Log($"Result:{result}");
         if (result == true)
         {
             RoleManager.JoinAsCommander();
 
-            UIController.GotoWaitingPage("Connected.");
+            Commander.InitializeCommander();
+
+            UIController.GotoWaitingPage("Succeed.");
 
             isPlaying = true;
 
@@ -326,9 +339,20 @@ public class GameManager : MonoBehaviour
 
         isPlaying = false;
 
+        if (RoleManager.Role == RoleManager.PlayerRole.Server)
+        {
+            ControlPanel.ClearAllPropertyInControlPanel();
+            MiddlewareManager.TurnOff();
+        }            
+        else if (RoleManager.Role == RoleManager.PlayerRole.Commander)
+        {
+            Commander.DeinitializeCommander();
+        }
+            
+
         RoleManager.ResetPlayerRole();
 
-        UIController.GoBackToHomePage();
+        UIController.GoBackToHomePage();        
     }
 
     public void DisplayMessageOnUI(string msg)
@@ -391,16 +415,34 @@ public class GameManager : MonoBehaviour
             Debug.LogError("No ImageTrackingStablizer Found.");
         }
 
+        middlewareManager = FindObjectOfType<MiddlewareManager>();
+        if (middlewareManager == null)
+        {
+            Debug.LogError("No MiddlewareManager Found.");
+        }
+
         roleManager = FindObjectOfType<RoleManager>();
         if (roleManager == null)
         {
             Debug.LogError("No RoleManager Found.");
         }
 
+        commander = FindObjectOfType<Commander>();
+        if (commander == null)
+        {
+            Debug.LogError("No Commander Found.");
+        }
+
         uiController = FindObjectOfType<UIController>();
         if (uiController == null)
         {
             Debug.LogError("No UIController Found.");
+        }
+
+        controlPanel = FindObjectOfType<ControlPanel>();
+        if (controlPanel == null)
+        {
+            Debug.LogError("No ControlPanel Found.");
         }
 
         performerGroup = FindObjectOfType<PerformerGroup>();

@@ -110,7 +110,7 @@ public class PerformerGroup : NetworkBehaviour
 
         ParameterReceiver.Instance.RegisterOscReceiverFunction("/mode", new UnityAction<float>(OnReceive_Mode));
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/magrandom", new UnityAction<Vector3>((v) => { OnChangePerformMagnetic(); }));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction("/magrandom", new UnityAction<Vector3>((v) => { OnChangePerformMagnetic(); }));
     }
 
     void OnReceive_Mode(float v)

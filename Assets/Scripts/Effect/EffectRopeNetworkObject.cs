@@ -4,14 +4,9 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.Events;
 
-public class EffectParameter<T>
-{
-    public string address;
-    public T value;
-    public NetworkVariable<T> networkValue;
-}
 
-public class EffectRopeNetworkObject : EffectBaseNetworkObject
+
+public class EffectRopeNetworkObject : NetworkBehaviour
 {
     public NetworkVariable<float> mass = new NetworkVariable<float>(42.8f);
     public NetworkVariable<float> maxWidth = new NetworkVariable<float>(40);
@@ -31,21 +26,19 @@ public class EffectRopeNetworkObject : EffectBaseNetworkObject
     {
         if (IsServer)
         {
-            BindOscAddress();
-
             RegisterOscReceiverFunction();
         }
     }
 
-    protected override void BindOscAddress()
+    void RegisterOscReceiverFunction()
     {
         if (!IsServer) return;
 
-        parameterList.Add("/rope-mass", mass);
-        parameterList.Add("/rope-maxWidth", maxWidth);
-        parameterList.Add("/rope-scaler", ropeScaler);
-        parameterList.Add("/rope-offset-y", ropeOffsetY);
-        parameterList.Add("/rope-offset-z", ropeOffsetZ);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/rope-mass", mass, need_clamp: true, min_value: 10, max_value: 80);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/rope-maxWidth", maxWidth, need_clamp: true, min_value: 1, max_value: 100);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/rope-scaler", ropeScaler, need_clamp: true, min_value: 1, max_value: 20);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/rope-offset-y", ropeOffsetY);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/rope-offset-z", ropeOffsetZ);
     }
 
     

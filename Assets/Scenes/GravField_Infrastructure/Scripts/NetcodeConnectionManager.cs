@@ -166,8 +166,8 @@ public class NetcodeConnectionManager : MonoBehaviour
 
     public void StartClient(Action<bool, string> callback)
     {
-        if(serverIPSynchronizer.IsServerIpValid)
-        {
+        //if(serverIPSynchronizer.IsServerIpValid)
+        //{
             OnBeforeClientStarted();
 
             bool result = NetworkManager.Singleton.StartClient();
@@ -181,12 +181,12 @@ public class NetcodeConnectionManager : MonoBehaviour
                 string msg = "Failed to start client.";
                 callback?.Invoke(false, msg);
             }
-        }
-        else
-        {
-            string msg = "Didn't find server in network.";
-            callback?.Invoke(false, msg);
-        }
+        //}
+        //else
+        //{
+        //    string msg = "Didn't find server in network.";
+        //    callback?.Invoke(false, msg);
+        //}
     }
 
     public void StartServer(Action<bool, string> callback)

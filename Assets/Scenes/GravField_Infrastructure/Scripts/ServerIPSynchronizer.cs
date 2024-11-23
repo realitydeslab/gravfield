@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 public class ServerIPSynchronizer : MonoBehaviour
 {
-    private string serverIp = "";
+    private string serverIp = "192.168.0.135";
     public string ServerIP
     {
         get => serverIp;

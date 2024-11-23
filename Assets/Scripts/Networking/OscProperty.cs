@@ -79,6 +79,16 @@ public class OscPropertyForReceiving
         dataType = typeof(float);
     }
 
+    public OscPropertyForReceiving(string _address, UnityAction<float> _action, bool need_clamp, float min_value, float max_value) : this(_address)
+    {
+        floatAction = _action;
+        dataType = typeof(float);
+
+        needClamp = need_clamp;
+        minValue = min_value;
+        maxValue = max_value;
+    }
+
     public OscPropertyForReceiving(string _address, UnityAction<Vector3> _action) : this(_address)
     {
         vector3Action = _action;
@@ -101,4 +111,9 @@ public class OscPropertyForReceiving
     public UnityAction<Vector3> vector3Action;
     public UnityAction<int> intAction;
     public UnityAction<string> stringAction;
+
+    public float minValue;
+    public float maxValue;
+    public bool needClamp = false;
+
 }
