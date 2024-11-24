@@ -72,7 +72,7 @@ public class MiddlewareManager : MonoBehaviour
     {
         if (role == PlayerRole.Server)// && Application.platform != RuntimePlatform.IPhonePlayer)
         {
-            dataProcessor.TurnOn();
+            //dataProcessor.TurnOn();
 
             senderForCoda.TurnOn();
 
@@ -86,7 +86,7 @@ public class MiddlewareManager : MonoBehaviour
     {
         if (role == PlayerRole.Server)
         {
-            dataProcessor.TurnOff();
+            //dataProcessor.TurnOff();
 
             senderForCoda.TurnOff();
 
@@ -131,7 +131,7 @@ public class MiddlewareManager : MonoBehaviour
 
     public void TurnOn()
     {
-        dataProcessor.TurnOn();
+        //dataProcessor.TurnOn();
 
         senderForCoda.TurnOn();
 
@@ -142,7 +142,7 @@ public class MiddlewareManager : MonoBehaviour
     {
         //if(roleManager.Role == PlayerRole.Server && Application.platform != RuntimePlatform.IPhonePlayer)
         //{
-            dataProcessor.TurnOff();
+            //dataProcessor.TurnOff();
 
             senderForCoda.TurnOff();
 

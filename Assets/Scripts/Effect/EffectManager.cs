@@ -69,7 +69,7 @@ public class EffectManager : NetworkBehaviour
     void OnStartGame(PlayerRole player_role)
     {
         // Register NetworkVariable functions
-        RegisterNetworkVariableCallback_Client();
+        RegisterNetworkVariableCallback();
 
         // Start
         ChangeEffectModeTo(effectMode.Value);
@@ -78,19 +78,19 @@ public class EffectManager : NetworkBehaviour
     void OnStopGame(PlayerRole player_role)
     {
         // Unregister NetworkVariable functions
-        UnregisterNetworkVariableCallback_Client();
+        UnregisterNetworkVariableCallback();
     }
     #endregion
 
     #region NetworkVariable 
-    void RegisterNetworkVariableCallback_Client()
+    void RegisterNetworkVariableCallback()
     {
         effectMode.OnValueChanged += OnEffectModeChange;
 
         holoKitCameraManager.OnScreenRenderModeChanged += OnScreenRenderModeChanged;
     }
 
-    void UnregisterNetworkVariableCallback_Client()
+    void UnregisterNetworkVariableCallback()
     {
         effectMode.OnValueChanged -= OnEffectModeChange;
 

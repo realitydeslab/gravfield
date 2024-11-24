@@ -3,6 +3,11 @@ using UnityEngine.Events;
 
 public class EffectManager_Dispatcher : BaseDispatcher
 {
+    //*******************
+    // BaseDispatcher has been made only for server
+    //*******************
+
+
     // receiver
     [SerializeField]
     EffectManager effectManager;

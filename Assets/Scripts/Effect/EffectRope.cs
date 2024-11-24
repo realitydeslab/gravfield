@@ -82,7 +82,7 @@ public class EffectRope : MonoBehaviour
 
     void Update()
     {
-        if (isInitialized == false && GameManager.Instance.PerformerGroup.PerformerFinishSpawn == true && ropeParameter.IsSpawned == true)
+        if (isInitialized == false) // && GameManager.Instance.PerformerGroup.PerformerFinishSpawn == true && ropeParameter.IsSpawned == true)
         {
             OnPerformerFinishSpawn();
             isInitialized = true;

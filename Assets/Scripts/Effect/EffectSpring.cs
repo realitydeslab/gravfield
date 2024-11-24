@@ -151,7 +151,7 @@ public class EffectSpring : MonoBehaviour
 
     void Update()
     {
-        if (isInitialized == false && GameManager.Instance.PerformerGroup.PerformerFinishSpawn == true)
+        if (isInitialized == false)// && GameManager.Instance.PerformerGroup.PerformerFinishSpawn == true)
         {
             OnPerformerFinishSpawn();
             isInitialized = true;

@@ -65,6 +65,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -102,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 62431084
+  GlobalObjectIdHash: 2846700473
   InScenePlacedSourceGlobalObjectIdHash: 3408312161
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -158,28 +161,12 @@ MonoBehaviour:
     m_InternalValue: 0
   isPerforming:
     m_InternalValue: 0
-  remoteThickness:
-    m_InternalValue: 1
-  remoteMass:
-    m_InternalValue: 42.8
-  effectRope_mass:
-    m_InternalValue: 0
-  effectRope_thickness:
-    m_InternalValue: 0
-  magnetic:
-    m_InternalValue: 0
-  ropeMass:
-    m_InternalValue: 42.8
-  ropeMaxWidth:
-    m_InternalValue: 40
-  ropeScaler:
-    m_InternalValue: 3
-  ropeOffsetY:
-    m_InternalValue: -0.2
   springFreq:
     m_InternalValue: 30
   springWidth:
     m_InternalValue: 20
+  magnetic:
+    m_InternalValue: 0
   OnStartPerforming:
     m_PersistentCalls:
       m_Calls: []
@@ -214,7 +201,7 @@ MonoBehaviour:
   m_HoloKitMarkPrefab: {fileID: 2280931343860109315, guid: 46cda46aeea43471aaf495ebf2093d82, type: 3}
 --- !u!95 &4768856609242587979
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -228,6 +215,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -299,6 +287,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -336,7 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4008036483
+  GlobalObjectIdHash: 2846700473
   InScenePlacedSourceGlobalObjectIdHash: 3408312161
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -392,28 +383,12 @@ MonoBehaviour:
     m_InternalValue: 1
   isPerforming:
     m_InternalValue: 0
-  remoteThickness:
-    m_InternalValue: 1
-  remoteMass:
-    m_InternalValue: 42.8
-  effectRope_mass:
-    m_InternalValue: 0
-  effectRope_thickness:
-    m_InternalValue: 0
-  magnetic:
-    m_InternalValue: 1
-  ropeMass:
-    m_InternalValue: 42.8
-  ropeMaxWidth:
-    m_InternalValue: 40
-  ropeScaler:
-    m_InternalValue: 3
-  ropeOffsetY:
-    m_InternalValue: -0.2
   springFreq:
     m_InternalValue: 30
   springWidth:
     m_InternalValue: 20
+  magnetic:
+    m_InternalValue: 1
   OnStartPerforming:
     m_PersistentCalls:
       m_Calls: []
@@ -460,7 +435,7 @@ MonoBehaviour:
   m_HoloKitMarkPrefab: {fileID: 2280931343860109315, guid: 46cda46aeea43471aaf495ebf2093d82, type: 3}
 --- !u!95 &9185380575440812507
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -474,6 +449,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -543,6 +519,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -580,7 +559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3074982968
+  GlobalObjectIdHash: 2846700473
   InScenePlacedSourceGlobalObjectIdHash: 3408312161
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -636,28 +615,12 @@ MonoBehaviour:
     m_InternalValue: 2
   isPerforming:
     m_InternalValue: 0
-  remoteThickness:
-    m_InternalValue: 1
-  remoteMass:
-    m_InternalValue: 42.8
-  effectRope_mass:
-    m_InternalValue: 0
-  effectRope_thickness:
-    m_InternalValue: 0
-  magnetic:
-    m_InternalValue: 0
-  ropeMass:
-    m_InternalValue: 42.8
-  ropeMaxWidth:
-    m_InternalValue: 40
-  ropeScaler:
-    m_InternalValue: 3
-  ropeOffsetY:
-    m_InternalValue: -0.2
   springFreq:
     m_InternalValue: 30
   springWidth:
     m_InternalValue: 20
+  magnetic:
+    m_InternalValue: 0
   OnStartPerforming:
     m_PersistentCalls:
       m_Calls: []
@@ -749,6 +712,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -854,6 +820,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -911,7 +880,6 @@ GameObject:
   - component: {fileID: 2386362520638764014}
   - component: {fileID: 5841723620387128820}
   - component: {fileID: 6790830247122997414}
-  - component: {fileID: 2025799917615018390}
   m_Layer: 0
   m_Name: Performers
   m_TagString: Untagged
@@ -949,7 +917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 16521271
+  GlobalObjectIdHash: 2846700473
   InScenePlacedSourceGlobalObjectIdHash: 3408312161
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 0
@@ -970,30 +938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b05ee110d29c4a6b98c45001b41d149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2025799917615018390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7375516848168713379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81ee627b228d04506864cbb49ca00ac4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meshy:
-    m_InternalValue: 0
-  meshnoise:
-    m_InternalValue: 0
-  meshsize:
-    m_InternalValue: 0
-  effectMode:
-    m_InternalValue: 0
-  ropeTransformRoot: {fileID: 0}
-  OnPerformerFinishSpawn:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &8170742325841811808
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,6 +997,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

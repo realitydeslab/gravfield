@@ -64,7 +64,6 @@ public class Performer : NetworkBehaviour
 
         if(IsServer)
         {
-            InitialLocalParameter();
 
             RegisterOscReceiverFunction();
         }
@@ -84,6 +83,8 @@ public class Performer : NetworkBehaviour
         if (IsSpawned == false)
             return;
 
+        // Use this way to find out when Performer is ready to perform on each client
+        // Then, can use OnStartPerforming to trigger effects
         // Just Start Performing
         if (isPerforming.Value == true && localData.isPerforming == false)
         {
@@ -111,28 +112,13 @@ public class Performer : NetworkBehaviour
         localData.velocity = new_vel;
         localData.position = new_pos;
         localData.positive = magnetic.Value > 0.5 ? true : false;
-
-        // 
-        UpdateRemoteParameterWithLocal();
     }
 
 
     #region Paramters received from Coda / Example to use local/remote parameter pair
-    void InitialLocalParameter()
-    {
-        if (!IsServer) return;
 
-        //localThickness.OrginalValue = remoteThickness.Value;
-        //localMass.OrginalValue = remoteMass.Value;
-    }
 
-    void UpdateRemoteParameterWithLocal()
-    {
-        if (!IsServer) return;
 
-        //remoteMass.Value = localMass.Value;
-        //remoteThickness.Value = localThickness.Value;
-    }
 
     void RegisterOscReceiverFunction()
     {
