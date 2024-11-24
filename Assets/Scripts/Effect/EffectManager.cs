@@ -9,22 +9,26 @@ using UnityEngine.Rendering.Universal;
 
 public class EffectManager : NetworkBehaviour
 {
-    public Volume volume;
-    Bloom bloom;
-
-    public EffectRopeController effectRope;
-
-    public EffectSpringController effectSpring;
-
-    public EffectMagneticField effectMagneticField;
-
-    //float effectMode = 0;
-
-    HoloKitCameraManager holoKitCameraManager;
-
-    // Mode
+    // Network Variables
     public NetworkVariable<float> effectMode;
 
+
+    // Effects
+    [Header("Effects")]
+    [SerializeField]
+    EffectRopeController effectRope;
+
+    [SerializeField]
+    EffectSpringController effectSpring;
+
+    [SerializeField]
+    EffectMagneticField effectMagneticField;
+
+    [SerializeField]
+    Volume volume;
+    Bloom bloom;
+    
+    HoloKitCameraManager holoKitCameraManager;
 
     void Awake()
     {
@@ -33,54 +37,83 @@ public class EffectManager : NetworkBehaviour
         {
             Debug.LogError($"[{this.GetType()}] Can't find HoloKitCameraManager.");
         }
-
     }
 
     void OnEnable()
     {
         GameManager.Instance.OnStartGame.AddListener(OnStartGame);
         GameManager.Instance.OnStopGame.AddListener(OnStopGame);
-
-        //GameManager.Instance.RoleManager.OnSpecifyPlayerRoleEvent.AddListener(OnSpecifyPlayerRole);
-
-        //GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
-
-        holoKitCameraManager.OnScreenRenderModeChanged += OnScreenRenderModeChanged;
     }
 
     void OnDisable()
     {
         GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
         GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
-
-        holoKitCameraManager.OnScreenRenderModeChanged -= OnScreenRenderModeChanged;
-
-        //GameManager.Instance.RoleManager.OnSpecifyPlayerRoleEvent.RemoveListener(OnSpecifyPlayerRole);
     }
 
-    void OnStartGame(PlayerRole player_role)
-    {  
-        //AssignLocalVariable();
+    void Update()
+    {
+        if (IsServer)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+                {
+                    effectMode.Value = i;
+                }
+            }
+        }
+    }
 
+    #region Start / Stop game 
+    void OnStartGame(PlayerRole player_role)
+    {
+        // Register NetworkVariable functions
         RegisterNetworkVariableCallback_Client();
 
-        //ChangeEffectModeTo(GameManager.Instance.PerformerGroup.effectMode.Value);
+        // Start
         ChangeEffectModeTo(effectMode.Value);
     }
 
     void OnStopGame(PlayerRole player_role)
     {
-        //ResetLocalVariable();
-
+        // Unregister NetworkVariable functions
         UnregisterNetworkVariableCallback_Client();
     }
+    #endregion
 
-    //void Start()
-    //{
+    #region NetworkVariable 
+    void RegisterNetworkVariableCallback_Client()
+    {
+        effectMode.OnValueChanged += OnEffectModeChange;
+
+        holoKitCameraManager.OnScreenRenderModeChanged += OnScreenRenderModeChanged;
+    }
+
+    void UnregisterNetworkVariableCallback_Client()
+    {
+        effectMode.OnValueChanged -= OnEffectModeChange;
+
+        holoKitCameraManager.OnScreenRenderModeChanged -= OnScreenRenderModeChanged;
+    }
+    void OnEffectModeChange(float prev, float cur)
+    {
+        ChangeEffectModeTo(cur);
+    }
+    #endregion
 
 
-    //    OnScreenRenderModeChanged(GameManager.Instance.HolokitCameraManager.ScreenRenderMode);
-    //}
+    void ChangeEffectModeTo(float effect_index)
+    {
+        Debug.Log("ChangeEffectModeTo: " + effect_index);
+        int effect_mode = Mathf.RoundToInt(effect_index);
+
+        effectRope.SetEffectState(effect_mode == 0);
+
+        effectSpring.SetEffectState(effect_mode == 1);
+
+        effectMagneticField.SetEffectState(effect_mode == 2);
+    }
 
     void OnScreenRenderModeChanged(HoloKit.ScreenRenderMode mode)
     {
@@ -102,60 +135,4 @@ public class EffectManager : NetworkBehaviour
         }
 #endif
     }
-
-
-
-    //void OnSpecifyPlayerRole(PlayerRole role)
-    //{
-    //    ChangeEffectModeTo(GameManager.Instance.PerformerGroup.effectMode.Value);
-    //}
-
-    //void OnPerformerFinishSpawn()
-    //{
-    //    AssignLocalVariable();
-
-    //    RegisterNetworkVariableCallback_Client();
-    //}
-
-    #region NetworkVariable / Clients also should execute
-    //void AssignLocalVariable()
-    //{
-    //    effectMode = GameManager.Instance.PerformerGroup.effectMode.Value;
-    //}
-
-    //void ResetLocalVariable()
-    //{
-    //    effectMode = 0;
-    //}
-
-    void RegisterNetworkVariableCallback_Client()
-    {
-        //GameManager.Instance.PerformerGroup.effectMode.OnValueChanged += OnEffectModeChange;
-        effectMode.OnValueChanged += OnEffectModeChange;
-    }
-
-    void UnregisterNetworkVariableCallback_Client()
-    {
-        //GameManager.Instance.PerformerGroup.effectMode.OnValueChanged -= OnEffectModeChange;
-        effectMode.OnValueChanged -= OnEffectModeChange;
-    }
-
-    void OnEffectModeChange(float prev, float cur)
-    {
-        ChangeEffectModeTo(cur);
-    }
-
-    void ChangeEffectModeTo(float effect_index)
-    {
-        Debug.Log("ChangeEffectModeTo: " + effect_index);
-        int effect_mode = Mathf.RoundToInt(effect_index);
-
-        effectRope.SetEffectState(effect_mode == 0);
-
-        effectSpring.SetEffectState(effect_mode == 1);
-
-        effectMagneticField.SetEffectState(effect_mode == 2);
-    }
-    #endregion
-
 }

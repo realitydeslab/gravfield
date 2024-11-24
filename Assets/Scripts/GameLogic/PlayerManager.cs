@@ -41,6 +41,7 @@ public class PlayerManager : NetworkBehaviour
 
     private PerformerSynchronizer performerSynchronizer;
     private List<Performer> performerList = new List<Performer>();
+    public List<Performer> PerformerList { get => performerList; }
 
     /// <summary>
     /// https://docs-multiplayer.unity3d.com/netcode/current/basics/networkvariable/
@@ -272,13 +273,6 @@ public class PlayerManager : NetworkBehaviour
     }
     #endregion
 
-    //void Update()
-    //{
-    //    if (IsSpawned == false || IsServer == false)
-    //        return;
-
-    //}
-
 
     #region Private Functions
     void RefreshPlayerCount(ulong just_deleted_id = ulong.MaxValue)
@@ -325,10 +319,6 @@ public class PlayerManager : NetworkBehaviour
     void SetPlayerRole(PlayerRole role)
     {
         playerRole = role;
-
-        //Debug.Log("Send Event OnSpecifyPlayerRole: " + role.ToString());
-
-        //OnSpecifyPlayerRoleEvent?.Invoke(role);
     }
 
 

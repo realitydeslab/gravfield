@@ -8,11 +8,11 @@ using Xiaobo.Parameter;
 
 public class PerformerGroup : NetworkBehaviour
 {
-    public NetworkVariable<float> meshy;
+    //public NetworkVariable<float> meshy;
 
-    public NetworkVariable<float> meshnoise;
+    //public NetworkVariable<float> meshnoise;
 
-    public NetworkVariable<float> meshsize;
+    //public NetworkVariable<float> meshsize;
 
 
     // Mode
@@ -90,16 +90,7 @@ public class PerformerGroup : NetworkBehaviour
             mode2.OrginalValue = effectMode.Value == 2 ? 1 : 0;
         }
 
-        if(IsServer)
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha1 + i))
-                {
-                    OnReceive_Mode(i);
-                }
-            }
-        }
+        
     }
 
 

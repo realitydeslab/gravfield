@@ -60,11 +60,7 @@ public class GameManager : MonoBehaviour
     private ControlPanel controlPanel;
     public ControlPanel ControlPanel { get => controlPanel; }
 
-    private PerformerGroup performerGroup;
-    public PerformerGroup PerformerGroup { get => performerGroup; }
-
-    private List<Performer> performerList;
-    public List<Performer> PerformerList { get => performerList; }
+    public List<Performer> PerformerList { get => roleManager.PerformerList; }
 
     private PlayerRole playerRole;
     public PlayerRole PlayerRole { get => playerRole; }
@@ -471,21 +467,8 @@ public class GameManager : MonoBehaviour
             Debug.LogError("No ControlPanel Found.");
         }
 
-        performerGroup = FindObjectOfType<PerformerGroup>();
-        if (uiController == null)
-        {
-            Debug.LogError("No PerformerGroup Found.");
-        }
 
-        if(performerGroup!= null)
-        {
-            Transform performer_root = performerGroup.transform;
-            performerList = new List<Performer>();
-            for(int i=0; i< performer_root.childCount; i++)
-            {
-                performerList.Add(performer_root.GetChild(i).GetComponent<Performer>());
-            }
-        }
+        
     }
 
     #region Instance
