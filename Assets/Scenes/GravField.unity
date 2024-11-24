@@ -2990,7 +2990,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 2975138149678949925}
-  ropeParameter: {fileID: 0}
+  ropeMass: 42.8
+  cornerThickness: 2
+  centerThickness: 40
+  offsetMultiplier: 3
+  ropeOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &86498463
 GameObject:
   m_ObjectHideFlags: 0
@@ -3726,6 +3730,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0990164aa7e4b52a760f88ab3a3bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mass:
+    m_InternalValue: 42.8
+  maxWidth:
+    m_InternalValue: 40
+  ropeScaler:
+    m_InternalValue: 5
+  ropeOffsetY:
+    m_InternalValue: -0.3
+  ropeOffsetZ:
+    m_InternalValue: 0.3
   performerTransformRoot: {fileID: 8404228704562627179}
 --- !u!114 &115862329
 MonoBehaviour:
@@ -3766,19 +3780,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 115862326}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4678ccab09514efab4856f20178d40a, type: 3}
+  m_Script: {fileID: 11500000, guid: c99f469b36a0e47e6b1a958ced395d81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass:
-    m_InternalValue: 42.8
-  maxWidth:
-    m_InternalValue: 40
-  ropeScaler:
-    m_InternalValue: 5
-  ropeOffsetY:
-    m_InternalValue: -0.3
-  ropeOffsetZ:
-    m_InternalValue: 0.3
+  effectRope: {fileID: 0}
 --- !u!1 &116770814
 GameObject:
   m_ObjectHideFlags: 0
@@ -4353,7 +4358,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 4836987816853913778}
   performerEnd: {fileID: 2975138149678949925}
-  ropeParameter: {fileID: 0}
+  ropeMass: 42.8
+  cornerThickness: 2
+  centerThickness: 40
+  offsetMultiplier: 3
+  ropeOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &130364748
 GameObject:
   m_ObjectHideFlags: 0
@@ -10524,7 +10533,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 4836987816853913778}
-  ropeParameter: {fileID: 0}
+  ropeMass: 42.8
+  cornerThickness: 2
+  centerThickness: 40
+  offsetMultiplier: 3
+  ropeOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &389304596
 GameObject:
   m_ObjectHideFlags: 0
@@ -23477,7 +23490,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 4836987816853913778}
   performerEnd: {fileID: 2975138149678949925}
-  ropeParameter: {fileID: 115862330}
+  ropeMass: 42.8
+  cornerThickness: 2
+  centerThickness: 40
+  offsetMultiplier: 3
+  ropeOffset: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &883717665
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -47717,7 +47734,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 4836987816853913778}
-  ropeParameter: {fileID: 115862330}
+  ropeMass: 42.8
+  cornerThickness: 2
+  centerThickness: 40
+  offsetMultiplier: 3
+  ropeOffset: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &1941620457
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -50392,7 +50413,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 2975138149678949925}
-  ropeParameter: {fileID: 115862330}
+  ropeMass: 42.8
+  cornerThickness: 2
+  centerThickness: 40
+  offsetMultiplier: 3
+  ropeOffset: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &2063145567
 VisualEffect:
   m_ObjectHideFlags: 0

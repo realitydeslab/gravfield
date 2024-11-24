@@ -40,12 +40,12 @@ public class EffectRope : MonoBehaviour
     AutoSwitchedParameter<float> ropeacc = new AutoSwitchedParameter<float>();
 
     // Parameters
-    public EffectRopeNetworkObject ropeParameter;
-    float ropeMass = 42.8f;
-    float cornerThickness = 2;
-    float centerThickness = 40;
-    float offsetMultiplier = 3;
-    Vector3 ropeOffset;
+    //public EffectRopeNetworkObject ropeParameter;
+    public float ropeMass = 42.8f;
+    public float cornerThickness = 2;
+    public float centerThickness = 40;
+    public float offsetMultiplier = 3;
+    public Vector3 ropeOffset;
 
     bool isInitialized = false;
 
@@ -114,17 +114,17 @@ public class EffectRope : MonoBehaviour
 
     void UpdateParameter()
     {
-        ropeMass = ropeParameter.mass.Value;
-        ropeMass = Mathf.Clamp(ropeMass, 10, 80);
+        //ropeMass = ropeParameter.mass.Value;
+        //ropeMass = Mathf.Clamp(ropeMass, 10, 80);
 
-        centerThickness = ropeParameter.maxWidth.Value;
-        centerThickness = Mathf.Clamp(centerThickness, 1, 100);
+        //centerThickness = ropeParameter.maxWidth.Value;
+        //centerThickness = Mathf.Clamp(centerThickness, 1, 100);
 
-        offsetMultiplier = ropeParameter.ropeScaler.Value;
-        offsetMultiplier = Mathf.Clamp(offsetMultiplier, 1, 20);
+        //offsetMultiplier = ropeParameter.ropeScaler.Value;
+        //offsetMultiplier = Mathf.Clamp(offsetMultiplier, 1, 20);
 
-        ropeOffset.y = ropeParameter.ropeOffsetY.Value;
-        ropeOffset.z = ropeParameter.ropeOffsetZ.Value;
+        //ropeOffset.y = ropeParameter.ropeOffsetY.Value;
+        //ropeOffset.z = ropeParameter.ropeOffsetZ.Value;
     }
 
     void UpdateRopeAnchors()

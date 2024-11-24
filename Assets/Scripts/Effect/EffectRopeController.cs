@@ -5,9 +5,18 @@ using UnityEditor;
 using System.Linq;
 using SplineMesh;
 using UnityEngine.Events;
+using Unity.Netcode;
 
 public class EffectRopeController : MonoBehaviour
 {
+    public NetworkVariable<float> mass = new NetworkVariable<float>(42.8f);
+    public NetworkVariable<float> maxWidth = new NetworkVariable<float>(40);
+    public NetworkVariable<float> ropeScaler = new NetworkVariable<float>(5);
+    public NetworkVariable<float> ropeOffsetY = new NetworkVariable<float>(-0.3f);
+    public NetworkVariable<float> ropeOffsetZ = new NetworkVariable<float>(0.3f);
+
+
+
     public Transform performerTransformRoot;
 
     PlayerManager roleManager;
@@ -16,6 +25,8 @@ public class EffectRopeController : MonoBehaviour
     List<bool> ropeStateList = new List<bool>();
     List<EffectRope> ropeList = new List<EffectRope>();
     bool effectEnabled = false;
+
+    bool needUpdateParameter = false;
 
     void Awake()
     {
@@ -44,14 +55,91 @@ public class EffectRopeController : MonoBehaviour
 
     void OnEnable()
     {
+        GameManager.Instance.OnStartGame.AddListener(OnStartGame);
+        GameManager.Instance.OnStopGame.AddListener(OnStopGame);
+
         roleManager.OnStartPerformingEvent.AddListener(OnStartPerforming);
         roleManager.OnStopPerformingEvent.AddListener(OnStopPerforming);
     }
+
     void OnDisable()
     {
+        GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
+        GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
+
         roleManager.OnStartPerformingEvent.RemoveListener(OnStartPerforming);
         roleManager.OnStopPerformingEvent.RemoveListener(OnStopPerforming);
     }
+
+    #region Start / Stop game 
+    void OnStartGame(PlayerRole player_role)
+    {
+        // Register NetworkVariable functions
+        RegisterNetworkVariableCallback();
+    }
+
+    void OnStopGame(PlayerRole player_role)
+    {
+        // Unregister NetworkVariable functions
+        UnregisterNetworkVariableCallback();
+    }
+    #endregion
+
+    #region NetworkVariable 
+    void RegisterNetworkVariableCallback()
+    {
+        mass.OnValueChanged += UpdateParameter_Mass;
+        maxWidth.OnValueChanged += UpdateParameter_MaxWidth;
+        ropeScaler.OnValueChanged += UpdateParameter_Scaler;
+        ropeOffsetY.OnValueChanged += UpdateParameter_OffsetY;
+        ropeOffsetZ.OnValueChanged += UpdateParameter_OffsetZ;
+    }
+
+    void UnregisterNetworkVariableCallback()
+    {
+        mass.OnValueChanged -= UpdateParameter_Mass;
+        maxWidth.OnValueChanged -= UpdateParameter_MaxWidth;
+        ropeScaler.OnValueChanged -= UpdateParameter_Scaler;
+        ropeOffsetY.OnValueChanged -= UpdateParameter_OffsetY;
+        ropeOffsetZ.OnValueChanged -= UpdateParameter_OffsetZ;
+    }
+
+    void UpdateParameter_Mass(float prev, float cur)
+    {
+        foreach(var r in ropeList)
+        {
+            r.ropeMass = cur;
+        }
+    }
+    void UpdateParameter_MaxWidth(float prev, float cur)
+    {
+        foreach (var r in ropeList)
+        {
+            r.centerThickness = cur;
+        }
+    }
+    void UpdateParameter_Scaler(float prev, float cur)
+    {
+        foreach (var r in ropeList)
+        {
+            r.offsetMultiplier = cur;
+        }
+    }
+    void UpdateParameter_OffsetY(float prev, float cur)
+    {
+        foreach (var r in ropeList)
+        {
+            r.ropeOffset.y = cur;
+        }
+    }
+    void UpdateParameter_OffsetZ(float prev, float cur)
+    {
+        foreach (var r in ropeList)
+        {
+            r.ropeOffset.z = mass.Value;
+        }
+    }
+    #endregion
 
     void OnStartPerforming(int index, ulong client_index)
     {
