@@ -105,5 +105,13 @@ public class BaseDispatcher : MonoBehaviour
 
     //}
     //#endregion
+    public static string GetFormatedOscAddress(string base_name, int index, string param_name)
+    {
+        return base_name + index.ToString() + param_name;
+    }
 
+    public static string GetFormatedOscAddress(string base_name, string index_name, string param_name)
+    {
+        return base_name + index_name + param_name;
+    }
 }

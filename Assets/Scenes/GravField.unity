@@ -2990,11 +2990,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 2975138149678949925}
+  ropeIndex: 0
   ropeMass: 42.8
   cornerThickness: 2
   centerThickness: 40
   offsetMultiplier: 3
   ropeOffset: {x: 0, y: 0, z: 0}
+  centroidPos: {x: 0, y: 0, z: 0}
+  centroidVel: {x: 0, y: 0, z: 0}
+  centroidAcc: {x: 0, y: 0, z: 0}
 --- !u!1 &86498463
 GameObject:
   m_ObjectHideFlags: 0
@@ -3691,8 +3695,8 @@ GameObject:
   m_Component:
   - component: {fileID: 115862327}
   - component: {fileID: 115862328}
-  - component: {fileID: 115862329}
   - component: {fileID: 115862330}
+  - component: {fileID: 115862329}
   m_Layer: 11
   m_Name: Rope
   m_TagString: Untagged
@@ -3783,7 +3787,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99f469b36a0e47e6b1a958ced395d81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectRope: {fileID: 0}
 --- !u!1 &116770814
 GameObject:
   m_ObjectHideFlags: 0
@@ -4358,11 +4361,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 4836987816853913778}
   performerEnd: {fileID: 2975138149678949925}
+  ropeIndex: 0
   ropeMass: 42.8
   cornerThickness: 2
   centerThickness: 40
   offsetMultiplier: 3
   ropeOffset: {x: 0, y: 0, z: 0}
+  centroidPos: {x: 0, y: 0, z: 0}
+  centroidVel: {x: 0, y: 0, z: 0}
+  centroidAcc: {x: 0, y: 0, z: 0}
 --- !u!1 &130364748
 GameObject:
   m_ObjectHideFlags: 0
@@ -10533,11 +10540,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 4836987816853913778}
+  ropeIndex: 0
   ropeMass: 42.8
   cornerThickness: 2
   centerThickness: 40
   offsetMultiplier: 3
   ropeOffset: {x: 0, y: 0, z: 0}
+  centroidPos: {x: 0, y: 0, z: 0}
+  centroidVel: {x: 0, y: 0, z: 0}
+  centroidAcc: {x: 0, y: 0, z: 0}
 --- !u!1 &389304596
 GameObject:
   m_ObjectHideFlags: 0
@@ -23366,6 +23377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 883717660}
   - component: {fileID: 883717664}
+  - component: {fileID: 883717667}
   - component: {fileID: 883717663}
   - component: {fileID: 883717662}
   - component: {fileID: 883717661}
@@ -23490,11 +23502,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 4836987816853913778}
   performerEnd: {fileID: 2975138149678949925}
+  ropeIndex: 0
   ropeMass: 42.8
   cornerThickness: 2
   centerThickness: 40
   offsetMultiplier: 3
   ropeOffset: {x: 0, y: 0, z: 0}
+  centroidPos: {x: 0, y: 0, z: 0}
+  centroidVel: {x: 0, y: 0, z: 0}
+  centroidAcc: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &883717665
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -23576,6 +23592,18 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &883717667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883717659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ccaec697bf846f2ad9642a8ea39368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &889306525
 GameObject:
   m_ObjectHideFlags: 0
@@ -47610,6 +47638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1941620452}
   - component: {fileID: 1941620456}
+  - component: {fileID: 1941620459}
   - component: {fileID: 1941620455}
   - component: {fileID: 1941620454}
   - component: {fileID: 1941620453}
@@ -47734,11 +47763,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 4836987816853913778}
+  ropeIndex: 0
   ropeMass: 42.8
   cornerThickness: 2
   centerThickness: 40
   offsetMultiplier: 3
   ropeOffset: {x: 0, y: 0, z: 0}
+  centroidPos: {x: 0, y: 0, z: 0}
+  centroidVel: {x: 0, y: 0, z: 0}
+  centroidAcc: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &1941620457
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -47820,6 +47853,18 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1941620459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941620451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ccaec697bf846f2ad9642a8ea39368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1950062335
 GameObject:
   m_ObjectHideFlags: 0
@@ -50289,6 +50334,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2063145562}
   - component: {fileID: 2063145566}
+  - component: {fileID: 2063145569}
   - component: {fileID: 2063145565}
   - component: {fileID: 2063145564}
   - component: {fileID: 2063145563}
@@ -50413,11 +50459,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 2975138149678949925}
+  ropeIndex: 0
   ropeMass: 42.8
   cornerThickness: 2
   centerThickness: 40
   offsetMultiplier: 3
   ropeOffset: {x: 0, y: 0, z: 0}
+  centroidPos: {x: 0, y: 0, z: 0}
+  centroidVel: {x: 0, y: 0, z: 0}
+  centroidAcc: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &2063145567
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -50499,6 +50549,18 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &2063145569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063145561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ccaec697bf846f2ad9642a8ea39368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2069088008
 GameObject:
   m_ObjectHideFlags: 0
