@@ -2990,12 +2990,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 2975138149678949925}
-  ropeIndex: 0
-  ropeMass: 42.8
-  cornerThickness: 2
-  centerThickness: 40
-  offsetMultiplier: 3
-  ropeOffset: {x: 0, y: 0, z: 0}
+  NV_Mass:
+    m_InternalValue: 42.8
+  NV_MaxWidth:
+    m_InternalValue: 40
+  NV_RopeScaler:
+    m_InternalValue: 5
+  NV_RopeOffsetY:
+    m_InternalValue: -0.3
+  NV_RopeOffsetZ:
+    m_InternalValue: 0.3
   centroidPos: {x: 0, y: 0, z: 0}
   centroidVel: {x: 0, y: 0, z: 0}
   centroidAcc: {x: 0, y: 0, z: 0}
@@ -3695,7 +3699,6 @@ GameObject:
   m_Component:
   - component: {fileID: 115862327}
   - component: {fileID: 115862328}
-  - component: {fileID: 115862330}
   - component: {fileID: 115862329}
   m_Layer: 11
   m_Name: Rope
@@ -3734,17 +3737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0990164aa7e4b52a760f88ab3a3bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass:
-    m_InternalValue: 42.8
-  maxWidth:
-    m_InternalValue: 40
-  ropeScaler:
-    m_InternalValue: 5
-  ropeOffsetY:
-    m_InternalValue: -0.3
-  ropeOffsetZ:
-    m_InternalValue: 0.3
-  performerTransformRoot: {fileID: 8404228704562627179}
 --- !u!114 &115862329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3775,18 +3767,6 @@ MonoBehaviour:
   ropeMeshRotation: {x: 0, y: 0, z: 0}
   ropeMeshScale: 0.1
   ropeCornerOffset: {x: 0, y: -0.1, z: 0.4}
---- !u!114 &115862330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 115862326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c99f469b36a0e47e6b1a958ced395d81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &116770814
 GameObject:
   m_ObjectHideFlags: 0
@@ -4218,6 +4198,10 @@ MonoBehaviour:
   performerEnd: {fileID: 4836987816853913778}
   ropeOffset: {x: 0, y: -0.3, z: 0}
   springEnabled: 0
+  NV_SpringFreq:
+    m_InternalValue: 30
+  NV_SpringWidth:
+    m_InternalValue: 20
   meshMat: {fileID: -876546973899608171, guid: 6662ceef639564f789f8fb789dc30398, type: 3}
   soundAmplifier: 20
   maxSpringThickness: 2
@@ -4361,12 +4345,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 4836987816853913778}
   performerEnd: {fileID: 2975138149678949925}
-  ropeIndex: 0
-  ropeMass: 42.8
-  cornerThickness: 2
-  centerThickness: 40
-  offsetMultiplier: 3
-  ropeOffset: {x: 0, y: 0, z: 0}
+  NV_Mass:
+    m_InternalValue: 42.8
+  NV_MaxWidth:
+    m_InternalValue: 40
+  NV_RopeScaler:
+    m_InternalValue: 5
+  NV_RopeOffsetY:
+    m_InternalValue: -0.3
+  NV_RopeOffsetZ:
+    m_InternalValue: 0.3
   centroidPos: {x: 0, y: 0, z: 0}
   centroidVel: {x: 0, y: 0, z: 0}
   centroidAcc: {x: 0, y: 0, z: 0}
@@ -9407,6 +9395,7 @@ GameObject:
   m_Component:
   - component: {fileID: 316569097}
   - component: {fileID: 316569099}
+  - component: {fileID: 316569101}
   - component: {fileID: 316569100}
   m_Layer: 11
   m_Name: Spring
@@ -9445,7 +9434,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e897eb69a5a5a4accaae91cb91fd7dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  performerTransformRoot: {fileID: 8404228704562627179}
 --- !u!114 &316569100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9476,6 +9464,18 @@ MonoBehaviour:
   ropeMeshRotation: {x: 0, y: 0, z: 0}
   ropeMeshScale: 0.01
   ropeCornerOffset: {x: 0, y: -0.2, z: 0.2}
+--- !u!114 &316569101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316569096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 918fa7094994d45f0b089ad7faf4daa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &318703274
 GameObject:
   m_ObjectHideFlags: 0
@@ -10540,12 +10540,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 4836987816853913778}
-  ropeIndex: 0
-  ropeMass: 42.8
-  cornerThickness: 2
-  centerThickness: 40
-  offsetMultiplier: 3
-  ropeOffset: {x: 0, y: 0, z: 0}
+  NV_Mass:
+    m_InternalValue: 42.8
+  NV_MaxWidth:
+    m_InternalValue: 40
+  NV_RopeScaler:
+    m_InternalValue: 5
+  NV_RopeOffsetY:
+    m_InternalValue: -0.3
+  NV_RopeOffsetZ:
+    m_InternalValue: 0.3
   centroidPos: {x: 0, y: 0, z: 0}
   centroidVel: {x: 0, y: 0, z: 0}
   centroidAcc: {x: 0, y: 0, z: 0}
@@ -11016,6 +11020,7 @@ GameObject:
   m_Component:
   - component: {fileID: 413307801}
   - component: {fileID: 413307806}
+  - component: {fileID: 413307809}
   - component: {fileID: 413307808}
   - component: {fileID: 413307807}
   - component: {fileID: 413307802}
@@ -11278,6 +11283,10 @@ MonoBehaviour:
   performerEnd: {fileID: 4836987816853913778}
   ropeOffset: {x: 0, y: -0.3, z: 0}
   springEnabled: 0
+  NV_SpringFreq:
+    m_InternalValue: 30
+  NV_SpringWidth:
+    m_InternalValue: 20
   meshMat: {fileID: -876546973899608171, guid: 6662ceef639564f789f8fb789dc30398, type: 3}
   soundAmplifier: 20
   maxSpringThickness: 2
@@ -11342,6 +11351,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 413307800}
   m_Mesh: {fileID: -7945763844007451589, guid: 9bd37709a0a0744c0935cd70301d6d6a, type: 3}
+--- !u!114 &413307809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413307800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd92bc8cf551d4143b6c9829d5e9164b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &413918082
 GameObject:
   m_ObjectHideFlags: 0
@@ -23502,12 +23523,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 4836987816853913778}
   performerEnd: {fileID: 2975138149678949925}
-  ropeIndex: 0
-  ropeMass: 42.8
-  cornerThickness: 2
-  centerThickness: 40
-  offsetMultiplier: 3
-  ropeOffset: {x: 0, y: 0, z: 0}
+  NV_Mass:
+    m_InternalValue: 42.8
+  NV_MaxWidth:
+    m_InternalValue: 40
+  NV_RopeScaler:
+    m_InternalValue: 5
+  NV_RopeOffsetY:
+    m_InternalValue: -0.3
+  NV_RopeOffsetZ:
+    m_InternalValue: 0.3
   centroidPos: {x: 0, y: 0, z: 0}
   centroidVel: {x: 0, y: 0, z: 0}
   centroidAcc: {x: 0, y: 0, z: 0}
@@ -36284,6 +36309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1505279090}
   - component: {fileID: 1505279095}
+  - component: {fileID: 1505279098}
   - component: {fileID: 1505279097}
   - component: {fileID: 1505279096}
   - component: {fileID: 1505279091}
@@ -36546,6 +36572,10 @@ MonoBehaviour:
   performerEnd: {fileID: 2975138149678949925}
   ropeOffset: {x: 0, y: -0.3, z: 0}
   springEnabled: 0
+  NV_SpringFreq:
+    m_InternalValue: 30
+  NV_SpringWidth:
+    m_InternalValue: 20
   meshMat: {fileID: 2100000, guid: 93fbbd2a700f94628bef0842e8f84f01, type: 2}
   soundAmplifier: 20
   maxSpringThickness: 2
@@ -36610,6 +36640,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1505279089}
   m_Mesh: {fileID: -7945763844007451589, guid: 9bd37709a0a0744c0935cd70301d6d6a, type: 3}
+--- !u!114 &1505279098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505279089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd92bc8cf551d4143b6c9829d5e9164b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1509922943
 GameObject:
   m_ObjectHideFlags: 0
@@ -37935,6 +37977,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1559899950}
   - component: {fileID: 1559899955}
+  - component: {fileID: 1559899958}
   - component: {fileID: 1559899957}
   - component: {fileID: 1559899956}
   - component: {fileID: 1559899951}
@@ -38197,6 +38240,10 @@ MonoBehaviour:
   performerEnd: {fileID: 2975138149678949925}
   ropeOffset: {x: 0, y: -0.3, z: 0}
   springEnabled: 0
+  NV_SpringFreq:
+    m_InternalValue: 30
+  NV_SpringWidth:
+    m_InternalValue: 20
   meshMat: {fileID: 2100000, guid: d22504f766859411a983d23df82a0dfd, type: 2}
   soundAmplifier: 20
   maxSpringThickness: 2
@@ -38261,6 +38308,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1559899949}
   m_Mesh: {fileID: -7945763844007451589, guid: 9bd37709a0a0744c0935cd70301d6d6a, type: 3}
+--- !u!114 &1559899958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559899949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd92bc8cf551d4143b6c9829d5e9164b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1560462836
 GameObject:
   m_ObjectHideFlags: 0
@@ -44865,6 +44924,10 @@ MonoBehaviour:
   performerEnd: {fileID: 2975138149678949925}
   ropeOffset: {x: 0, y: -0.3, z: 0}
   springEnabled: 0
+  NV_SpringFreq:
+    m_InternalValue: 30
+  NV_SpringWidth:
+    m_InternalValue: 20
   meshMat: {fileID: 2100000, guid: 93fbbd2a700f94628bef0842e8f84f01, type: 2}
   soundAmplifier: 20
   maxSpringThickness: 2
@@ -47763,12 +47826,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 4836987816853913778}
-  ropeIndex: 0
-  ropeMass: 42.8
-  cornerThickness: 2
-  centerThickness: 40
-  offsetMultiplier: 3
-  ropeOffset: {x: 0, y: 0, z: 0}
+  NV_Mass:
+    m_InternalValue: 42.8
+  NV_MaxWidth:
+    m_InternalValue: 40
+  NV_RopeScaler:
+    m_InternalValue: 5
+  NV_RopeOffsetY:
+    m_InternalValue: -0.3
+  NV_RopeOffsetZ:
+    m_InternalValue: 0.3
   centroidPos: {x: 0, y: 0, z: 0}
   centroidVel: {x: 0, y: 0, z: 0}
   centroidAcc: {x: 0, y: 0, z: 0}
@@ -50459,12 +50526,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   performerStart: {fileID: 47557538106725269}
   performerEnd: {fileID: 2975138149678949925}
-  ropeIndex: 0
-  ropeMass: 42.8
-  cornerThickness: 2
-  centerThickness: 40
-  offsetMultiplier: 3
-  ropeOffset: {x: 0, y: 0, z: 0}
+  NV_Mass:
+    m_InternalValue: 42.8
+  NV_MaxWidth:
+    m_InternalValue: 40
+  NV_RopeScaler:
+    m_InternalValue: 5
+  NV_RopeOffsetY:
+    m_InternalValue: -0.3
+  NV_RopeOffsetZ:
+    m_InternalValue: 0.3
   centroidPos: {x: 0, y: 0, z: 0}
   centroidVel: {x: 0, y: 0, z: 0}
   centroidAcc: {x: 0, y: 0, z: 0}
@@ -50603,6 +50674,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2073128431}
   - component: {fileID: 2073128432}
+  - component: {fileID: 2073128442}
   - component: {fileID: 2073128441}
   - component: {fileID: 2073128440}
   - component: {fileID: 2073128439}
@@ -50643,7 +50715,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18af08b68187426ea0783c68440c28f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  performerTransformRoot: {fileID: 8404228704562627179}
+  NV_Magnetic0:
+    m_InternalValue: 0
+  NV_Magnetic1:
+    m_InternalValue: 0
+  NV_Magnetic2:
+    m_InternalValue: 0
   headOffsetY: -1.3
 --- !u!114 &2073128434
 MonoBehaviour:
@@ -50876,6 +50953,18 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &2073128442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073128430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de874e4edef9744b39d6ef1337795de3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2075631516
 GameObject:
   m_ObjectHideFlags: 0
@@ -53789,6 +53878,10 @@ MonoBehaviour:
   performerEnd: {fileID: 2975138149678949925}
   ropeOffset: {x: 0, y: -0.3, z: 0}
   springEnabled: 0
+  NV_SpringFreq:
+    m_InternalValue: 30
+  NV_SpringWidth:
+    m_InternalValue: 20
   meshMat: {fileID: 2100000, guid: d22504f766859411a983d23df82a0dfd, type: 2}
   soundAmplifier: 20
   maxSpringThickness: 2
@@ -54192,12 +54285,6 @@ MonoBehaviour:
   clientID:
     m_InternalValue: 0
   isPerforming:
-    m_InternalValue: 0
-  springFreq:
-    m_InternalValue: 30
-  springWidth:
-    m_InternalValue: 20
-  magnetic:
     m_InternalValue: 0
   OnStartPerforming:
     m_PersistentCalls:
@@ -54897,12 +54984,6 @@ MonoBehaviour:
     m_InternalValue: 2
   isPerforming:
     m_InternalValue: 0
-  springFreq:
-    m_InternalValue: 30
-  springWidth:
-    m_InternalValue: 20
-  magnetic:
-    m_InternalValue: 0
   OnStartPerforming:
     m_PersistentCalls:
       m_Calls: []
@@ -55274,12 +55355,6 @@ MonoBehaviour:
     m_InternalValue: 1
   isPerforming:
     m_InternalValue: 0
-  springFreq:
-    m_InternalValue: 30
-  springWidth:
-    m_InternalValue: 20
-  magnetic:
-    m_InternalValue: 1
   OnStartPerforming:
     m_PersistentCalls:
       m_Calls: []
