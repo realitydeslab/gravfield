@@ -48,8 +48,8 @@ public class GameManager : MonoBehaviour
     private MiddlewareManager middlewareManager;
     public MiddlewareManager MiddlewareManager { get => middlewareManager; }
 
-    private PlayerManager roleManager;
-    public PlayerManager RoleManager { get => roleManager; }
+    private PlayerManager playerManager;
+    public PlayerManager PlayerManager { get => playerManager; }
 
     private Commander commander;
     public Commander Commander { get => commander; }
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     private ControlPanel controlPanel;
     public ControlPanel ControlPanel { get => controlPanel; }
 
-    public List<Performer> PerformerList { get => roleManager.PerformerList; }
+    public List<Performer> PerformerList { get => playerManager.PerformerList; }
 
     private PlayerRole playerRole;
     public PlayerRole PlayerRole { get => playerRole; }
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
 
     public void ApplyPerformer(System.Action<bool, string> action)
     {
-        RoleManager.ApplyPerformer((result, msg) =>
+        PlayerManager.ApplyPerformer((result, msg) =>
         {
             if (result == true)
             {
@@ -184,11 +184,11 @@ public class GameManager : MonoBehaviour
 
     void OnClientJoined(ulong client_id)
     {
-        RoleManager.OnClientJoined(client_id);
+        PlayerManager.OnClientJoined(client_id);
     }
     void OnClientLost(ulong client_id)
     {
-        RoleManager.OnClientLost(client_id);
+        PlayerManager.OnClientLost(client_id);
 
     }
     void OnServerLost()
@@ -356,12 +356,12 @@ public class GameManager : MonoBehaviour
 
         isPlaying = false;
 
-        if (RoleManager.Role == PlayerRole.Server)
+        if (PlayerManager.Role == PlayerRole.Server)
         {
             ControlPanel.ClearAllPropertyInControlPanel();
             MiddlewareManager.TurnOff();
         }
-        else if (RoleManager.Role == PlayerRole.Commander)
+        else if (PlayerManager.Role == PlayerRole.Commander)
         {
             Commander.DeinitializeCommander();
         }
@@ -400,7 +400,7 @@ public class GameManager : MonoBehaviour
     {
         showPerformerAxis = state;
 
-        MeshRenderer[] mesh_renderers = roleManager.PerformerTransformRoot.GetComponentsInChildren<MeshRenderer>();
+        MeshRenderer[] mesh_renderers = playerManager.PerformerTransformRoot.GetComponentsInChildren<MeshRenderer>();
         foreach (MeshRenderer renderer in mesh_renderers)
         {
             renderer.enabled = state;
@@ -413,55 +413,55 @@ public class GameManager : MonoBehaviour
     void InitializeReferences()
     {
         // Initialize References
-        holoKitCameraManager = FindObjectOfType<HoloKitCameraManager>();
+        holoKitCameraManager = FindFirstObjectByType<HoloKitCameraManager>();
         if (holoKitCameraManager == null)
         {
             Debug.LogError("No HoloKitCameraManager Found.");
         }
         
-        audioProcessor = FindObjectOfType<AudioProcessor>();
+        audioProcessor = FindFirstObjectByType<AudioProcessor>();
         if (audioProcessor == null)
         {
             Debug.LogError("No AudioProcessor Found.");
         }
 
-        connectionManager = FindObjectOfType<NetcodeConnectionManager>();
+        connectionManager = FindFirstObjectByType<NetcodeConnectionManager>();
         if (connectionManager == null)
         {
             Debug.LogError("No NetcodeConnectionManager Found.");
         }
 
-        relocalizationStablizer = FindObjectOfType<ImageTrackingStablizer>();
+        relocalizationStablizer = FindFirstObjectByType<ImageTrackingStablizer>();
         if (relocalizationStablizer == null)
         {
             Debug.LogError("No ImageTrackingStablizer Found.");
         }
 
-        middlewareManager = FindObjectOfType<MiddlewareManager>();
+        middlewareManager = FindFirstObjectByType<MiddlewareManager>();
         if (middlewareManager == null)
         {
             Debug.LogError("No MiddlewareManager Found.");
         }
 
-        roleManager = FindObjectOfType<PlayerManager>();
-        if (roleManager == null)
+        playerManager = FindFirstObjectByType<PlayerManager>();
+        if (playerManager == null)
         {
             Debug.LogError("No RoleManager Found.");
         }
 
-        commander = FindObjectOfType<Commander>();
+        commander = FindFirstObjectByType<Commander>();
         if (commander == null)
         {
             Debug.LogError("No Commander Found.");
         }
 
-        uiController = FindObjectOfType<UIController>();
+        uiController = FindFirstObjectByType<UIController>();
         if (uiController == null)
         {
             Debug.LogError("No UIController Found.");
         }
 
-        controlPanel = FindObjectOfType<ControlPanel>();
+        controlPanel = FindFirstObjectByType<ControlPanel>();
         if (controlPanel == null)
         {
             Debug.LogError("No ControlPanel Found.");
@@ -486,18 +486,19 @@ public class GameManager : MonoBehaviour
                     GameObject go = new GameObject();
                     _Instance = go.AddComponent<GameManager>();
                 }
+
+                _Instance.InitializeReferences();
             }
             return _Instance;
         }
     }
     private void Awake()
     {
-        if (_Instance != null)
+        if (_Instance == null)
         {
-            Destroy(gameObject);
+            _Instance = this;
+            InitializeReferences();
         }
-
-        InitializeReferences();
     }
 
     private void OnDestroy()

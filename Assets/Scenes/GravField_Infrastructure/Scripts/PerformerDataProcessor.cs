@@ -181,7 +181,7 @@ public class PerfomerDataProcessor : MonoBehaviour
 
     void CalculateDataToLive()
     {
-        PerformerCount = GameManager.Instance.RoleManager.PerformerCount;
+        PerformerCount = GameManager.Instance.PlayerManager.PerformerCount;
 
         // Pos / Speed / Acclerate
         if (PerformerCount > 0)

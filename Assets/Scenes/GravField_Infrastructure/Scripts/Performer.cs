@@ -10,7 +10,7 @@ public class PerformerLocalData
     public Vector3 position = Vector3.zero;
     public Vector3 velocity = Vector3.zero;
     public Vector3 acceleration = Vector3.zero;
-    public bool positive = false;
+    //public bool positive = false;
 }
 
 public class Performer : NetworkBehaviour
@@ -36,11 +36,11 @@ public class Performer : NetworkBehaviour
     //public NetworkVariable<float> ropeOffsetY = new NetworkVariable<float>(-0.3f);
 
     // Spring Effect
-    public NetworkVariable<float> springFreq = new NetworkVariable<float>(30);
-    public NetworkVariable<float> springWidth = new NetworkVariable<float>(1);
+    //public NetworkVariable<float> springFreq = new NetworkVariable<float>(30);
+    //public NetworkVariable<float> springWidth = new NetworkVariable<float>(1);
 
     // Magnetic Effect
-    public NetworkVariable<float> magnetic;
+    //public NetworkVariable<float> magnetic;
 
     int performerIndex = 0;
 
@@ -75,7 +75,7 @@ public class Performer : NetworkBehaviour
         localData.position = transform.localPosition;
         localData.velocity = Vector3.zero;
         localData.acceleration = Vector3.zero;
-        localData.positive = magnetic.Value > 0.5 ? true : false;
+        //localData.positive = magnetic.Value > 0.5 ? true : false;
     }
 
     void Update()
@@ -111,7 +111,7 @@ public class Performer : NetworkBehaviour
         localData.acceleration = (new_vel - localData.velocity) / Time.deltaTime;
         localData.velocity = new_vel;
         localData.position = new_pos;
-        localData.positive = magnetic.Value > 0.5 ? true : false;
+        //localData.positive = magnetic.Value > 0.5 ? true : false;
     }
 
 
@@ -129,10 +129,10 @@ public class Performer : NetworkBehaviour
         //ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-scaler"), new UnityAction<float>((v) => { ropeScaler.Value = v; }));
         //ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/rope-offset"), new UnityAction<float>((v) => { ropeOffsetY.Value = v; }));
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/spring-freq"), new UnityAction<float>((v) => { springFreq.Value = v; }));
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/spring-width"), new UnityAction<float>((v) => { springWidth.Value = v; }));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/spring-freq"), new UnityAction<float>((v) => { springFreq.Value = v; }));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/spring-width"), new UnityAction<float>((v) => { springWidth.Value = v; }));
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/mag"), new UnityAction<float>((v) => { magnetic.Value = v; }));
+        //ParameterReceiver.Instance.RegisterOscReceiverFunction(FormatedOscAddress("/mag"), new UnityAction<float>((v) => { magnetic.Value = v; }));
     }
 
     string FormatedOscAddress(string param)

@@ -58,8 +58,8 @@ public class Performer_Dispatcher : BaseDispatcher
 
     void CalculateDataToLive()
     {
-        int performer_count = GameManager.Instance.RoleManager.PerformerCount;
-        List<Performer> performerList = GameManager.Instance.RoleManager.PerformerList;
+        int performer_count = GameManager.Instance.PlayerManager.PerformerCount;
+        List<Performer> performerList = GameManager.Instance.PlayerManager.PerformerList;
 
         // Pos / Speed / Acclerate
         if (performer_count > 0)

@@ -34,9 +34,16 @@ public class EffectSpring : MonoBehaviour
     //Transform ropeStart;
     //Transform ropeEnd;
     public Vector3 ropeOffset;
+
     int springIndex;
+    public int SpringIndex { get => springIndex; }
+
     public bool springEnabled = false;
-    bool isInitialized = false;
+
+
+
+    public NetworkVariable<float> NV_SpringFreq = new NetworkVariable<float>(30);
+    public NetworkVariable<float> NV_SpringWidth = new NetworkVariable<float>(20);
 
 
     // Path    
@@ -51,20 +58,6 @@ public class EffectSpring : MonoBehaviour
     List<MeshRenderer> springMeshList = new List<MeshRenderer>();
     float meshRotation = 0;
 
-    // Output to LIVE
-    Transform centroidTransform;
-    private Vector3 centroidPos;
-    public Vector3 CentroidPos { get => centroidPos; }
-    private Vector3 centroidVel;
-    public Vector3 CentroidVel { get => centroidVel; }
-    AutoSwitchedParameter<float> ropevel = new AutoSwitchedParameter<float>();
-
-    // Parameters    
-    //float ropeMeshScale;
-    //float startThickness;
-    //float endThickness;
-    //float startMass;
-    //float endMass;
 
 
     float sinBaseValue;
@@ -122,19 +115,7 @@ public class EffectSpring : MonoBehaviour
         }
     }
 
-    //void OnEnable()
-    //{
-    //    GameManager.Instance.PerformerGroup.OnPerformerFinishSpawn.AddListener(OnPerformerFinishSpawn);
-    //}
-
-    void OnPerformerFinishSpawn()
-    {
-        InitializeLocalVariable();
-
-        RegisterNetworkVariableCallback_Client();
-
-        RegisterPropertiesToLive_Server();
-    }
+    
 
     void Start()
     {
@@ -151,13 +132,11 @@ public class EffectSpring : MonoBehaviour
 
     void Update()
     {
-        if (isInitialized == false)// && GameManager.Instance.PerformerGroup.PerformerFinishSpawn == true)
-        {
-            OnPerformerFinishSpawn();
-            isInitialized = true;
-        }
 
         if (springEnabled == false) return;
+
+        soundwaveFrequency = NV_SpringFreq.Value;
+        maxSpringThickness = NV_SpringWidth.Value;
 
         UpdateSpringAnchors();
 
@@ -464,34 +443,7 @@ public class EffectSpring : MonoBehaviour
         }
     }
 
-    #region NetworkVariable
-    void InitializeLocalVariable()
-    {
-        //ropeMeshScale = GameManager.Instance.PerformerGroup.ropeMeshScale.Value;
-        //startThickness = performerStart.remoteThickness.Value;
-        //endThickness = performerEnd.remoteThickness.Value;
-        //startMass = performerStart.remoteMass.Value;
-        //endMass = performerEnd.remoteMass.Value;
-
-        soundwaveFrequency = GameManager.Instance.PerformerList[springIndex].springFreq.Value;
-        maxSpringThickness = GameManager.Instance.PerformerList[springIndex].springWidth.Value;
-    }
-
-    void RegisterNetworkVariableCallback_Client()
-    {
-        //performerStart.remoteThickness.OnValueChanged += (float prev, float cur) => { startThickness = cur; SetSpringThickness(cur); };
-        //performerEnd.remoteThickness.OnValueChanged += (float prev, float cur) => { endThickness = cur; SetSpringThickness(cur); };
-
-        //performerStart.remoteMass.OnValueChanged += (float prev, float cur) => { startMass = cur; UpdateRopeMass(); };
-        //performerEnd.remoteMass.OnValueChanged += (float prev, float cur) => { endMass = cur; UpdateRopeMass(); };
-
-        //GameManager.Instance.PerformerGroup.ropeMeshScale.OnValueChanged += (float prev, float cur) => { ropeMeshScale = cur; UpdateRopeMeshScale(); };
-
-        GameManager.Instance.PerformerList[springIndex].springFreq.OnValueChanged += (float prev, float cur) => { soundwaveFrequency = Mathf.Clamp(cur, 0, 200); };
-        GameManager.Instance.PerformerList[springIndex].springWidth.OnValueChanged += (float prev, float cur) => { maxSpringThickness = Mathf.Clamp(cur, minSpringThickness, 1000); };
-
-
-    }
+    
     //void SetSpringThickness(float new_thickness, float start_angle_x = 0, float end_angle_x = 0)
     //{
         //float currentLength = 0;
@@ -534,25 +486,10 @@ public class EffectSpring : MonoBehaviour
     //    SplineMeshTiling meshTiling = GetComponent<SplineMeshTiling>();
     //    meshTiling.scale = Mathf.Max(0.05f, ropeMeshScale) * Vector3.one;
     //}
-    #endregion
 
-    #region Parameter sent to Live
-    void RegisterPropertiesToLive_Server()
-    {
-        //if (NetworkManager.Singleton.IsServer == false) return;
 
-        //SenderForLive.Instance.RegisterOscPropertyToSend(FormatedOscAddress("vel"), ropevel);
-    }
+   
 
-    string FormatedOscAddressToLive(string param)
-    {
-        return "/spring" + springIndex.ToString() + param;
-    }
-    #endregion
-
-    #region Paramters received from Coda
-
-    #endregion
 
 
 

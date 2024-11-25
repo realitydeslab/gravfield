@@ -8,16 +8,24 @@ using Unity.Netcode;
 using UnityEngine.VFX;
 
 public class EffectRope : MonoBehaviour
-{
-    
+{   
     // Basic
     public Performer performerStart;
     public Performer performerEnd;
     Transform ropeStart;
     Transform ropeEnd;
 
-    [HideInInspector] public int ropeIndex;
+    int ropeIndex;
+    public int RopeIndex { get => ropeIndex; }
+
     bool ropeEnabled = false;
+
+    // Network Variables
+    public NetworkVariable<float> NV_Mass = new NetworkVariable<float>(42.8f);
+    public NetworkVariable<float> NV_MaxWidth = new NetworkVariable<float>(40);
+    public NetworkVariable<float> NV_RopeScaler = new NetworkVariable<float>(5);
+    public NetworkVariable<float> NV_RopeOffsetY = new NetworkVariable<float>(-0.3f);
+    public NetworkVariable<float> NV_RopeOffsetZ = new NetworkVariable<float>(0.3f);
 
     // Path
     Spline spline;
@@ -31,11 +39,13 @@ public class EffectRope : MonoBehaviour
     private GraphicsBuffer bufferRopePoints;
 
     // Effect Parameters
-    [HideInInspector]public float ropeMass = 42.8f;
-    [HideInInspector] public float cornerThickness = 2;
-    [HideInInspector] public float centerThickness = 40;
-    [HideInInspector] public float offsetMultiplier = 3;
-    [HideInInspector] public Vector3 ropeOffset;
+    float ropeMass = 42.8f;
+    float cornerThickness = 2;
+    float centerThickness = 40;
+    float offsetMultiplier = 3;
+    Vector3 ropeOffset;
+
+    
 
     // Parameters sent to Live
     Transform centroidTransform;
@@ -110,17 +120,17 @@ public class EffectRope : MonoBehaviour
 
     void UpdateParameter()
     {
-        //ropeMass = ropeParameter.mass.Value;
-        //ropeMass = Mathf.Clamp(ropeMass, 10, 80);
+        ropeMass = NV_Mass.Value;
+        ropeMass = Mathf.Clamp(ropeMass, 10, 80);
 
-        //centerThickness = ropeParameter.maxWidth.Value;
-        //centerThickness = Mathf.Clamp(centerThickness, 1, 100);
+        centerThickness = NV_MaxWidth.Value;
+        centerThickness = Mathf.Clamp(centerThickness, 1, 100);
 
-        //offsetMultiplier = ropeParameter.ropeScaler.Value;
-        //offsetMultiplier = Mathf.Clamp(offsetMultiplier, 1, 20);
+        offsetMultiplier = NV_RopeScaler.Value;
+        offsetMultiplier = Mathf.Clamp(offsetMultiplier, 1, 20);
 
-        //ropeOffset.y = ropeParameter.ropeOffsetY.Value;
-        //ropeOffset.z = ropeParameter.ropeOffsetZ.Value;
+        ropeOffset.y = NV_RopeOffsetY.Value;
+        ropeOffset.z = NV_RopeOffsetZ.Value;
 
 
         Vector3 last_pos = centroidPos;

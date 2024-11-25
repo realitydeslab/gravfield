@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class EffectSpringController : MonoBehaviour
+public class EffectSpringController : NetworkBehaviour
 {
-    public Transform performerTransformRoot;
-
-    PlayerManager roleManager;
 
     List<Performer> performerList = new List<Performer>();
     List<bool> springStateList = new List<bool>();
@@ -16,9 +14,7 @@ public class EffectSpringController : MonoBehaviour
 
     void Awake()
     {
-        roleManager = FindObjectOfType<PlayerManager>();
-
-
+        Transform performerTransformRoot = GameManager.Instance.PlayerManager.PerformerTransformRoot;
         for (int i=0; i<performerTransformRoot.childCount; i++)
         {
             performerList.Add(performerTransformRoot.GetChild(i).GetComponent<Performer>());
@@ -40,21 +36,44 @@ public class EffectSpringController : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        
-    }
     void OnEnable()
     {
-        roleManager.OnStartPerformingEvent.AddListener(OnStartPerforming);
-        roleManager.OnStopPerformingEvent.AddListener(OnStopPerforming);
+        GameManager.Instance.OnStartGame.AddListener(OnStartGame);
+        GameManager.Instance.OnStopGame.AddListener(OnStopGame);
+
+        GameManager.Instance.PlayerManager.OnStartPerformingEvent.AddListener(OnStartPerforming);
+        GameManager.Instance.PlayerManager.OnStopPerformingEvent.AddListener(OnStopPerforming);
     }
     void OnDisable()
     {
-        roleManager.OnStartPerformingEvent.RemoveListener(OnStartPerforming);
-        roleManager.OnStopPerformingEvent.RemoveListener(OnStopPerforming);
+        GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
+        GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
+
+        GameManager.Instance.PlayerManager.OnStartPerformingEvent.RemoveListener(OnStartPerforming);
+        GameManager.Instance.PlayerManager.OnStopPerformingEvent.RemoveListener(OnStopPerforming);
     }
 
+    public void SetEffectState(bool state)
+    {
+        effectEnabled = state;
+        UpdateAllRopeState();
+    }
+
+
+
+    #region Start / Stop game 
+    void OnStartGame(PlayerRole player_role)
+    {
+        
+    }
+
+    void OnStopGame(PlayerRole player_role)
+    {
+        
+    }
+    #endregion
+
+    #region Performer join / leave
     void OnStartPerforming(int index, ulong client_index)
     {
         UpdateAllRopeState();
@@ -64,8 +83,11 @@ public class EffectSpringController : MonoBehaviour
     {
         UpdateAllRopeState();
     }
+    #endregion
 
 
+
+    
     void UpdateAllRopeState()
     {
         for (int i = 0; i < springStateList.Count; i++)
@@ -87,6 +109,18 @@ public class EffectSpringController : MonoBehaviour
         }
     }
 
+    void SetRopeState(int index, bool state)
+    {
+        for (int i = 0; i < springList[index].Count; i++)
+        {
+            springList[index][i].SetSpringState(state);
+        }
+
+
+        //transform.GetChild(index).gameObject.SetActive(state);
+        //SetSplineMeshVisible(index, state);
+    }
+
     bool GetRopeState(int rope_index)
     {
         if (effectEnabled == false)
@@ -104,23 +138,5 @@ public class EffectSpringController : MonoBehaviour
         int start_index = rope_index == 2 ? 1 : 0;
         int end_index = rope_index == 0 ? 1 : 2;
         return new Vector2Int(start_index, end_index);
-    }
-
-    void SetRopeState(int index, bool state)
-    {
-        for (int i = 0; i < springList[index].Count; i++)
-        {
-            springList[index][i].SetSpringState(state);
-        }
-
-
-        //transform.GetChild(index).gameObject.SetActive(state);
-        //SetSplineMeshVisible(index, state);
-    }
-
-    public void SetEffectState(bool state)
-    {
-        effectEnabled = state;
-        UpdateAllRopeState();
     }
 }

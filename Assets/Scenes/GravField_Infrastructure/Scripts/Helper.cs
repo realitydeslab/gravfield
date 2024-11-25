@@ -93,8 +93,8 @@ public class Helper : MonoBehaviour
         // Only Server
         if(NetworkManager.Singleton.IsServer)
         {
-            SetInfo("PerformerCount", GameManager.Instance.RoleManager.PerformerCount.ToString());
-            SetInfo("AudienceCount", GameManager.Instance.RoleManager.AudienceCount.ToString());
+            SetInfo("PerformerCount", GameManager.Instance.PlayerManager.PerformerCount.ToString());
+            SetInfo("AudienceCount", GameManager.Instance.PlayerManager.AudienceCount.ToString());
             //SetInfo("Coda", SenderForCoda.Instance.ConnectedWithCoda ? "Yes" : "No");
             //SetInfo("Live", SenderForLive.Instance.ConnectedWithLive ? "Yes" : "No");
         }
