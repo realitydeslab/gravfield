@@ -48,6 +48,9 @@ public class EffectRopeController : MonoBehaviour
 
     void OnDisable()
     {
+        if (GameManager.Instance == null)
+            return;
+
         GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
         GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
 

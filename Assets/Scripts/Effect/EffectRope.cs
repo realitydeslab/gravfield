@@ -7,7 +7,7 @@ using SplineMesh;
 using Unity.Netcode;
 using UnityEngine.VFX;
 
-public class EffectRope : MonoBehaviour
+public class EffectRope : NetworkBehaviour
 {   
     // Basic
     public Performer performerStart;
@@ -50,7 +50,7 @@ public class EffectRope : MonoBehaviour
     // Parameters sent to Live
     Transform centroidTransform;
     [HideInInspector] public Vector3 centroidPos;
-    [HideInInspector] public Vector3 centroidVel;
+    [HideInInspector] public Vector3 centroidVel;    
     [HideInInspector] public Vector3 centroidAcc;
 
     void Awake()
@@ -139,11 +139,17 @@ public class EffectRope : MonoBehaviour
         Vector3 last_vel = centroidVel;
         Vector3 new_vel = (centroidPos - last_pos) / Time.deltaTime;
         float temp_float = 0;
-        centroidVel = centroidVel.normalized * Mathf.SmoothDamp(last_vel.magnitude, new_vel.magnitude, ref temp_float, 0.1f);
+        if (centroidVel.magnitude == 0)
+            centroidVel = new_vel;
+        else
+            centroidVel = centroidVel.normalized * Mathf.SmoothDamp(last_vel.magnitude, new_vel.magnitude, ref temp_float, 0.1f);
 
         Vector3 last_acc = centroidAcc;
         Vector3 new_acc = (centroidVel - last_vel) / Time.deltaTime;
-        centroidAcc = centroidAcc.normalized * Mathf.SmoothDamp(last_acc.magnitude, new_acc.magnitude, ref temp_float, 0.1f);
+        if (centroidAcc.magnitude == 0)
+            centroidAcc = new_acc;
+        else
+            centroidAcc = centroidAcc.normalized * Mathf.SmoothDamp(last_acc.magnitude, new_acc.magnitude, ref temp_float, 0.1f);
     }
 
     #region Path

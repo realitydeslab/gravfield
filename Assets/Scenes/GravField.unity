@@ -20371,7 +20371,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parameterReceiver: {fileID: 1290787279}
-  dataProcessor: {fileID: 389304598}
   senderForCoda: {fileID: 2114693665}
   senderForLive: {fileID: 1293376035}
 --- !u!4 &744186740
@@ -20389,7 +20388,6 @@ Transform:
   m_Children:
   - {fileID: 1290787278}
   - {fileID: 389304597}
-  - {fileID: 1094962969}
   - {fileID: 2114693664}
   - {fileID: 1293376034}
   m_Father: {fileID: 1001103181}
@@ -28597,37 +28595,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1103702655}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1094962968
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1094962969}
-  m_Layer: 0
-  m_Name: Observer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1094962969
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094962968}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 744186740}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1103262684
 GameObject:
@@ -50718,7 +50685,7 @@ MonoBehaviour:
   NV_Magnetic0:
     m_InternalValue: 0
   NV_Magnetic1:
-    m_InternalValue: 0
+    m_InternalValue: 1
   NV_Magnetic2:
     m_InternalValue: 0
   headOffsetY: -1.3

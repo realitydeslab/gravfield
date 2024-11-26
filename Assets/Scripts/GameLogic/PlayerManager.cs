@@ -66,8 +66,11 @@ public class PlayerManager : NetworkBehaviour
     }
     void OnDisable()
     {
-        GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
-        GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
+            GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
+        }
 
         for (int i = 0; i < performerList.Count; i++)
         {

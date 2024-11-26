@@ -25,7 +25,7 @@ public class SoundWaveLine
 }
 
 
-public class EffectSpring : MonoBehaviour
+public class EffectSpring : NetworkBehaviour
 {
     public Camera cam;
     // Basic

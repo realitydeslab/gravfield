@@ -182,7 +182,16 @@ public class SenderForLive : MonoBehaviour
         _client?.Dispose();
         _client = null;
 
+        RemoveAllSender();
+
         HideControlPanel();
+    }
+
+    void RemoveAllSender()
+    {
+        propertiesForSending.Clear();
+
+        //RemoveAllItemsInControlPanel();
     }
 
 

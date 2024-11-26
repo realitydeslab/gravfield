@@ -27,9 +27,6 @@ public class MiddlewareManager : MonoBehaviour
     ParameterReceiver parameterReceiver;
 
     [SerializeField]
-    PerfomerDataProcessor dataProcessor;
-
-    [SerializeField]
     SenderForCoda senderForCoda;
 
     [SerializeField]
@@ -64,8 +61,11 @@ public class MiddlewareManager : MonoBehaviour
 
     void OnDisable()
     {
-        GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
-        GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
+            GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
+        }
     }
 
     void OnStartGame(PlayerRole role)

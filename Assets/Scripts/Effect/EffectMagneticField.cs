@@ -6,11 +6,11 @@ using UnityEngine.VFX;
 using UnityEngine.VFX.Utility;
 
 
-public class EffectMagneticField : MonoBehaviour
+public class EffectMagneticField : NetworkBehaviour
 {
-    public NetworkVariable<float> NV_Magnetic0;
-    public NetworkVariable<float> NV_Magnetic1;
-    public NetworkVariable<float> NV_Magnetic2;
+    public NetworkVariable<float> NV_Magnetic0 = new NetworkVariable<float>(0);
+    public NetworkVariable<float> NV_Magnetic1 = new NetworkVariable<float>(1);
+    public NetworkVariable<float> NV_Magnetic2 = new NetworkVariable<float>(0);
 
 
     List<Performer> performerList = new  List<Performer>();

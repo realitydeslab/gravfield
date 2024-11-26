@@ -16,8 +16,11 @@ public class BaseDispatcher : MonoBehaviour
 
     void OnDisable()
     {
-        GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
-        GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnStartGame.RemoveListener(OnStartGame);
+            GameManager.Instance.OnStopGame.RemoveListener(OnStopGame);
+        }
     }
 
     #region Start / Stop game 

@@ -65,22 +65,18 @@ public class ParameterReceiver : MonoBehaviour
     //    AddReceiverComponent(property);
     //}
 
-    
 
     public void TurnOn()
     {
-        Debug.Log("ParameterReceiver | TurnOn");
+        Debug.Log($"[{this.GetType()}] TurnOn");
 
-        //InitializeAllOscReceiver();
-        ActiveAllOscReceiver();
     }
 
     public void TurnOff()
     {
-        Debug.Log("ParameterReceiver | TurnOff");
+        Debug.Log($"[{this.GetType()}] TurnOff");
 
-        //RemoveAllOscReceiver();
-        DeactiveAllOscReceiver();
+        RemoveAllOscReceiver();
     }
 
     public string[] GetAllParameterAddresses()
@@ -113,19 +109,20 @@ public class ParameterReceiver : MonoBehaviour
     //    }
     //}
 
-    //void RemoveAllOscReceiver()
-    //{
-    //    if (transReceiver == null)
-    //    {
-    //        transReceiver = transform.Find("Receiver");
-    //    }
+    void RemoveAllOscReceiver()
+    {
+        if (transReceiver == null)
+        {
+            transReceiver = transform.Find("Receiver");
+        }
 
-    //    Debug.Log("ParameterReceiver | RemoveAllOscReceiver");
-    //    foreach (OscEventReceiverModified receiver in transReceiver.GetComponents<OscEventReceiverModified>())
-    //    {
-    //        Destroy(receiver);
-    //    }
-    //}
+        OscEventReceiverModified[] receivers = transReceiver.GetComponents<OscEventReceiverModified>();
+        foreach (OscEventReceiverModified receiver in receivers)
+        {
+            Destroy(receiver);
+        }
+    }
+
     void ActiveAllOscReceiver()
     {
         if (transReceiver == null)
@@ -207,7 +204,6 @@ public class ParameterReceiver : MonoBehaviour
 
         //    receiver.Initialize();
         //}
-        receiver.enabled = false;
     }
 
 

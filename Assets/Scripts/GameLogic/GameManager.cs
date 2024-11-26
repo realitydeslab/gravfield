@@ -481,13 +481,17 @@ public class GameManager : MonoBehaviour
             if (_Instance == null)
             {
                 _Instance = GameObject.FindFirstObjectByType<GameManager>();
-                if (_Instance == null)
-                {
-                    GameObject go = new GameObject();
-                    _Instance = go.AddComponent<GameManager>();
-                }
+                //if (_Instance == null)
+                //{
+                //    GameObject go = new GameObject();
+                //    _Instance = go.AddComponent<GameManager>();
+                //}
 
-                _Instance.InitializeReferences();
+                if(_Instance != null)
+                {
+                    _Instance.InitializeReferences();
+                    DontDestroyOnLoad(_Instance);
+                }
             }
             return _Instance;
         }
