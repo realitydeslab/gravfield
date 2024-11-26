@@ -6,9 +6,9 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 
-public class ControlPanel : MonoBehaviour
+public class ParameterReceiverPanel : MonoBehaviour
 {
-    [SerializeField] Transform transformControlPanel;
+    [SerializeField] Transform panelRoot;
     [SerializeField] Transform parameterRoot;
     [SerializeField] GameObject prefabParameterItem;
 
@@ -16,14 +16,14 @@ public class ControlPanel : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F6) && NetworkManager.Singleton.IsServer)
+        if (Input.GetKeyDown(KeyCode.F5) && NetworkManager.Singleton.IsServer)
         {
-            if (showControlPanel) HideDisplayPanel();
-            else ShowDisplayPanel();
+            if (showControlPanel) HideControlPanel();
+            else ShowControlPanel();
         }
     }
 
-    public void AddProperyInControlPanel_ServerMode(OscPropertyForReceiving property)
+    public void AddProperyInControlPanel(OscPropertyForReceiving property)
     {
         GameObject new_item = Instantiate(prefabParameterItem, parameterRoot);
         new_item.name = property.oscAddress.Substring(1);
@@ -63,14 +63,12 @@ public class ControlPanel : MonoBehaviour
         });
     }
 
-    public void AddProperyInControlPanel_CommanderMode()
+    public void RemoveAllPropertyInControlPanel()
     {
-
-    }
-
-    public void ClearAllPropertyInControlPanel()
-    {
-
+        foreach (Transform child in parameterRoot)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     public void OnUpdateDisplay(string address, float v)
@@ -85,37 +83,37 @@ public class ControlPanel : MonoBehaviour
         }
     }
 
-    public void ShowDisplayPanel()
+    public void ShowControlPanel()
     {
-        transformControlPanel.gameObject.SetActive(true);
+        panelRoot.gameObject.SetActive(true);
         showControlPanel = true;
     }
-    public void HideDisplayPanel()
+    public void HideControlPanel()
     {
-        transformControlPanel.gameObject.SetActive(false);
+        panelRoot.gameObject.SetActive(false);
         showControlPanel = false;
     }
-    public void ToggleDisplayPanel()
+    public void ToggleControlPanel()
     {
-        if (showControlPanel) HideDisplayPanel();
-        else ShowDisplayPanel();
+        if (showControlPanel) HideControlPanel();
+        else ShowControlPanel();
     }
 
 
     #region Instance
-    private static ControlPanel _Instance;
+    private static ParameterReceiverPanel _Instance;
 
-    public static ControlPanel Instance
+    public static ParameterReceiverPanel Instance
     {
         get
         {
             if (_Instance == null)
             {
-                _Instance = GameObject.FindObjectOfType<ControlPanel>();
+                _Instance = GameObject.FindObjectOfType<ParameterReceiverPanel>();
                 if (_Instance == null)
                 {
                     GameObject go = new GameObject();
-                    _Instance = go.AddComponent<ControlPanel>();
+                    _Instance = go.AddComponent<ParameterReceiverPanel>();
                 }
             }
             return _Instance;

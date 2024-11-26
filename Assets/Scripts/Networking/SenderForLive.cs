@@ -11,7 +11,7 @@ public class SenderForLive : MonoBehaviour
     [SerializeField] OscConnection senderConnection = null;
 
     [Header("Control Panel")]
-    [SerializeField] Transform transformControlPanel;
+    [SerializeField] Transform parameterRoot;
     [SerializeField] GameObject prefabPropertyItem;
 
 
@@ -22,7 +22,7 @@ public class SenderForLive : MonoBehaviour
 
     OscClient _client = null;
 
-    bool controlPanelShown = false;
+    bool showControlPanel = false;
 
     public void RegisterOscPropertyToSend(string address, AutoSwitchedParameter<float> param)
     {
@@ -86,15 +86,15 @@ public class SenderForLive : MonoBehaviour
         connectedWithLive = !error_occured;
 
 
-        if(controlPanelShown)
+        if(showControlPanel)
         {
             UpdateControlPanel();
         }
 
 
-        if(Input.GetKeyDown(KeyCode.F5))
+        if(Input.GetKeyDown(KeyCode.F6))
         {
-            if (controlPanelShown) HideControlPanel();
+            if (showControlPanel) HideControlPanel();
             else ShowControlPanel();
         }
     }
@@ -184,14 +184,22 @@ public class SenderForLive : MonoBehaviour
 
         RemoveAllSender();
 
+        RemoveAllItemsInControlPanel();
+
         HideControlPanel();
     }
 
     void RemoveAllSender()
     {
         propertiesForSending.Clear();
+    }
 
-        //RemoveAllItemsInControlPanel();
+    void RemoveAllItemsInControlPanel()
+    {
+        foreach (Transform child in parameterRoot)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
 
@@ -208,7 +216,7 @@ public class SenderForLive : MonoBehaviour
 
     void AddProperyItemInControlPanel(OscPropertyForSending property)
     {
-        GameObject new_item = Instantiate(prefabPropertyItem, transformControlPanel.transform);
+        GameObject new_item = Instantiate(prefabPropertyItem, parameterRoot.transform);
         new_item.name = property.oscAddress;
 
         new_item.transform.Find("Toggle_Enabled").GetComponent<Toggle>().isOn = property.enabled;
@@ -256,7 +264,7 @@ public class SenderForLive : MonoBehaviour
         for (int i = 0; i < propertiesForSending.Count; i++)
         {
             OscPropertyForSending property = propertiesForSending[i];
-            Transform item = transformControlPanel.transform.GetChild(i);
+            Transform item = parameterRoot.transform.GetChild(i);
             if (item.name != property.oscAddress)
                 continue;
 
@@ -267,15 +275,20 @@ public class SenderForLive : MonoBehaviour
 
     void ShowControlPanel()
     {
-        transformControlPanel.gameObject.SetActive(true);
-        controlPanelShown = true;
+        parameterRoot.gameObject.SetActive(true);
+        showControlPanel = true;
     }
     void HideControlPanel()
     {
-        transformControlPanel.gameObject.SetActive(false);
-        controlPanelShown = false;
+        parameterRoot.gameObject.SetActive(false);
+        showControlPanel = false;
     }
 
+    public void ToggleControlPanel()
+    {
+        if (showControlPanel) HideControlPanel();
+        else ShowControlPanel();
+    }
 
 
     #region Remap Function

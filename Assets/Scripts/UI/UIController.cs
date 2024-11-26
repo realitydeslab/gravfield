@@ -112,9 +112,9 @@ public class UIController : MonoBehaviour
         FindButtonAndBind("Page_ExtraMenu/Button_Exit", () => { RestartGame(); });
         FindButtonAndBind("Page_ExtraMenu/Button_Return", () => { HideExtraMenu(); });
 
-        //pageExtraMenu.Find("Button_InfoPanel").GetComponent<Button>().onClick.AddListener(ToggleInfoPanel);
-        //pageExtraMenu.Find("Button_ControllerPanel").GetComponent<Button>().onClick.AddListener(ToggleControlPanel);
-        //pageExtraMenu.Find("Button_OscSenderPanel").GetComponent<Button>().onClick.AddListener(ToggleOscSenderPanel);
+        FindButtonAndBind("Page_ExtraMenu/Button_InfoPanel", ToggleInfoPanel);
+        FindButtonAndBind("Page_ExtraMenu/Button_ReceiverPanel", ToggleReceiverPanel);
+        FindButtonAndBind("Page_ExtraMenu/Button_SenderPanel", ToggleSenderPanel);
 
         GotoPage("Page_Home");
 
@@ -552,8 +552,8 @@ public class UIController : MonoBehaviour
         pageExtraMenu.gameObject.SetActive(true);
 
         pageExtraMenu.Find("Button_InfoPanel").gameObject.SetActive(GameManager.Instance.IsInDevelopment);
-        pageExtraMenu.Find("Button_ControllerPanel").gameObject.SetActive(GameManager.Instance.PlayerRole == PlayerRole.Server || GameManager.Instance.PlayerRole == PlayerRole.Commander);
-        pageExtraMenu.Find("Button_OscSenderPanel").gameObject.SetActive(GameManager.Instance.PlayerRole == PlayerRole.Server);
+        pageExtraMenu.Find("Button_ReceiverPanel").gameObject.SetActive(GameManager.Instance.PlayerRole == PlayerRole.Server || GameManager.Instance.PlayerRole == PlayerRole.Commander);
+        pageExtraMenu.Find("Button_SenderPanel").gameObject.SetActive(GameManager.Instance.PlayerRole == PlayerRole.Server);
     }
 
     void HideExtraMenu()
@@ -568,15 +568,17 @@ public class UIController : MonoBehaviour
         HideExtraMenu();
     }
 
-    void ToggleControlPanel()
+    void ToggleReceiverPanel()
     {
-        ControlPanel.Instance.ToggleDisplayPanel();
+        ParameterReceiver.Instance.ToggleControlPanel();
 
         HideExtraMenu();
     }
 
-    void ToggleOscSenderPanel()
+    void ToggleSenderPanel()
     {
+        SenderForLive.Instance.ToggleControlPanel();
+
         HideExtraMenu();
     }
     #endregion

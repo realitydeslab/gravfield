@@ -73,7 +73,7 @@ public class Helper : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F8))
+        if (Input.GetKeyDown(KeyCode.F7))
         {
             if (infoPanelEnabled) HideInfoPanel();
             else ShowInfoPanel();

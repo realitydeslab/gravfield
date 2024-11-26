@@ -50,11 +50,11 @@ public class EffectRope_Dispatcher : BaseDispatcher
         string base_name = "/rope";
         string rope_index = effectRope.RopeIndex.ToString();
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-mass", effectRope.NV_Mass);//, need_clamp: true, min_value: 10, max_value: 80);
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-maxWidth", effectRope.NV_MaxWidth);//, need_clamp: true, min_value: 1, max_value: 100);
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-scaler", effectRope.NV_RopeScaler);//, need_clamp: true, min_value: 1, max_value: 20);
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-offset-y", effectRope.NV_RopeOffsetY);
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-offset-z", effectRope.NV_RopeOffsetZ);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-mass", effectRope.NV_Mass, need_clamp: false, min_value: 10, max_value: 80);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-maxWidth", effectRope.NV_MaxWidth, need_clamp: false, min_value: 1, max_value: 100);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-scaler", effectRope.NV_RopeScaler, need_clamp: false, min_value: 1, max_value: 20);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-offset-y", effectRope.NV_RopeOffsetY, need_clamp: false, min_value: -1, max_value: 1);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-offset-z", effectRope.NV_RopeOffsetZ, need_clamp: false, min_value: -1, max_value: 1);
     }
 
     #endregion

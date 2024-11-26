@@ -57,16 +57,10 @@ public class GameManager : MonoBehaviour
     private UIController uiController;
     public UIController UIController { get => uiController; }
 
-    private ControlPanel controlPanel;
-    public ControlPanel ControlPanel { get => controlPanel; }
-
     public List<Performer> PerformerList { get => playerManager.PerformerList; }
 
     private PlayerRole playerRole;
     public PlayerRole PlayerRole { get => playerRole; }
-
-    private bool isPlaying = false;
-    public bool IsPlaying { get => isPlaying; }
 
     public UnityEvent<PlayerRole> OnStartGame;
     public UnityEvent<PlayerRole> OnStopGame;
@@ -354,20 +348,19 @@ public class GameManager : MonoBehaviour
     {
         ConnectionManager.ShutDown();
 
-        isPlaying = false;
+        //if (PlayerManager.Role == PlayerRole.Server)
+        //{
+        //    ControlPanel.ClearAllPropertyInControlPanel();
+        //    MiddlewareManager.TurnOff();
+        //}
+        //else if (PlayerManager.Role == PlayerRole.Commander)
+        //{
+        //    Commander.DeinitializeCommander();
+        //}
 
-        if (PlayerManager.Role == PlayerRole.Server)
-        {
-            ControlPanel.ClearAllPropertyInControlPanel();
-            MiddlewareManager.TurnOff();
-        }
-        else if (PlayerManager.Role == PlayerRole.Commander)
-        {
-            Commander.DeinitializeCommander();
-        }
+        OnStopGame?.Invoke(playerRole);
 
-
-        //RoleManager.ResetPlayerRole();
+        playerRole = PlayerRole.Undefined;
 
         UIController.GoBackToHomePage();
     }
@@ -460,15 +453,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("No UIController Found.");
         }
-
-        controlPanel = FindFirstObjectByType<ControlPanel>();
-        if (controlPanel == null)
-        {
-            Debug.LogError("No ControlPanel Found.");
-        }
-
-
-        
     }
 
     #region Instance

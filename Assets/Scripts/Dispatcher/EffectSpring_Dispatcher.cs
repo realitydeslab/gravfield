@@ -42,8 +42,8 @@ public class EffectSpring_Dispatcher : BaseDispatcher
         string base_name = "/spring";
         string rope_index = effectSpring.SpringIndex.ToString();
 
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-freq", effectSpring.NV_SpringFreq);
-        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-width", effectSpring.NV_SpringWidth);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-freq", effectSpring.NV_SpringFreq, need_clamp: false, min_value: 0, max_value: 80);
+        ParameterReceiver.Instance.RegisterOscReceiverFunction(base_name + rope_index + "-width", effectSpring.NV_SpringWidth, need_clamp: false, min_value: 0, max_value: 40);
     }
 
     #endregion

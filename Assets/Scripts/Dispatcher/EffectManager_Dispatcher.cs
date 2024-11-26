@@ -35,7 +35,7 @@ public class EffectManager_Dispatcher : BaseDispatcher
     #region Receiver
     protected override void RegisterReceiver()
     {
-        ParameterReceiver.Instance.RegisterOscReceiverFunction("/mode", (v)=> { effectManager.effectMode.Value = v; });
+        ParameterReceiver.Instance.RegisterOscReceiverFunction("/mode", effectManager.effectMode);
     }
 
     #endregion

@@ -79,11 +79,12 @@ public class OscPropertyForReceiving
         dataType = typeof(float);
     }
 
-    public OscPropertyForReceiving(string _address, UnityAction<float> _action, bool need_clamp, float min_value, float max_value) : this(_address)
+    public OscPropertyForReceiving(string _address, UnityAction<float> _action, float default_value, bool need_clamp, float min_value, float max_value) : this(_address)
     {
         floatAction = _action;
         dataType = typeof(float);
 
+        defaultValue = default_value;
         needClamp = need_clamp;
         minValue = min_value;
         maxValue = max_value;
@@ -112,6 +113,7 @@ public class OscPropertyForReceiving
     public UnityAction<int> intAction;
     public UnityAction<string> stringAction;
 
+    public float defaultValue;
     public float minValue;
     public float maxValue;
     public bool needClamp = false;

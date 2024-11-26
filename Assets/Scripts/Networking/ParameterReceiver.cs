@@ -11,6 +11,13 @@ public class ParameterReceiver : MonoBehaviour
 {
     [SerializeField] OscConnection receiverConnection = null;
 
+    [Header("Control Panel")]
+    [SerializeField] Transform panelRoot;
+    [SerializeField] Transform parameterRoot;
+    [SerializeField] GameObject prefabParameterItem;
+
+    bool showControlPanel = false;
+
 
     List<OscPropertyForReceiving> propertiesForReceiving = new List<OscPropertyForReceiving>();
 
@@ -20,25 +27,25 @@ public class ParameterReceiver : MonoBehaviour
 
     public void RegisterOscReceiverFunction(string address, UnityAction<float> action, bool need_clamp = false, float min_value = 0, float max_value = 1)
     {
-        OscPropertyForReceiving property = new OscPropertyForReceiving(address, action, need_clamp, min_value, max_value);
+        OscPropertyForReceiving property = new OscPropertyForReceiving(address, action, (min_value + max_value) * 0.5f, need_clamp, min_value, max_value);
 
         RegisterOscReceiverFunction(property);
     }
 
     public void RegisterOscReceiverFunction(string address, NetworkVariable<float> param, bool need_clamp = false, float min_value = 0, float max_value = 1)
     {
-        OscPropertyForReceiving property = new OscPropertyForReceiving(address, new UnityAction<float>((v)=> { param.Value = v; }), need_clamp, min_value, max_value);
+        OscPropertyForReceiving property = new OscPropertyForReceiving(address, new UnityAction<float>((v)=> { param.Value = v; }), param.Value, need_clamp, min_value, max_value);
 
         RegisterOscReceiverFunction(property);
     }
 
-    public void RegisterOscReceiverFunction(OscPropertyForReceiving property)
+    void RegisterOscReceiverFunction(OscPropertyForReceiving property)
     {
         propertiesForReceiving.Add(property);
 
         AddReceiverComponent(property);
 
-        ControlPanel.Instance.AddProperyInControlPanel_ServerMode(property);
+        AddProperyInControlPanel(property);
     }
     //public void RegisterOscReceiverFunction(string address, UnityAction<Vector3> action)
     //{
@@ -77,6 +84,10 @@ public class ParameterReceiver : MonoBehaviour
         Debug.Log($"[{this.GetType()}] TurnOff");
 
         RemoveAllOscReceiver();
+
+        RemoveAllPropertyInControlPanel();
+
+        HideControlPanel();
     }
 
     public string[] GetAllParameterAddresses()
@@ -173,7 +184,7 @@ public class ParameterReceiver : MonoBehaviour
 
                 property.floatAction?.Invoke(v);
 
-                ControlPanel.Instance.OnUpdateDisplay(property.oscAddress, v);
+                OnUpdateDisplay(property.oscAddress, v);
             });            
             receiver.Initialize();
         }
@@ -207,21 +218,6 @@ public class ParameterReceiver : MonoBehaviour
     }
 
 
-    //void OnUpdateDisplay(string address, Vector3 v)
-    //{
-    //    if (displayPanelShown == false)
-    //        return;
-
-    //    //Transform item = transformDisplayPanel.Find(address.Substring(1));
-    //    Transform item = parameterRoot.Find(address.Substring(1));
-    //    if (item != null)
-    //    {
-    //        item.Find("Value").GetComponent<TextMeshProUGUI>().text = v.ToString();
-    //    }
-    //}
-
-    
-
     //[ContextMenu("SetReceiverConnection")]
     //public void SetReceiverConnection()
     //{
@@ -235,6 +231,93 @@ public class ParameterReceiver : MonoBehaviour
     //        receiver._connection = receiverConnection;
     //    }
     //}
+
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F5) && NetworkManager.Singleton.IsServer)
+        {
+            if (showControlPanel) HideControlPanel();
+            else ShowControlPanel();
+        }
+    }
+
+    void AddProperyInControlPanel(OscPropertyForReceiving property)
+    {
+        GameObject new_item = Instantiate(prefabParameterItem, parameterRoot);
+        new_item.name = property.oscAddress.Substring(1);
+        new_item.transform.Find("Label").GetComponent<TextMeshProUGUI>().text = property.oscAddress;
+
+        TextMeshProUGUI value_text = new_item.transform.Find("Value").GetComponent<TextMeshProUGUI>();
+        value_text.text = "";
+
+        TMP_InputField min_value_input = new_item.transform.Find("InputField_Min").GetComponent<TMP_InputField>();
+        TMP_InputField max_value_input = new_item.transform.Find("InputField_Max").GetComponent<TMP_InputField>();
+        min_value_input.text = property.minValue.ToString("0.00");
+        max_value_input.text = property.maxValue.ToString("0.00");
+
+        Slider slider = new_item.transform.Find("Slider").GetComponent<Slider>();
+        slider.value = property.defaultValue;
+        slider.minValue = property.minValue;
+        slider.maxValue = property.maxValue;
+
+        slider.onValueChanged.AddListener((v) =>
+        {
+            property.floatAction?.Invoke(v);
+
+            value_text.text = v.ToString("0.00");
+        });
+
+        min_value_input.onEndEdit.AddListener((string str) => {
+            if (float.TryParse(str, out float result))
+            {
+                slider.minValue = result;
+            }
+        });
+
+        max_value_input.onEndEdit.AddListener((string str) => {
+            if (float.TryParse(str, out float result))
+            {
+                slider.maxValue = result;
+            }
+        });
+    }
+
+    void RemoveAllPropertyInControlPanel()
+    {
+        foreach(Transform child in parameterRoot)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    void OnUpdateDisplay(string address, float v)
+    {
+        if (showControlPanel == false)
+            return;
+
+        Transform item = parameterRoot.Find(address.Substring(1));
+        if (item != null)
+        {
+            item.Find("Value").GetComponent<TextMeshProUGUI>().text = v.ToString();
+        }
+    }
+
+    public void ShowControlPanel()
+    {
+        panelRoot.gameObject.SetActive(true);
+        showControlPanel = true;
+    }
+    public void HideControlPanel()
+    {
+        panelRoot.gameObject.SetActive(false);
+        showControlPanel = false;
+    }
+    public void ToggleControlPanel()
+    {
+        if (showControlPanel) HideControlPanel();
+        else ShowControlPanel();
+    }
 
     #region Instance
     private static ParameterReceiver _Instance;
