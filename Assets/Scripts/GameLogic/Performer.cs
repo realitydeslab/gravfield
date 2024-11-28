@@ -18,6 +18,10 @@ public class Performer : NetworkBehaviour
 
     public NetworkVariable<bool> isPerforming;
 
+    public NetworkVariable<float> soundVolume;
+
+    public NetworkVariable<float> soundPitch;
+
     int performerIndex = 0;
 
     string performerName = "A";
@@ -80,6 +84,13 @@ public class Performer : NetworkBehaviour
         localData.acceleration = (new_vel - localData.velocity) / Time.deltaTime;
         localData.velocity = new_vel;
         localData.position = new_pos;
+
+
+        if(IsOwner)
+        {
+            soundVolume.Value = GameManager.Instance.AudioProcessor.AudioVolume;
+            soundPitch.Value = GameManager.Instance.AudioProcessor.AudioPitch;
+        }
     }
 
 
