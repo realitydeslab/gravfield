@@ -31,8 +31,8 @@ public class EffectSpring : NetworkBehaviour
     // Basic
     public Performer performerStart;
     public Performer performerEnd;
-    //Transform ropeStart;
-    //Transform ropeEnd;
+    Transform ropeStart;
+    Transform ropeEnd;
     public Vector3 ropeOffset;
 
     int springIndex;
@@ -47,85 +47,108 @@ public class EffectSpring : NetworkBehaviour
 
 
     // Path    
-    //Spline spline;
-    //List<GameObject> wayPoints = new List<GameObject>();
+    Spline spline;
+    List<GameObject> wayPoints = new List<GameObject>();
     //LineRenderer lineRenderer;
     //Material lineMat;
 
 
-    //Mesh
-    MeshRenderer springMesh;
-    List<MeshRenderer> springMeshList = new List<MeshRenderer>();
-    float meshRotation = 0;
+    ////Mesh
+    //MeshRenderer springMesh;
+    //List<MeshRenderer> springMeshList = new List<MeshRenderer>();
+    //float meshRotation = 0;
 
 
 
-    float sinBaseValue;
+    //float sinBaseValue;
 
 
-    [SerializeField]
-    Material meshMat;
-    const int LINE_COUNT = 5;
-    float soundwaveFrequency = 30;
-    float frequencyRange = 30;
-    public float soundAmplifier = 6;
-    List<SoundWaveLine> soundWaveList = new List<SoundWaveLine>();
+    //[SerializeField]
+    //Material meshMat;
+    //const int LINE_COUNT = 5;
+    //float soundwaveFrequency = 30;
+    //float frequencyRange = 30;
+    //public float soundAmplifier = 6;
+    //List<SoundWaveLine> soundWaveList = new List<SoundWaveLine>();
 
-    float maxDistance = 8;
-    public float maxSpringThickness = 20;
-    public float minSpringThickness = 0.2f;
-    public Vector2 switchDirectionTime = new Vector2(0, 1f);
-    public float attackSpeed = 0.01f;
-    public float decaySpeed = 0.001f;
-    public float sinChangeSpeed = 0.001f;
-    public Vector2 sinSpeedRange = new Vector2(0.4f, 1f);
+    //float maxDistance = 8;
+    //public float maxSpringThickness = 20;
+    //public float minSpringThickness = 0.2f;
+    //public Vector2 switchDirectionTime = new Vector2(0, 1f);
+    //public float attackSpeed = 0.01f;
+    //public float decaySpeed = 0.001f;
+    //public float sinChangeSpeed = 0.001f;
+    //public Vector2 sinSpeedRange = new Vector2(0.4f, 1f);
 
-    public float amplifier = 1;
-    public float period = 1;
+    //public float amplifier = 1;
+    //public float period = 1;
+
+    public float shakeYStart;
+    public float shakeYEnd;
+    public float shakeAngleStart;
+    public float shakeAngleEnd;
+
+    public float ropeMass = 42.8f;
+    public float cornerThickness = 2;
+    public float centerThickness = 40;
+    public float offsetMultiplier = 3;
+
+    public float anchorMass = 2;
+    public float jointMass = 2;
+    public float thickness = 2;
+    public float hingeSpring = 2;
+    public float hingeDamper = 2;
+
+    // Parameters sent to Live
+    Transform centroidTransform;
+    [HideInInspector] public Vector3 centroidPos;
+    [HideInInspector] public Vector3 centroidVel;
+    [HideInInspector] public Vector3 centroidAcc;
 
     void Awake()
     {
         springIndex = transform.GetSiblingIndex();
 
-        //ropeStart = transform.Find("Anchors").GetChild(0);
-        //ropeEnd = transform.Find("Anchors").GetChild(1);
+        ropeStart = transform.Find("Anchors").GetChild(0);
+        ropeEnd = transform.Find("Anchors").GetChild(1);
 
-        springMesh = GetComponent<MeshRenderer>();
+        //springMesh = GetComponent<MeshRenderer>();
 
-        sinBaseValue = Random.Range(0, 1000f);
+        //sinBaseValue = Random.Range(0, 1000f);
 
-        for(int i=0; i< LINE_COUNT; i++)
-        {
-            SoundWaveLine soundwave = new SoundWaveLine();
-            soundWaveList.Add(soundwave);
+        //for(int i=0; i< LINE_COUNT; i++)
+        //{
+        //        SoundWaveLine soundwave = new SoundWaveLine();
+        //    soundWaveList.Add(soundwave);
 
-            soundwave.soundData = 0;
-            soundwave.chaos = 0;
-            soundwave.sinShift = Random.Range(0f, 1000f);
-            soundwave.sinSpeed = Random.Range(5f, 11f); 
-            soundwave.sinFrequency = soundwaveFrequency + Random.Range(-0.5f, 0.5f) * frequencyRange;
+        //    soundwave.soundData = 0;
+        //    soundwave.chaos = 0;
+        //    soundwave.sinShift = Random.Range(0f, 1000f);
+        //    soundwave.sinSpeed = Random.Range(5f, 11f);
+        //    soundwave.sinFrequency = soundwaveFrequency + Random.Range(-0.5f, 0.5f) * frequencyRange;
 
-            soundwave.direction = Random.Range(0f, 1f) > 0.5f ? 1 : -1;
-            soundwave.duration = Random.Range(0f, 1f);
-        }
+        //    soundwave.direction = Random.Range(0f, 1f) > 0.5f ? 1 : -1;
+        //    soundwave.duration = Random.Range(0f, 1f);
+        //}
 
-        for(int i=0;i<transform.childCount; i++)
-        {
-            springMeshList.Add(transform.GetChild(i).GetComponent<MeshRenderer>());
-        }
+        //for (int i = 0; i < transform.childCount; i++)
+        //{
+        //    springMeshList.Add(transform.GetChild(i).GetComponent<MeshRenderer>());
+        //}
     }
 
     
 
     void Start()
     {
-        //spline = GetComponent<Spline>();
+        spline = GetComponent<Spline>();
+
         //lineRenderer = GetComponent<LineRenderer>();
         //lineMat = lineRenderer.material;
 
-        //AssignWayPoints();
+        AssignWayPoints();
 
-        //AssignSplineNodes();
+        AssignSplineNodes();
     }
 
     
@@ -135,22 +158,31 @@ public class EffectSpring : NetworkBehaviour
 
         if (springEnabled == false) return;
 
-        soundwaveFrequency = NV_SpringFreq.Value;
-        maxSpringThickness = NV_SpringWidth.Value;
+        //soundwaveFrequency = NV_SpringFreq.Value;
+        //maxSpringThickness = NV_SpringWidth.Value;
 
-        UpdateSpringAnchors();
+        //UpdateSpringAnchors();
 
-        //UpdateNodes();
+        //UpdateSpringMaterial();
 
-        //UpdateSpringThickness();
 
-        UpdateSpringMaterial();
 
-        //UpdateLineRenderer();
+        // update parameters
+        UpdateParameter();
 
-        //UpdateParamtersForLive();
+        // update rope
+        UpdateRopeAnchors();
+
+        UpdateNodes();
+
+
+        // update effect
+        UpdateRopeEffect();
+
+        UpdateRopeMass();
     }
 
+    /*
     void UpdateSpringAnchors()
     {
         Vector3 start_pos = performerStart.transform.TransformPoint(ropeOffset);// + RandomOffset(performerStart.transform.position));
@@ -343,22 +375,64 @@ public class EffectSpring : NetworkBehaviour
     {
         return Mathf.Cos(time * speed / Mathf.PI) * scale;
     }
+    */
 
-    //void UpdateNodes()
-    //{
-    //    int i = 0;
-    //    foreach (GameObject wayPoint in wayPoints)
-    //    {
-    //        var node = spline.nodes[i++];
-    //        //if (Vector3.Distance(node.Position, transform.InverseTransformPoint(wayPoint.transform.position)) > 0.001f)
-    //        //{
-    //        //    node.Position = transform.InverseTransformPoint(wayPoint.transform.position);
-    //        //    //node.Up = wayPoint.transform.up;
-    //        //}
-    //        node.Position = wayPoint.transform.position;
-    //        //node.Up = wayPoint.transform.up;
-    //    }
-    //}
+
+    void UpdateParameter()
+    {
+        
+    }
+
+    #region Path
+    void UpdateRopeAnchors()
+    {
+        //ropeStart.localPosition = ApplyOffset(performerStart.transform);
+        //ropeEnd.localPosition = ApplyOffset(performerEnd.transform);
+
+        Vector3 direction = performerEnd.transform.position - performerStart.transform.position;
+
+        ropeStart.localPosition = performerStart.transform.position + direction.normalized * Mathf.Min(direction.magnitude * 0.1f, ropeOffset.z);
+        ropeEnd.localPosition = performerEnd.transform.position - direction.normalized * Mathf.Min(direction.magnitude * 0.1f, ropeOffset.z);
+
+
+        // Shake
+        ropeStart.localPosition += Vector3.up * shakeYStart;
+        ropeEnd.localPosition += Vector3.up * shakeYEnd;
+
+        //ropeStart.forward = direction.normalized;
+        //ropeStart.localEulerAngles = new Vector3(shakeAngleStart, ropeStart.localEulerAngles.y, ropeStart.localEulerAngles.z);
+
+        //ropeEnd.forward = -direction.normalized;
+        //ropeEnd.localEulerAngles = new Vector3(shakeAngleEnd, ropeEnd.localEulerAngles.y, ropeEnd.localEulerAngles.z);
+    }
+
+    Vector3 ApplyOffset(Transform trans)
+    {
+        float angle_x = Mathf.Abs(trans.localRotation.eulerAngles.x);
+        angle_x = angle_x > 180 ? 360 - angle_x : angle_x;
+
+        //float offset_multipler = Utilities.Remap(angle_x, 0, 90, 1f, Mathf.Max(1, offsetMultiplier), true);
+        //return trans.TransformPoint(new Vector3(ropeOffset.x, ropeOffset.y, ropeOffset.z * offset_multipler));
+
+        return trans.TransformPoint(new Vector3(ropeOffset.x, ropeOffset.y, ropeOffset.z));
+    }
+
+    void UpdateNodes()
+    {
+        int i = 0;
+        foreach (GameObject wayPoint in wayPoints)
+        {
+            var node = spline.nodes[i++];
+            //if (Vector3.Distance(node.Position, transform.InverseTransformPoint(wayPoint.transform.position)) > 0.001f)
+            //{
+            //    node.Position = transform.InverseTransformPoint(wayPoint.transform.position);
+            //    //node.Up = wayPoint.transform.up;
+            //}
+            node.Position = wayPoint.transform.position;
+            //node.Up = wayPoint.transform.up;
+        }
+    }
+    #endregion
 
     //void UpdateLineRenderer()
     //{
@@ -417,69 +491,100 @@ public class EffectSpring : NetworkBehaviour
     //    //Debug.Log($"Min:{min}, Max{max}");
     //}
 
-    //void UpdateParamtersForLive()
-    //{
-    //    Vector3 last_pos = centroidPos;
-    //    centroidPos = centroidTransform.localPosition;
-    //    centroidVel = (centroidPos - last_pos) / Time.deltaTime;
 
-    //    ropevel.OrginalValue = centroidVel.magnitude;
-    //}
 
     public void SetSpringState(bool state)
     {
         springEnabled = state;
 
-        //lineRenderer.enabled = state;
+        Debug.Log($"[{this.GetType()}] SetSpringState:{state}");
 
-        //Transform mesh_transform = transform.Find("generated by SplineMeshTiling");
-        //mesh_transform?.gameObject.SetActive(state);
+        Transform mesh_transform = transform.Find("generated by SplineMeshTiling");
+        mesh_transform?.gameObject.SetActive(state);
 
-        //springMesh.enabled = state;
+        //for (int i=0; i<springMeshList.Count; i++)
+        //{
+        //    springMeshList[i].enabled = state;
+        //}
+    }
 
-        for (int i=0; i<springMeshList.Count; i++)
+
+    //void SetSpringThickness(float new_thickness, float start_angle_x = 0, float end_angle_x = 0)
+    //{
+    //float currentLength = 0;
+    //int curve_index = 0;
+    //foreach (CubicBezierCurve curve in spline.GetCurves())
+    //{            
+    //    if (curve_index == 0 || curve_index == spline.curves.Count - 1)
+    //    {
+    //        float startRate = currentLength / spline.Length;
+    //        currentLength += curve.Length;
+    //        float endRate = currentLength / spline.Length;
+
+    //        float start_thickness = curve_index == 0 ? Utilities.Remap(start_angle_x, 0, 90, new_thickness, new_thickness * 0.5f) : new_thickness;
+    //        float end_thickness = curve_index == 0 ? new_thickness : Utilities.Remap(end_angle_x, 0, 90, new_thickness, new_thickness * 0.5f);
+
+    //        curve.n1.Scale = Vector3.one * (start_thickness + (end_thickness - start_thickness) * startRate);
+    //        curve.n2.Scale = Vector3.one * (start_thickness + (end_thickness - start_thickness) * endRate);
+    //    }
+    //    else
+    //    {
+    //        curve.n1.Scale = Vector3.one * new_thickness;
+    //        curve.n2.Scale = Vector3.one * new_thickness;
+    //    }
+    //}
+    //}
+
+    void UpdateRopeEffect()
+    {
+        float min_thickness = Utilities.Remap(spline.Length, 0, 10, cornerThickness, 1, true);
+        float max_thickness = Utilities.Remap(centroidVel.magnitude, 0, 20, min_thickness, centerThickness);
+
+        float currentLength = 0;
+        foreach (CubicBezierCurve curve in spline.GetCurves())
         {
-            springMeshList[i].enabled = state;
+            float start_percentage = 1 - Mathf.Abs((currentLength / spline.Length - 0.5f) * 2);
+            currentLength += curve.Length;
+            float end_percentage = 1 - Mathf.Abs((currentLength / spline.Length - 0.5f) * 2);
+
+            curve.n1.Scale = Vector3.one * thickness;// (min_thickness + (max_thickness - min_thickness) * start_percentage);
+            curve.n2.Scale = Vector3.one * thickness;// (min_thickness + (max_thickness - min_thickness) * end_percentage);
         }
     }
 
-    
-    //void SetSpringThickness(float new_thickness, float start_angle_x = 0, float end_angle_x = 0)
-    //{
-        //float currentLength = 0;
-        //int curve_index = 0;
-        //foreach (CubicBezierCurve curve in spline.GetCurves())
-        //{            
-        //    if (curve_index == 0 || curve_index == spline.curves.Count - 1)
-        //    {
-        //        float startRate = currentLength / spline.Length;
-        //        currentLength += curve.Length;
-        //        float endRate = currentLength / spline.Length;
+    void UpdateRopeMass()
+    {
+        Transform segment_root = transform.Find("Segments");
+        for (int m = 0; m < segment_root.childCount; m++)
+        {
+            Rigidbody rigid = segment_root.GetChild(m).GetComponent<Rigidbody>();
+            rigid.mass = ropeMass;// Mathf.Lerp(startMass, endMass, m / segment_root.childCount - 1);
+        }
 
-        //        float start_thickness = curve_index == 0 ? Utilities.Remap(start_angle_x, 0, 90, new_thickness, new_thickness * 0.5f) : new_thickness;
-        //        float end_thickness = curve_index == 0 ? new_thickness : Utilities.Remap(end_angle_x, 0, 90, new_thickness, new_thickness * 0.5f);
+        Transform joint_root = transform.Find("Joints");
 
-        //        curve.n1.Scale = Vector3.one * (start_thickness + (end_thickness - start_thickness) * startRate);
-        //        curve.n2.Scale = Vector3.one * (start_thickness + (end_thickness - start_thickness) * endRate);
-        //    }
-        //    else
-        //    {
-        //        curve.n1.Scale = Vector3.one * new_thickness;
-        //        curve.n2.Scale = Vector3.one * new_thickness;
-        //    }
-        //}
-    //}
+        JointSpring spring_settings = new JointSpring();
+        spring_settings.spring = hingeSpring;
+        spring_settings.damper = hingeDamper;
+        for (int m = 0; m < joint_root.childCount; m++)
+        {
+            Rigidbody rigid = joint_root.GetChild(m).GetComponent<Rigidbody>();
+            rigid.mass = jointMass;
 
-    //void UpdateRopeMass()
-    //{
-    //    Transform segment_root = transform.Find("Segments");
-    //    for (int m = 0; m < segment_root.childCount; m++)
-    //    {
-    //        Rigidbody rigid = segment_root.GetChild(m).GetComponent<Rigidbody>();
-    //        rigid.mass = Mathf.Lerp(startMass, endMass, m / segment_root.childCount - 1);
-    //    }
-    //    Debug.Log($"UpdateRopeMass:{startMass}, {endMass}");
-    //}
+            HingeJoint[] hinge_list = joint_root.GetChild(m).GetComponents<HingeJoint>();
+            foreach (var hinge in hinge_list)
+            {
+                hinge.spring = spring_settings;
+            }
+        }
+
+        Transform anchor_root = transform.Find("Anchors");
+        for (int m = 0; m < anchor_root.childCount; m++)
+        {
+            Rigidbody rigid = anchor_root.GetChild(m).GetComponent<Rigidbody>();
+            rigid.mass = anchorMass;
+        }
+    }
 
     //void UpdateRopeMeshScale()
     //{
@@ -488,7 +593,7 @@ public class EffectSpring : NetworkBehaviour
     //}
 
 
-   
+
 
 
 
@@ -531,40 +636,40 @@ public class EffectSpring : NetworkBehaviour
 
 
 
-    //void AssignWayPoints()
-    //{
-    //    wayPoints.Clear();
-    //    //Transform anchor_root = transform.Find("Anchors");
-    //    //wayPoints.Add(anchor_root.GetChild(0).gameObject);
+    void AssignWayPoints()
+    {
+        wayPoints.Clear();
+        //Transform anchor_root = transform.Find("Anchors");
+        //wayPoints.Add(anchor_root.GetChild(0).gameObject);
 
-    //    Transform joint_root = transform.Find("Joints");
-    //    for (int i = 0; i < joint_root.childCount; i++)
-    //    {
-    //        wayPoints.Add(joint_root.GetChild(i).gameObject);
-    //    }
+        Transform joint_root = transform.Find("Joints");
+        for (int i = 0; i < joint_root.childCount; i++)
+        {
+            wayPoints.Add(joint_root.GetChild(i).gameObject);
+        }
 
-    //    //wayPoints.Add(anchor_root.GetChild(1).gameObject);
+        //wayPoints.Add(anchor_root.GetChild(1).gameObject);
 
-    //    centroidTransform = joint_root.GetChild(Mathf.FloorToInt(joint_root.childCount / 2f));
-    //}
+        centroidTransform = joint_root.GetChild(Mathf.FloorToInt(joint_root.childCount / 2f));
+    }
 
-    //void AssignSplineNodes()
-    //{
-    //    foreach (var penisNode in wayPoints.ToList())
-    //    {
-    //        if (penisNode == null) wayPoints.Remove(penisNode);
-    //    }
-    //    int nodeCount = wayPoints.Count;
-    //    // adjust the number of nodes in the spline.
-    //    while (spline.nodes.Count < nodeCount)
-    //    {
-    //        spline.AddNode(new SplineNode(Vector3.zero, Vector3.zero));
-    //    }
-    //    while (spline.nodes.Count > nodeCount && spline.nodes.Count > 2)
-    //    {
-    //        spline.RemoveNode(spline.nodes.Last());
-    //    }
-    //}
+    void AssignSplineNodes()
+    {
+        foreach (var penisNode in wayPoints.ToList())
+        {
+            if (penisNode == null) wayPoints.Remove(penisNode);
+        }
+        int nodeCount = wayPoints.Count;
+        // adjust the number of nodes in the spline.
+        while (spline.nodes.Count < nodeCount)
+        {
+            spline.AddNode(new SplineNode(Vector3.zero, Vector3.zero));
+        }
+        while (spline.nodes.Count > nodeCount && spline.nodes.Count > 2)
+        {
+            spline.RemoveNode(spline.nodes.Last());
+        }
+    }
 
     //float CalculateRopeLength()
     //{

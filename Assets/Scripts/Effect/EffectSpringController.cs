@@ -5,16 +5,21 @@ using UnityEngine;
 
 public class EffectSpringController : NetworkBehaviour
 {
+    [SerializeField]
+    Transform performerTransformRoot;
 
     List<Performer> performerList = new List<Performer>();
+
     List<bool> springStateList = new List<bool>();
-    List<List<EffectSpring>> springList = new List<List<EffectSpring>>();
+
+    List<EffectSpringGroup> springGroupList = new List<EffectSpringGroup>();
+
     bool effectEnabled = false;
 
 
     void Awake()
     {
-        Transform performerTransformRoot = GameManager.Instance.PlayerManager.PerformerTransformRoot;
+        //Transform performerTransformRoot = GameManager.Instance.PlayerManager.PerformerTransformRoot;
         for (int i=0; i<performerTransformRoot.childCount; i++)
         {
             performerList.Add(performerTransformRoot.GetChild(i).GetComponent<Performer>());
@@ -23,21 +28,25 @@ public class EffectSpringController : NetworkBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             springStateList.Add(false);
-            Transform spring_group_root = transform.GetChild(i);
-            List<EffectSpring> spring_group = new List<EffectSpring>();
-            springList.Add(spring_group);
-            for (int k = 0; k < spring_group_root.childCount; k++)
-            {
-                EffectSpring spring = spring_group_root.GetChild(k).GetComponent<EffectSpring>();
-                Vector2Int performer_index = GetPerformerIndexOfRope(i);
-                spring.BindPerformer(performerList[performer_index.x], performerList[performer_index.y]);
-                spring_group.Add(spring);
-            }
+
+            EffectSpringGroup spring_group = transform.GetChild(i).GetComponent<EffectSpringGroup>();
+            Vector2Int performer_index = GetPerformerIndexOfRope(i);
+            spring_group.InitializeSpringGroup(performerList[performer_index.x], performerList[performer_index.y]);
+
+            springGroupList.Add(spring_group);
         }
+    }
+
+    void Start()
+    {
+
     }
 
     void OnEnable()
     {
+        if (GameManager.Instance == null)
+            return;
+
         GameManager.Instance.OnStartGame.AddListener(OnStartGame);
         GameManager.Instance.OnStopGame.AddListener(OnStopGame);
 
@@ -114,10 +123,8 @@ public class EffectSpringController : NetworkBehaviour
 
     void SetRopeState(int index, bool state)
     {
-        for (int i = 0; i < springList[index].Count; i++)
-        {
-            springList[index][i].SetSpringState(state);
-        }
+
+        springGroupList[index].SetSpringState(state);
 
 
         //transform.GetChild(index).gameObject.SetActive(state);

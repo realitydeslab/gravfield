@@ -7,7 +7,7 @@ using UnityEngine;
 public class SpringGenerator : RopeGenerator
 {
 
-    int ropeCountEachSpring = 1;
+    const int ropeCountEachSpring = 5;
 
     #region Generate Spring
     [ContextMenu("GenerateSprings")]
@@ -21,11 +21,15 @@ public class SpringGenerator : RopeGenerator
                 // Generate Spring
                 GameObject spring_group_root = new GameObject("Spring" + i.ToString() + k.ToString());
                 spring_group_root.transform.parent = transform;
+                spring_group_root.AddComponent<EffectSpringGroup>();
+
                 for (int m = 0;m < ropeCountEachSpring; m++)
                 {
                     GameObject spring_root = new GameObject("Spring" + m.ToString());
                     spring_root.transform.parent = spring_group_root.transform;
                     GenerateRope(spring_root, i, k);
+
+                    Debug.Log("Spring" + i.ToString() + k.ToString() + ": Spring" + m.ToString());
                 }
             }
         }
@@ -55,12 +59,12 @@ public class SpringGenerator : RopeGenerator
         meshTilling.curveSpace = false;
 
 
-        LineRenderer line_renderer = go.AddComponent<LineRenderer>();
-        line_renderer.material = ropeMat;
-        line_renderer.positionCount = 100;
-        line_renderer.startWidth = 0.01f;
-        line_renderer.endWidth = 0.01f;
-        line_renderer.enabled = false;
+        //LineRenderer line_renderer = go.AddComponent<LineRenderer>();
+        //line_renderer.material = ropeMat;
+        //line_renderer.positionCount = 100;
+        //line_renderer.startWidth = 0.01f;
+        //line_renderer.endWidth = 0.01f;
+        //line_renderer.enabled = false;
     }
 
     protected override void DoExtraSettings(GameObject go, int start_index, int end_index)
