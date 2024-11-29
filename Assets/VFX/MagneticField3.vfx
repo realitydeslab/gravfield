@@ -316,10 +316,8 @@ MonoBehaviour:
   m_UIInfos: {fileID: 114340500867371532}
   m_CustomAttributes:
   - {fileID: 8926484042661618030}
-  - {fileID: 8926484042661618034}
   - {fileID: 8926484042661618038}
   - {fileID: 8926484042661618045}
-  - {fileID: 8926484042661618052}
   m_ParameterInfo:
   - name: Initial Color Cycle Duration
     path: Initial Color Cycle Duration
@@ -35476,22 +35474,6 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
   m_Direction: 0
   m_LinkedSlots: []
---- !u!114 &8926484042661618034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1fe1c3ae22b45dea22da94bb7969561, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Description: 
-  m_AttributeName: MasterPerformerIndex
-  m_Type: 6
-  m_IsExpanded: 0
 --- !u!114 &8926484042661618035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36019,22 +36001,6 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
   m_Direction: 0
   m_LinkedSlots: []
---- !u!114 &8926484042661618052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1fe1c3ae22b45dea22da94bb7969561, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Description: 
-  m_AttributeName: IsPositive
-  m_Type: 4
-  m_IsExpanded: 0
 --- !u!114 &8926484042661618053
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -60,7 +60,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.cinemachine": {
-      "version": "2.10.1",
+      "version": "2.10.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -126,7 +126,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.11.1",
+      "version": "1.11.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -310,7 +310,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.transport": {
-      "version": "2.3.0",
+      "version": "2.4.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -413,7 +413,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.openxr": {
-      "version": "1.12.1",
+      "version": "1.13.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {

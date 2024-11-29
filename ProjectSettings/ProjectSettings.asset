@@ -865,11 +865,11 @@ PlayerSettings:
     PS5: UNITY_POST_PROCESSING_STACK_V2
     QNX: UNITY_POST_PROCESSING_STACK_V2
     Stadia: UNITY_POST_PROCESSING_STACK_V2
-    Standalone: UNITY_XR_ARKIT_LOADER_ENABLED;UNITY_POST_PROCESSING_STACK_V2
+    Standalone: UNITY_XR_ARKIT_LOADER_ENABLED;UNITY_POST_PROCESSING_STACK_V2;WWISE_ADDRESSABLES_23_1_OR_LATER;WWISE_ADDRESSABLES_24_1_OR_LATER;WWISE_2024_OR_LATER
     VisionOS: UNITY_POST_PROCESSING_STACK_V2
     WebGL: UNITY_POST_PROCESSING_STACK_V2
     XboxOne: UNITY_POST_PROCESSING_STACK_V2
-    iPhone: UNITY_XR_ARKIT_LOADER_ENABLED
+    iPhone: UNITY_XR_ARKIT_LOADER_ENABLED;WWISE_ADDRESSABLES_23_1_OR_LATER;WWISE_ADDRESSABLES_24_1_OR_LATER;WWISE_2024_OR_LATER
     tvOS: UNITY_POST_PROCESSING_STACK_V2
   additionalCompilerArguments: {}
   platformArchitecture:
@@ -956,7 +956,23 @@ PlayerSettings:
   XboxOneIsContentPackage: 0
   XboxOneEnhancedXboxCompatibilityMode: 0
   XboxOneEnableGPUVariability: 0
-  XboxOneSockets: {}
+  XboxOneSockets:
+    WwiseCommandSocket:
+      m_Name: WwiseCommandSocket
+      m_Port: 24025
+      m_Protocol: 0
+      m_Usages: 00000000010000000400000007000000
+      m_TemplateName: WwiseCommand
+      m_SessionRequirment: 0
+      m_DeviceUsages: 00000000
+    WwiseDiscoverySocket:
+      m_Name: WwiseDiscoverySocket
+      m_Port: 24024
+      m_Protocol: 1
+      m_Usages: 00000000010000000400000007000000
+      m_TemplateName: WwiseDiscovery
+      m_SessionRequirment: 0
+      m_DeviceUsages: 00000000
   XboxOneSplashScreen: {fileID: 0}
   XboxOneAllowedProductIds: []
   XboxOnePersistentLocalStorageSize: 0
