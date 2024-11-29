@@ -38,7 +38,7 @@ MonoBehaviour:
     ParentPath: Master-Mixer Hierarchy/Default Work Unit
     guid: c8d843ecf2b708419b996dea9beef418
     GuidInternal: 
-    m_lastTime: -8584687155872480067
+    m_lastTime: -8584687152470655431
     List:
     - name: Master Audio Bus
       guid: d8a41415a61d2a41a17e75ca0c2149f3
@@ -54,6 +54,23 @@ MonoBehaviour:
         ObjectType: 2
         guid: d8a41415a61d2a41a17e75ca0c2149f3
       Path: Master-Mixer Hierarchy/Default Work Unit/Master Audio Bus
+    - name: music
+      guid: b075eef4669c8a428de4ccf72998c041
+      id: 3991942870
+      PathAndIcons:
+      - ElementName: Master-Mixer Hierarchy
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: c8d843ecf2b708419b996dea9beef418
+      - ElementName: Master Audio Bus
+        ObjectType: 2
+        guid: d8a41415a61d2a41a17e75ca0c2149f3
+      - ElementName: music
+        ObjectType: 2
+        guid: b075eef4669c8a428de4ccf72998c041
+      Path: Master-Mixer Hierarchy/Default Work Unit/Master Audio Bus/music
   BankWwu:
   - PhysicalPath: SoundBanks/Default Work Unit.wwu
     PathAndIcons:
@@ -80,8 +97,25 @@ MonoBehaviour:
     ParentPath: Events/Default Work Unit
     guid: 9f73ff58934d1f4e92f85b1c54e84626
     GuidInternal: 
-    m_lastTime: -8584687155872486659
-    List: []
+    m_lastTime: -8584687143441129756
+    List:
+    - name: Music_Play
+      guid: 032be1ce01300b4e9b013305d54e5752
+      id: 202194903
+      PathAndIcons:
+      - ElementName: Events
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: 9f73ff58934d1f4e92f85b1c54e84626
+      - ElementName: Music_Play
+        ObjectType: 3
+        guid: 032be1ce01300b4e9b013305d54e5752
+      Path: Events/Default Work Unit/Music_Play
+      maxAttenuation: 0
+      maxDuration: -1
+      minDuration: -1
   RtpcWwu:
   - PhysicalPath: Game Parameters/Default Work Unit.wwu
     PathAndIcons:
@@ -108,8 +142,58 @@ MonoBehaviour:
     ParentPath: States/Default Work Unit
     guid: bede1229a584094a8d8876c0668b3a53
     GuidInternal: 
-    m_lastTime: -8584687155872444590
-    List: []
+    m_lastTime: -8584687151423566530
+    List:
+    - name: Music_List
+      guid: e48a4936f989b84e8772172224ec7135
+      id: 3735381909
+      PathAndIcons:
+      - ElementName: States
+        ObjectType: 5
+        guid: 00000000000000000000000000000000
+      - ElementName: Default Work Unit
+        ObjectType: 12
+        guid: bede1229a584094a8d8876c0668b3a53
+      - ElementName: Music_List
+        ObjectType: 9
+        guid: e48a4936f989b84e8772172224ec7135
+      Path: States/Default Work Unit/Music_List
+      values:
+      - name: Music_01
+        guid: da9ce40f3cc43d4e8870147cf86b1b19
+        id: 1973439780
+        PathAndIcons:
+        - ElementName: States
+          ObjectType: 5
+          guid: 00000000000000000000000000000000
+        - ElementName: Default Work Unit
+          ObjectType: 12
+          guid: bede1229a584094a8d8876c0668b3a53
+        - ElementName: Music_List
+          ObjectType: 9
+          guid: e48a4936f989b84e8772172224ec7135
+        - ElementName: Music_01
+          ObjectType: 8
+          guid: da9ce40f3cc43d4e8870147cf86b1b19
+      - name: None
+        guid: 2f59817de7f5184f88fbb9c574076969
+        id: 748895195
+        PathAndIcons:
+        - ElementName: States
+          ObjectType: 5
+          guid: 00000000000000000000000000000000
+        - ElementName: Default Work Unit
+          ObjectType: 12
+          guid: bede1229a584094a8d8876c0668b3a53
+        - ElementName: Music_List
+          ObjectType: 9
+          guid: e48a4936f989b84e8772172224ec7135
+        - ElementName: None
+          ObjectType: 8
+          guid: 2f59817de7f5184f88fbb9c574076969
+      ValueGuids: []
+      ValueIcons: []
+      valuesInternal: []
   SwitchWwu:
   - PhysicalPath: Switches/Default Work Unit.wwu
     PathAndIcons:
@@ -138,9 +222,9 @@ MonoBehaviour:
     GuidInternal: 
     m_lastTime: -8584687155872440153
     List: []
-  ExpandedFileSystemItemIds: 
-  ExpandedWaapiItemIds: 
+  ExpandedFileSystemItemIds: 0700000008000000
+  ExpandedWaapiItemIds: 0700000008000000
   AutoSyncSelection: 0
   autoPopulateEnabled: 1
-  currentDataSource: 0
+  currentDataSource: 1
   CurrentPluginConfig: 

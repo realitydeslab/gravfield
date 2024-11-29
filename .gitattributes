@@ -87,3 +87,4 @@
 *.bundle.dSYM filter=lfs diff=lfs merge=lfs -text
 *.chm filter=lfs diff=lfs merge=lfs -text
 *.dylib filter=lfs diff=lfs merge=lfs -text
+*.prof filter=lfs diff=lfs merge=lfs -text

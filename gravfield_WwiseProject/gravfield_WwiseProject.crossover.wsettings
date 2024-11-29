@@ -3,6 +3,8 @@
 	<UserProjectSettingsInfo>
 		<UserProjectSettings Name="" ID="{58EFA2DD-C35F-4011-9DA4-A66B53D627C5}">
 			<PropertyList>
+				<Property Name="AudioFilesImporter\Path" Type="string" Value="Y:\Projects\HoloWeb\gravfield\gravfield_WwiseProject\Originals\SFX\Music\"/>
+				<Property Name="Event Action List\{CEE12B03-3001-4E0B-9B01-3305D54E5752}\x64_Expand States" Type="string" Value=""/>
 				<Property Name="ExternalSourcesInputPath" Type="string">
 					<ValueList>
 						<Value Platform="Windows"></Value>
@@ -17,8 +19,34 @@
 						<Value Platform="iOS">GeneratedSoundBanks\iOS\</Value>
 					</ValueList>
 				</Property>
+				<Property Name="Game Profiler\Capture List\Filters\Scope - Game Object" Type="bool" Value="True"/>
+				<Property Name="Game Profiler\Capture List\Filters\Scope - Global" Type="bool" Value="True"/>
+				<Property Name="Game Profiler\Capture List\Filters\Sub Type - Mask" Type="int32" Value="3"/>
+				<Property Name="Game Profiler\Capture List\Filters\Type - Mask" Type="int32" Value="4096"/>
+				<Property Name="Game Profiler\Capture List\Filters\Wwise Objects - Game Objects" Type="bool" Value="False"/>
+				<Property Name="Game Profiler\Capture List\Filters\Wwise Objects - Parents" Type="bool" Value="False"/>
+				<Property Name="Game Profiler\Capture List\Filters\Wwise Objects - PlayingID" Type="bool" Value="False"/>
+				<Property Name="General\SourceControlPluginID" Type="string" Value="{C403A906-0C19-4ED5-808E-748707065301}"/>
+				<Property Name="GenerateSoundBanks\x64_SelectedLanguages" Type="string" Value=""/>
+				<Property Name="GenerateSoundBanks\x64_SelectedPlatforms" Type="string" Value=""/>
+				<Property Name="GenerateSoundBanks\x64_SelectedSoundBanks" Type="string" Value=""/>
+				<Property Name="Interactive Music\x64_{FFE9176E-460B-4A07-A415-C9AE772984BD} - SegmentEditorZoomInfo" Type="string" Value="u5mZmZmZ8T+gVJh4P3LqPwAAAAAAYGBAAAAAAAAA8D8AAAAAAAAAAAAAAAAAAAAA"/>
 				<Property Name="MeterView\LastObject1" Type="string" Value="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}"/>
 				<Property Name="MeterView\MeterMode1" Type="int32" Value="1"/>
+				<Property Name="Music Transition List\{4E9F7FBA-0CD5-4D60-9890-B3B4ABA2F4E4}\Scroll Position" Type="int32" Value="0"/>
+				<Property Name="Music Transition List\{4E9F7FBA-0CD5-4D60-9890-B3B4ABA2F4E4}\x64_Expand States" Type="string" Value=""/>
+				<Property Name="Music Transition List\{6933EDD0-BB8D-4570-A322-6783409B8D2D}\Scroll Position" Type="int32" Value="0"/>
+				<Property Name="Music Transition List\{6933EDD0-BB8D-4570-A322-6783409B8D2D}\x64_Expand States" Type="string" Value=""/>
+				<Property Name="Music Transition List\{A543539F-B64A-4965-B2C9-C8B5570D7B20}\Scroll Position" Type="int32" Value="0"/>
+				<Property Name="Music Transition List\{A543539F-B64A-4965-B2C9-C8B5570D7B20}\x64_Expand States" Type="string" Value=""/>
+				<Property Name="OverrideCacheFolder\Active" Type="bool" Value="False"/>
+				<Property Name="OverrideCacheFolder\Path" Type="string" Value=".cache"/>
+				<Property Name="OverrideOriginalFolder\Active" Type="bool" Value="False"/>
+				<Property Name="OverrideOriginalFolder\Path" Type="string" Value="Originals"/>
+				<Property Name="SoundBank Manager\x64_Expand Folders Auto" Type="string" Value=""/>
+				<Property Name="SoundBank Manager\x64_Expand Folders User" Type="string" Value="BwAAAA=="/>
+				<Property Name="SoundBank Manager\x64_Expand States Auto" Type="string" Value=""/>
+				<Property Name="SoundBank Manager\x64_Expand States User" Type="string" Value=""/>
 				<Property Name="SoundBankHeaderFilePath" Type="string" Value="GeneratedSoundBanks\"/>
 				<Property Name="SoundBankPaths" Type="string">
 					<ValueList>

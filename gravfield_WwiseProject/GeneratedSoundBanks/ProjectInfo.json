@@ -1,0 +1,43 @@
+{
+ "ProjectInfo": {
+  "Project": {
+   "Name": "gravfield_WwiseProject",
+   "GUID": "{91CDFABD-A51B-4370-9FD1-08744B45A772}",
+   "Generator": "2024.1.0.8669"
+  },
+  "CacheRoot": "../.cache",
+  "Platforms": [
+   {
+    "Name": "iOS",
+    "GUID": "{CEC62CD3-78A2-4E9C-AC9F-A45367E14637}",
+    "BasePlatform": "iOS",
+    "BasePlatformGUID": "{ECE03DB4-F948-462D-B2BB-A9173012B1F8}",
+    "Path": "iOS"
+   },
+   {
+    "Name": "Mac",
+    "GUID": "{D5631CBB-AF55-4BE9-8D8F-238FD0866A13}",
+    "BasePlatform": "Mac",
+    "BasePlatformGUID": "{9C6217D5-DD11-4795-87C1-6CE02853C540}",
+    "Path": "Mac"
+   },
+   {
+    "Name": "Windows",
+    "GUID": "{7EBE6387-A400-4642-A35F-71994F875E00}",
+    "BasePlatform": "Windows",
+    "BasePlatformGUID": "{6E0CB257-C6C8-4C5C-8366-2740DFC441EB}",
+    "Path": "Windows"
+   }
+  ],
+  "Languages": [
+   {
+    "Name": "English(US)",
+    "Id": "684519430",
+    "GUID": "{22BB4329-3830-400A-BEB1-9D30AA325566}",
+    "Default": "true",
+    "UseAsStandIn": "true"
+   }
+  ],
+  "FileHash": "{1D852829-DFF6-911A-8D1A-581B2CE7454C}"
+ }
+}

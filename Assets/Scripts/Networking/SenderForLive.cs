@@ -5,6 +5,7 @@ using Unity.Netcode;
 using OscJack;
 using UnityEngine.UI;
 using TMPro;
+using AK.Wwise;
 
 public class SenderForLive : MonoBehaviour
 {
@@ -116,6 +117,11 @@ public class SenderForLive : MonoBehaviour
             //Debug.Log($"SenderForLive | Send Address:{property.oscAddress}, Value:{data}");
 
              _client.Send(property.oscAddress, data);
+            
+            //Change here
+            Debug.Log(property.oscAddress.Replace("/","") + " " + data);
+            var obj = FindFirstObjectByType<AkGameObj>();
+            AkSoundEngine.SetRTPCValue(property.oscAddress.Replace("/",""), data, obj.gameObject);
         }
         else if (property.dataType == typeof(Vector3))
         {

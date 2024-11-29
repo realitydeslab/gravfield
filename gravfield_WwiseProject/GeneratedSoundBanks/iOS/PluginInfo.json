@@ -1,0 +1,19 @@
+{
+ "PluginInfo": {
+  "Platform": "iOS",
+  "BasePlatform": "iOS",
+  "PluginLibs": [
+   {
+    "LibName": "System",
+    "LibId": "11403271",
+    "Type": "AudioDevice"
+   },
+   {
+    "LibName": "No Output",
+    "LibId": "11862023",
+    "Type": "AudioDevice"
+   }
+  ],
+  "FileHash": "{3F2836D5-3C44-7855-E283-99F2C513D071}"
+ }
+}

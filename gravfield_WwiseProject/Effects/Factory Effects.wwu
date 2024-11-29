@@ -1982,6 +1982,7 @@
 								</Effect>
 							</ChildrenList>
 						</Folder>
+						<Effect Name="New_Pitch_Shifter" ID="{63E35F2D-B16C-43F6-8658-5581A6823E37}" PluginName="Wwise Pitch Shifter" CompanyID="0" PluginID="136" PluginType="3"/>
 					</ChildrenList>
 				</Folder>
 			</ChildrenList>
