@@ -1,0 +1,91 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to the License Client on channel: "LicenseClient-chaimingze" at "2024-11-15T14:38:50.2660099Z"
+[Licensing::Client] Error: Code 10 while verifying Licensing Client signature (process Id: 29028, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] Error: LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.16.0+1c867a9
+  Session Id:              e8ceae2624704d9fa13e697c8b695cc3
+  Correlation Id:          1d7d4546cb15e89e11ee3b094cf0df38
+  External correlation Id: 1872195965063623886
+  Machine Id:              oSYzw2mVB7rihcnw8/Kg6PcQxh8=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-chaimingze" (connect: 0.00s, validation: 0.01s, handshake: 0.10s)
+[Licensing::IpcConnector] Successfully connected to the License Notification on channel: "LicenseClient-chaimingze-notifications" at "2024-11-15T14:38:50.3815561Z"
+Built from 'origin/EngineU3D' branch; Version is '2022.3.20f1 (d8be83a2881d) revision 14204547'; Using compiler version '192930153'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26100) 64bit Professional' Language: 'en' Physical Memory: 65202 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+E:\Unity_Engine\240821\Release\Unity.exe
+-batchmode
+-nographics
+-logFile
+logRunSetup.txt
+-projectPath
+E:\Github\gravfield\UnityProject_WwiseIntegrationTemp
+-executeMethod
+WwiseSetupWizard.RunSetup
+-quit
+Successfully changed project path to: E:\Github\gravfield\UnityProject_WwiseIntegrationTemp
+E:/Github/gravfield/UnityProject_WwiseIntegrationTemp
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [26404] Host "[IP] 172.27.82.174 [Port] 55504 [Flags] 2 [Guid] 4003819909 [EditorId] 4003819909 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-DHQ8RI0) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+
+Player connection [26404] Host "[IP] 172.27.82.174 [Port] 55504 [Flags] 2 [Guid] 4003819909 [EditorId] 4003819909 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-DHQ8RI0) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+
+[XDEngine] - XD_BUG_FIX_PREFAB_IMPORT:True
+[XDEngine] - XD_BUG_SLIGHT_FIXED:True
+[XDEngine] - XD_DISABLE_HUB:True
+[XDEngine] - XD_EDITOR_LOAD_ASSET_ASYNC:False
+[XDEngine] - XD_EDITOR_PREFAB_APPLY_CALLBACK:True
+[XDEngine] - XD_GPU_SHADER_NAME:True
+[XDEngine] - XD_HIZ:True
+[XDEngine] - XD_LIGHTMAP_HELPER:True
+[XDEngine] - XD_NAVIGATION:True
+[XDEngine] - XD_OPT_ANIMATION_LOW_FREQUENCY:True
+[XDEngine] - XD_OPT_BRG_TEXTURE_STREAMING:True
+[XDEngine] - XD_OPT_CASCADE_LOW_FREQUENCY:True
+[XDEngine] - XD_OPT_DYNAMIC_LOAD_ANIMATION_CLIP:True
+[XDEngine] - XD_OPT_SKIN_MESH_MEMORY:True
+[XDEngine] - XD_PLAYER_SHADER_VARIANT_COLLECTION:True
+[XDEngine] - XD_SHADER_COLOR_DEPTH_FETCH:True
+[Physics::Module] Initialized MultithreadedJobDispatcher with 15 workers.
+[Package Manager] UpmClient::Connect -- Connected to IPC stream "Upm-38164" after 2.1 seconds.
+Rebuilding Library because the metadata folder could not be found!
+Source asset database requested to be recreated
+[Package Manager] Done resolving packages in 2.18 seconds
+[Licensing::Client] Successfully resolved entitlement details
+An error occurred while resolving packages:
+  Project has invalid dependencies:
+    com.community.netcode.transport.multipeer-connectivity: No 'git' executable was found. Please install Git on your system then restart Unity and Unity Hub
+    com.immersal.core: No 'git' executable was found. Please install Git on your system then restart Unity and Unity Hub
+Exiting without the bug reporter. Application will terminate with return code 1

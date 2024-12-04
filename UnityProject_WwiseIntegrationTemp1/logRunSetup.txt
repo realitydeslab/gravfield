@@ -1,0 +1,109 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to the License Client on channel: "LicenseClient-chaimingze" at "2024-11-15T16:07:56.6297818Z"
+[Licensing::Client] Error: Code 10 while verifying Licensing Client signature (process Id: 29028, path: "C:/Program Files/Unity Hub/UnityLicensingClient_V1/Unity.Licensing.Client.exe")
+[Licensing::Module] Error: LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.16.0+1c867a9
+  Session Id:              00f82830665445aa820ba453b237dcca
+  Correlation Id:          1d7d4546cb15e89e11ee3b094cf0df38
+  External correlation Id: 4719160899784290112
+  Machine Id:              oSYzw2mVB7rihcnw8/Kg6PcQxh8=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-chaimingze" (connect: 0.00s, validation: 0.01s, handshake: 0.14s)
+[Licensing::IpcConnector] Successfully connected to the License Notification on channel: "LicenseClient-chaimingze-notifications" at "2024-11-15T16:07:56.7814958Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully updated license
+Built from '6000.0/staging' branch; Version is '6000.0.26f1 (ccb7c73d2c02) revision 13416391'; Using compiler version '193933523'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26100) 64bit Professional' Language: 'en' Physical Memory: 65202 MB
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Serial number assigned to: "ewogICJzdWJzR3JvdXAiIDogInVuaXR5IGVkaXRvciIsCiAgIm5hbWVzcGFjZSIgOiAidW5pdHlfZWRpdG9yIiwKICAidHlwZSIgOiAiRURJVE9SIiwKICAidGFnIiA6ICJVbml0eVBlcnNvbmFsXXXX"
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+[Licensing::Client] Successfully resolved entitlement details
+
+COMMAND LINE ARGUMENTS:
+E:\Unity_Engine\6000.0.26f1\Editor\Unity.exe
+-batchmode
+-nographics
+-logFile
+logRunSetup.txt
+-projectPath
+E:\Github\gravfield\UnityProject_WwiseIntegrationTemp1
+-executeMethod
+WwiseSetupWizard.RunSetup
+-quit
+Successfully changed project path to: E:\Github\gravfield\UnityProject_WwiseIntegrationTemp1
+E:/Github/gravfield/UnityProject_WwiseIntegrationTemp1
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [39872]  Target information:
+
+Player connection [39872]  * "[IP] 172.27.82.174 [Port] 55504 [Flags] 2 [Guid] 2399824264 [EditorId] 2399824264 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-DHQ8RI0) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [39872] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [39872] Host joined alternative multi-casting on [225.0.0.222:34997]...
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-34276" after 0.6 seconds.
+Library Redirect Path: Library/
+Rebuilding Library because the metadata folder could not be found!
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were added:
+  com.unity.modules.accessibility@1.0.0
+  com.unity.multiplayer.center@1.0.0
+The following packages were updated:
+  com.unity.cinemachine from version 2.9.7 to 2.10.2
+  com.unity.memoryprofiler from version 1.1.0 to 1.1.1
+  com.unity.netcode.gameobjects from version 1.8.1 to 1.10.0
+  com.unity.recorder from version 4.0.2 to 5.1.1
+  com.unity.render-pipelines.universal from version 14.0.10 to 17.0.3
+  com.unity.timeline from version 1.7.6 to 1.8.7
+  com.unity.ugui from version 1.0.0 to 2.0.0
+  com.unity.visualeffectgraph from version 14.0.10 to 17.0.3
+  com.unity.xr.arcore from version 5.1.2 to 6.0.3
+  com.unity.xr.arfoundation from version 5.1.2 to 6.0.3
+  com.unity.xr.arkit from version 5.1.2 to 6.0.3
+The following packages were removed:
+  com.unity.textmeshpro@3.0.8
+[31merror[39m:   No 'git' executable was found. Please install Git on your system then restart Unity and Unity Hub
+[31merror[39m:   No 'git' executable was found. Please install Git on your system then restart Unity and Unity Hub
+[Package Manager] Done resolving packages in 70.68 seconds
+[Licensing::Client] Successfully resolved entitlement details
+An error occurred while resolving packages:
+  Project has invalid dependencies:
+    com.community.netcode.transport.multipeer-connectivity: No 'git' executable was found. Please install Git on your system then restart Unity and Unity Hub
+    com.immersal.core: No 'git' executable was found. Please install Git on your system then restart Unity and Unity Hub
+Exiting without the bug reporter. Application will terminate with return code 1
