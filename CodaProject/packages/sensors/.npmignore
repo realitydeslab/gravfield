@@ -1,6 +1,0 @@
-node_modules
-src
-test
-benchmark
-.eslintrc.js
-webpack.config.js
